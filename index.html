@@ -593,7 +593,7 @@ function vocabQ(R,w,type,all){
 
 /* ---- build one exam from config ---- */
 const DEFAULT_CFG={title:'English Exam',vocabCount:10,grammarCount:10,level:2,timeMin:15,
-  topics:TOPICS.map(t=>t.id),vocabSource:'bank',showAnswers:true,ownMode:'off',ownCount:0,examMode:'auto'};
+  topics:TOPICS.map(t=>t.id),vocabSource:'bank',showAnswers:true,ownMode:'off',ownCount:0,examMode:'auto',compOn:false,compRound:1,compMin:[8,9,10]};
 function ownQ(R,x){
   const o=R.shuffle([x.c,...x.w]);const ar=/[\u0600-\u06FF]/;
   return {sec:x.s==='v'?'v':'g',topic:'own-'+(x.s==='v'?'v':'g'),type:'own',q:x.q,o,a:o.indexOf(x.c),
@@ -689,6 +689,7 @@ try{S.name=localStorage.getItem('ex-name')||'';S.cls=localStorage.getItem('ex-cl
 
 const nowStr=ms=>{const d=new Date(ms);const p=n=>String(n).padStart(2,'0');return `${p(d.getDate())}/${p(d.getMonth()+1)}/${d.getFullYear()} ${p(d.getHours())}:${p(d.getMinutes())}`;};
 const mmss=s=>`${String(Math.floor(s/60)).padStart(2,'0')}:${String(s%60).padStart(2,'0')}`;
+const ROUND_NAMES=['All attempts','Round 1','Round 2','Final'];
 const LV={0:'Mixed',1:'Basic',2:'Intermediate',3:'Advanced'};
 
 /* ---- Convex HTTP API (no library needed) ---- */
@@ -763,6 +764,7 @@ function renderStart(){
       <span>Questions: <b>${nq}</b></span>
       ${onlyOwn?'':`<span>Level: <b>${LV[c.level]}</b></span>`}
       <span>Time: <b>${c.timeMin>0?c.timeMin+' min':'Untimed'}</b></span>
+      ${c.compOn?`<span>Round: <b>${ROUND_NAMES[c.compRound]}</b></span><span>Minimum to qualify: <b>${c.compMin[c.compRound-1]}</b> correct</span>`:''}
     </div>
     <div class="grid2">
       <label class="f">Full name<input class="in" id="f-name" maxlength="60" autocomplete="name" value="${esc(S.name)}" placeholder="Type your name"></label>
@@ -784,6 +786,16 @@ async function startExam(){
   try{localStorage.setItem('ex-name',S.name);localStorage.setItem('ex-cls',S.cls);}catch(e){}
   const gb=$('#f-go');if(gb){gb.disabled=true;gb.textContent='Preparing your exam...';}
   await refreshSettings();
+  if(S.cfg.compOn&&S.net==='ok'){
+    try{
+      const r=await cx('query','exam:canStart',{name:S.name},8000);
+      if(!r||!r.ok){
+        const e=$('#f-err');if(e){e.textContent='You are not on the qualified list for '+ROUND_NAMES[S.cfg.compRound]+'. Check that you typed your full name exactly as in the previous round, or ask your teacher.';e.hidden=false;}
+        if(gb){gb.disabled=false;gb.textContent='Start exam';}
+        return;
+      }
+    }catch(err){}
+  }
   S.exam=(S.cfg.examMode==='fixed'&&fixedOk(S.fixed))?fixedExam(S.cfg,S.fixed):buildExam(S.cfg,S.custom,S.own);
   S.ans=new Array(S.exam.questions.length).fill(-1);
   S.cur=0;S.phase='run';S.confirm=false;S.startAt=Date.now();S.saveState='';
@@ -881,7 +893,7 @@ function submit(auto){
   });
   const c=cv+cg,n=nv+ng;
   S.sum={id:newId(),t:Date.now(),code:E.code,v:[cv,nv],g:[cg,ng],c,n,pct:n?Math.round(100*c/n):0,
-    dur:Math.round((Date.now()-S.startAt)/1000),title:E.title,lv:E.level,tp,items,auto:!!auto};
+    dur:Math.round((Date.now()-S.startAt)/1000),title:E.title,lv:E.level,tp,items,auto:!!auto,round:S.cfg.compOn?S.cfg.compRound:0,min:S.cfg.compOn?S.cfg.compMin[S.cfg.compRound-1]:0};
   S.phase='done';S.saveState=S.preview?'preview':(BACKEND_ON?'saving':'local');
   render();window.scrollTo(0,0);
   if(S.saveState==='saving')saveAttempt();
@@ -890,7 +902,7 @@ async function saveAttempt(){
   const x=S.sum;
   try{
     const r=await cx('mutation','exam:submit',{id:x.id,name:S.name,cls:S.cls||'',code:x.code,title:x.title,lv:x.lv,v:x.v,g:x.g,pct:x.pct,dur:x.dur,tp:x.tp,items:x.items});
-    S.saveState=(r&&r.ok)?'ok':'fail';
+    S.saveState=(r&&r.ok)?'ok':(r&&r.reason==='not_eligible'?'noelig':'fail');
   }catch(e){S.saveState='fail';}
   if(S.view==='exam'&&S.phase==='done')renderDone();
 }
@@ -907,6 +919,7 @@ function renderDone(){
     saving:['','Sending your result to the teacher...'],
     ok:['ok','Your result was sent to your teacher.'],
     fail:['bad','Could not send your result. Check your internet, then press “Resend result”, or copy the summary and show it to your teacher.'],
+    noelig:['bad','You are not on the qualified list for this round, so your result was not saved. Ask your teacher.'],
     local:['bad','Your result was not sent automatically. Copy the summary below and show it to your teacher.']}[S.saveState]||['',''];
   let h=`<section class="sheet">
     <div class="res">
@@ -917,10 +930,11 @@ function renderDone(){
         <div class="split"><span class="pill">Vocabulary <b>${s.v[0]}/${s.v[1]}</b></span>
         <span class="pill">Grammar <b>${s.g[0]}/${s.g[1]}</b></span>
         <span class="pill">Time <b>${mmss(s.dur)}</b></span>
-        <span class="pill">Form <b dir="ltr">${s.code}</b></span></div>
+        <span class="pill">Form <b dir="ltr">${s.code}</b></span>${s.round?`<span class="pill">${ROUND_NAMES[s.round]}</span>`:''}</div>
       </div></div>
     <div class="sp"></div>
     <div class="note ${st[0]}" id="save-note">${st[1]}</div>
+    ${s.round?`<div class="sp"></div><div class="note ${s.c>=s.min?'ok':''}">${ROUND_NAMES[s.round]} target: at least <b>${s.min}</b> correct. You got <b>${s.c}</b> — ${s.c>=s.min?'you reached the target':'below the target'}. Your teacher will announce who qualifies.</div>`:''}
     <div class="sp"></div>
     <div class="row"><button class="btn" id="d-new">New exam with different questions</button>
     ${S.saveState==='fail'?'<button class="btn red" id="d-retry">Resend result</button>':''}<button class="btn ghost" id="d-copy">Copy result summary</button></div>
@@ -954,14 +968,14 @@ function renderTeacher(){
   if(!S.ready){m.innerHTML='<div class="empty"><b>Loading</b>One moment...</div>';return;}
   if(!S.canEdit){renderLogin();return;}
   const T=S.t;
-  const tabs=[['grades','Grades'],['own','My questions'],['settings','Exam settings'],['preview','Preview exam'],['words','Lesson words']];
+  const tabs=[['grades','Grades'],['own','My questions'],['settings','Exam settings'],['preview','Preview exam'],['words','Lesson words'],['rank','Qualifiers']];
   let h=`<div class="subtabs" role="tablist">${tabs.map(t=>`<button class="subtab" role="tab" data-st="${t[0]}" aria-selected="${T.tab===t[0]}">${t[1]}</button>`).join('')}<button class="subtab" id="t-out" style="margin-inline-start:auto">Sign out</button></div>`;
   if(!BACKEND_ON)h+=`<div class="note bad">The site is not connected to the database yet. Open the file config.js and put your Convex URL in it, as explained in the instructions file.</div><div class="sp"></div>`;
   else if(S.dbErr)h+=`<div class="note bad">${esc(S.dbErr)}</div><div class="sp"></div>`;
   m.innerHTML=h+`<div id="t-body"></div>`;
   $('#t-out').onclick=()=>{teacherLogout();S.loginMsg='';render();};
-  m.querySelectorAll('[data-st]').forEach(b=>b.onclick=()=>{T.tab=b.dataset.st;T.msg='';renderTeacher();});
-  if(T.tab==='grades')tGrades();else if(T.tab==='settings')tSettings();else if(T.tab==='own')tOwn();else if(T.tab==='preview')tPreview();else tWords();
+  m.querySelectorAll('[data-st]').forEach(b=>b.onclick=()=>{T.tab=b.dataset.st;T.msg='';T.rankFresh=false;renderTeacher();});
+  if(T.tab==='grades')tGrades();else if(T.tab==='settings')tSettings();else if(T.tab==='own')tOwn();else if(T.tab==='preview')tPreview();else if(T.tab==='rank')tRank();else tWords();
 }
 
 /* ---- grades ---- */
@@ -1082,7 +1096,7 @@ function readCfg(){
   const topics=[...document.querySelectorAll('[data-tp]')].filter(x=>x.checked).map(x=>x.dataset.tp);
   return {title:($('#s-title').value.trim()||DEFAULT_CFG.title),vocabCount:n('#s-vc',0,40),grammarCount:n('#s-gc',0,40),
     level:+$('#s-lv').value,timeMin:n('#s-time',0,180),examMode:S.cfg.examMode==='fixed'?'fixed':'auto',ownMode:$('#s-own').value,ownCount:n('#s-oc',0,100),vocabSource:$('#s-src').value,showAnswers:$('#s-show').value==='1',
-    topics:topics.length?topics:TOPICS.map(t=>t.id)};
+    topics:topics.length?topics:TOPICS.map(t=>t.id),compOn:!!S.cfg.compOn,compRound:S.cfg.compRound||1,compMin:S.cfg.compMin||[8,9,10]};
 }
 async function saveCfg(){
   const c=readCfg();
@@ -1092,6 +1106,112 @@ async function saveCfg(){
   try{await tcall('save',{field:'cfg',value:c});S.t.msg='Settings saved. Students will see them when they open a new exam.';}
   catch(e){S.t.msg='Could not save the settings. Please try again.';}
   renderTeacher();
+}
+
+/* ---- competition + qualifiers ---- */
+const normName=s=>String(s||'').trim().toLowerCase().replace(/\s+/g,' ');
+function corr(r){return r.a.v[0]+r.a.g[0];}
+function rankCmp(x,y){return (corr(y)-corr(x))||(y.a.pct-x.a.pct)||((x.a.dur||0)-(y.a.dur||0))||(x.a.t-y.a.t);}
+function bestByStudent(rr){
+  const m=new Map(),cnt=new Map();
+  S.results.filter(r=>rr===0||r.a.round===rr).forEach(r=>{const k=normName(r.name);cnt.set(k,(cnt.get(k)||0)+1);const cur=m.get(k);if(!cur||rankCmp(r,cur)<0)m.set(k,r);});
+  return [...m.entries()].map(([k,r])=>({k,r,tries:cnt.get(k)})).sort((x,y)=>rankCmp(x.r,y.r)).map((x,i)=>Object.assign(x,{rank:i+1}));
+}
+async function loadQual(field){
+  S.quals=S.quals||{};
+  try{const q=await tcall('getPrivate',{field});S.quals[field]=new Set(Array.isArray(q.value)?q.value:[]);}
+  catch(e){if(!S.canEdit)return false;S.quals[field]=new Set();}
+  return true;
+}
+function examQCount(){return S.cfg.examMode==='fixed'&&fixedOk(S.fixed)?S.fixed.questions.length:examSize(S.cfg,S.own);}
+function tRank(){
+  const T=S.t,body=$('#t-body'),c=S.cfg;
+  const rr=c.compOn?(T.rankRound||c.compRound):0;
+  const field=rr?'qual'+rr:'qualified';
+  S.quals=S.quals||{};
+  if(!S.quals[field]){body.innerHTML='<div class="sheet"><div class="empty"><b>Loading</b>One moment...</div></div>';loadQual(field).then(ok=>{if(ok&&S.view==='teacher'&&S.t.tab==='rank')tRank();});return;}
+  if(!T.rankFresh){T.rankFresh=true;loadResults().then(()=>{if(S.canEdit&&S.view==='teacher'&&S.t.tab==='rank')tRank();});}
+  const Q=S.quals[field],min=rr?c.compMin[rr-1]:0;
+  const list=bestByStudent(rr);
+  const qn=()=>list.filter(x=>Q.has(x.k)).length;
+  const passed=x=>rr?corr(x.r)>=min:true;
+  let h=`<section class="sheet"><h2>Competition</h2>
+  <p class="lead">Run a 3-round elimination. Scores are points (the number of correct answers). Students can join Round 2 only if you add them to the Round 1 qualified list, and the Final only from the Round 2 list. Round 1 is open to everyone. Use the same full name in every round.</p>
+  <label class="chk"><input type="checkbox" id="c-on" ${c.compOn?'checked':''}> Turn on the 3-round competition</label><div class="sp"></div>
+  <div class="grid2">
+    <label class="f">Current round (the one students can take now)<select class="in" id="c-round">${[1,2,3].map(i=>`<option value="${i}" ${c.compRound===i?'selected':''}>${ROUND_NAMES[i]}</option>`).join('')}</select></label>
+    <span></span>
+    <label class="f">Round 1: minimum correct to qualify<input class="in" id="c-m1" type="number" min="0" max="200" value="${c.compMin[0]}"></label>
+    <label class="f">Round 2: minimum correct to qualify<input class="in" id="c-m2" type="number" min="0" max="200" value="${c.compMin[1]}"></label>
+    <label class="f">Final: minimum correct to win<input class="in" id="c-m3" type="number" min="0" max="200" value="${c.compMin[2]}"></label>
+  </div><div class="sp"></div>
+  <p class="hint">Your exam currently has <b>${examQCount()}</b> question${examQCount()===1?'':'s'} (for example 8, 9 and 10 out of 10). If you want different questions in each round, approve a new exam between rounds.</p><div class="sp"></div>
+  ${T.compMsg?`<div class="note ${T.compMsg.startsWith('Could not')?'bad':'ok'}">${esc(T.compMsg)}</div><div class="sp"></div>`:''}
+  <div class="row"><button class="btn" id="c-save">Save competition settings</button></div></section>`;
+  h+=`<section class="sheet"><h2>${rr===3?'Final ranking':rr?ROUND_NAMES[rr]+' ranking':'Ranking (all attempts)'}</h2>
+  <p class="lead">Each student is ranked by their best attempt${rr?` in this round`:''}. Ties are broken by the faster time (and then the earlier attempt).${rr?` Minimum to ${rr===3?'win':'qualify'}: <b>${min}</b> correct.`:''}${rr&&rr<3?` Students you select and save here can join ${ROUND_NAMES[rr+1]}.`:''}</p>`;
+  if(c.compOn){h+=`<label class="f" style="max-width:260px;margin-bottom:12px">Show round<select class="in" id="r-round">${[1,2,3].map(i=>`<option value="${i}" ${rr===i?'selected':''}>${ROUND_NAMES[i]}</option>`).join('')}</select></label>`;}
+  if(!S.resultsLoaded)h+=`<div class="empty"><b>Loading grades</b>One moment...</div></section>`;
+  else if(!list.length)h+=`<div class="empty"><b>No results yet</b>Rankings appear here after students finish the exam${rr?' in this round':''}.</div></section>`;
+  else{
+    const npass=list.filter(passed).length;
+    const champ=rr===3?list.find(passed):null;
+    h+=`${champ?`<div class="note ok"><b>Winner: ${esc(champ.r.name)}</b> — ${corr(champ.r)}/${champ.r.a.v[1]+champ.r.a.g[1]} correct in ${mmss(champ.r.a.dur||0)}${list.filter(x=>passed(x)&&corr(x.r)===corr(champ.r)).length>1?' (fastest among students with the same score)':''}.</div><div class="sp"></div>`:''}
+    <div class="row" style="align-items:flex-end;margin-bottom:12px">
+      <button class="btn ghost" id="r-ref">Refresh results</button>
+      ${rr?`<button class="btn ghost" id="r-pass">Select everyone who reached ${min} (${npass})</button>`:''}
+      <label class="f" style="width:150px">Top students<input class="in" id="r-n" type="number" min="1" max="${list.length}" value="${esc(T.rankN||'')}" placeholder="e.g. 5"></label>
+      <button class="btn ghost" id="r-top">Select top</button><button class="btn ghost" id="r-clear">Clear selection</button></div>
+    ${T.rankMsg?`<div class="note ${T.rankMsg.startsWith('Could not')?'bad':'ok'}">${esc(T.rankMsg)}</div><div class="sp"></div>`:''}
+    <div class="scroller"><table><thead><tr><th>${rr===3?'Selected':'Qualified'}</th><th>Rank</th><th>Student</th><th>Class</th><th>Best score</th><th>Time</th><th>Date</th><th>Attempts</th>${rr?'<th>Target</th>':''}</tr></thead><tbody>
+    ${list.map(x=>{const r=x.r,a=r.a,n=a.v[1]+a.g[1];
+      return `<tr><td><input type="checkbox" data-q="${esc(x.k)}" ${Q.has(x.k)?'checked':''} aria-label="Select ${esc(r.name)}" style="width:20px;height:20px;accent-color:var(--brand)"></td>
+      <td class="num">${x.rank}</td><td>${esc(r.name)}</td><td>${esc(r.cls)||'-'}</td>
+      <td class="num"><span class="pct ${rr?(passed(x)?'hi':'lo'):(a.pct>=75?'hi':a.pct<50?'lo':'')}">${corr(r)}/${n} · ${a.pct}%</span></td>
+      <td class="num">${mmss(a.dur||0)}</td><td class="num">${nowStr(a.t)}</td><td class="num">${x.tries}</td>${rr?`<td>${passed(x)?'<span class="pct hi">Reached</span>':'<span class="pct lo">Below</span>'}</td>`:''}</tr>`;}).join('')}
+    </tbody></table></div>
+    <div class="sp"></div>
+    <div class="row"><b>Selected: <span id="r-count">${qn()}</span> of ${list.length}</b></div><div class="sp"></div>
+    <div class="row"><button class="btn" id="r-save">Save the list</button><button class="btn ghost" id="r-csv">Export selected (CSV)</button><button class="btn ghost" id="r-copy">Copy selected names</button></div>
+    <p class="hint" id="r-copied" style="margin-top:8px" hidden></p></section>`;
+  }
+  body.innerHTML=h;
+  const cs=$('#c-save');
+  cs.onclick=async()=>{
+    const num=id=>Math.max(0,Math.min(200,parseInt($(id).value,10)||0));
+    const nc=Object.assign({},S.cfg,{compOn:$('#c-on').checked,compRound:+$('#c-round').value,compMin:[num('#c-m1'),num('#c-m2'),num('#c-m3')]});
+    try{await tcall('save',{field:'cfg',value:nc});S.cfg=sanitizeCfg(nc);T.rankRound=null;T.rankMsg='';T.compMsg=nc.compOn?`Competition saved. Students can now take ${ROUND_NAMES[nc.compRound]}.`:'Competition turned off.';}
+    catch(e){if(!S.canEdit){render();return;}T.compMsg='Could not save the competition settings. Please try again.';}
+    tRank();
+  };
+  const sr=$('#r-round');if(sr)sr.onchange=()=>{T.rankRound=+sr.value;T.rankMsg='';tRank();};
+  if(!list.length||!S.resultsLoaded)return;
+  const cnt=()=>{$('#r-count').textContent=qn();};
+  body.querySelectorAll('[data-q]').forEach(cb=>cb.onchange=()=>{if(cb.checked)Q.add(cb.dataset.q);else Q.delete(cb.dataset.q);T.rankMsg='';cnt();});
+  $('#r-ref').onclick=async()=>{await loadResults();if(S.canEdit)tRank();else render();};
+  $('#r-n').oninput=e=>{T.rankN=e.target.value;};
+  const setQ=(arr,msg)=>{S.quals[field]=new Set(arr.map(x=>x.k));T.rankMsg=msg;tRank();};
+  const rp=$('#r-pass');if(rp)rp.onclick=()=>{const a=list.filter(passed);setQ(a,`Selected ${a.length} student${a.length===1?'':'s'} who reached ${min}. Press “Save the list” to keep it.`);};
+  $('#r-top').onclick=()=>{
+    const n=Math.max(0,Math.min(list.length,parseInt($('#r-n').value,10)||0));
+    if(!n){T.rankMsg='Could not select: type how many top students to select.';tRank();return;}
+    T.rankN=String(n);setQ(list.slice(0,n),`Selected the top ${n}. Press “Save the list” to keep it.`);
+  };
+  $('#r-clear').onclick=()=>setQ([],'');
+  $('#r-save').onclick=async()=>{
+    try{await tcall('save',{field,value:[...Q]});T.rankMsg=rr&&rr<3?`List saved. These ${Q.size} student${Q.size===1?'':'s'} can now join ${ROUND_NAMES[rr+1]}.`:'List saved.';}
+    catch(e){if(!S.canEdit){render();return;}T.rankMsg='Could not save the list. Please try again.';}
+    tRank();
+  };
+  const sel=()=>list.filter(x=>Q.has(x.k));
+  $('#r-csv').onclick=()=>{
+    const q=v=>'"'+String(v).replace(/"/g,'""')+'"';
+    let t='﻿'+['Rank','Name','Class','Round','Correct','Out of','Percent %','Time','Date'].map(q).join(',')+'\n';
+    sel().forEach(x=>{const a=x.r.a;t+=[x.rank,x.r.name,x.r.cls,rr?ROUND_NAMES[rr]:'',corr(x.r),a.v[1]+a.g[1],a.pct,mmss(a.dur||0),nowStr(a.t)].map(q).join(',')+'\n';});
+    const u=URL.createObjectURL(new Blob([t],{type:'text/csv;charset=utf-8'}));
+    const el=document.createElement('a');el.href=u;el.download='qualified-students.csv';document.body.appendChild(el);el.click();el.remove();setTimeout(()=>URL.revokeObjectURL(u),3000);
+  };
+  $('#r-copy').onclick=()=>copyText(sel().map((x,i)=>(i+1)+'. '+x.r.name+(x.r.cls?' ('+x.r.cls+')':'')+' — '+corr(x.r)+'/'+(x.r.a.v[1]+x.r.a.g[1])+' — '+mmss(x.r.a.dur||0)).join('\n')||'No one is selected.',$('#r-copied'));
 }
 
 /* ---- custom words ---- */
@@ -1338,6 +1458,7 @@ function tOwn(){
   <p class="lead">Write each question on its own line and separate its parts with the <span class="en">|</span> sign in this order: question | correct answer | wrong | wrong | wrong. Start the line with <span class="en">v:</span> for vocabulary or <span class="en">g:</span> for grammar (grammar is the default).</p>
   <textarea class="in en" id="o-bulk" dir="ltr" placeholder="g: My brother ___ football every Friday. | plays | play | playing | played&#10;v: What does “borrow” mean? | to take something and give it back later | to carry | to visit | to forget"></textarea>
   <div class="sp"></div><div class="row"><button class="btn" id="o-bulk-go">Add questions</button></div></section>`}
+  ${pubSection()}
   <section class="sheet"><h2>My questions (${S.own.length})</h2>
   ${S.own.length?S.own.map((x,i)=>{const ar=/[؀-ۿ]/.test(x.q);return `<div class="rv"><div class="row" style="justify-content:space-between;align-items:flex-start;flex-wrap:nowrap">
     <div style="min-width:0;flex:1"><span class="pill" style="font-size:.78rem">${x.s==='v'?'Vocabulary':'Grammar'}</span>${x.img?' <span class="pill" style="font-size:.78rem">with image</span>':''}
@@ -1347,6 +1468,8 @@ function tOwn(){
   :`<div class="empty"><b>No questions added yet</b>Add your first question using the form above, then turn on “Teacher questions” in the Exam settings tab.</div>`}
   </section>`;
   wireImg('o',()=>T.oImg,v=>{T.oImg=v;});
+  const pb=$('#o-pub');if(pb)pb.onclick=publishOwn;
+  const ub=$('#o-unpub');if(ub)ub.onclick=unpublishOwn;
   $('#o-save').onclick=saveOneOwn;
   const bg=$('#o-bulk-go');if(bg)bg.onclick=saveBulkOwn;
   const cn=$('#o-cancel');if(cn)cn.onclick=()=>{T.edit=null;T.oImgFor=undefined;T.ownMsg='';tOwn();};
@@ -1354,6 +1477,38 @@ function tOwn(){
   body.querySelectorAll('[data-od]').forEach(b=>b.onclick=async()=>{
     const i=+b.dataset.od;T.edit=null;await saveOwn(S.own.filter((_,k)=>k!==i),'Question deleted.');
   });
+}
+function pubSection(){
+  const T=S.t,n=S.own.length,fixedOn=S.cfg.examMode==='fixed'&&fixedOk(S.fixed);
+  return `<section class="sheet"><h2>Publish my questions as the student exam</h2>
+  <p class="lead">Use all <b>${n}</b> question${n===1?'':'s'} below as the exam. Students will get exactly these questions, with vocabulary first and then grammar. The options of each question are shuffled once. If you change a question later, approve again to update the exam.</p>
+  ${fixedOn?`<div class="note ok">Students are now taking a fixed exam (form <b dir="ltr">${esc(S.fixed.code)}</b>, ${S.fixed.questions.length} questions).</div><div class="sp"></div>`:''}
+  ${T.pubMsg?`<div class="note ${T.pubMsg.startsWith('Could not')?'bad':'ok'}">${esc(T.pubMsg)}</div><div class="sp"></div>`:''}
+  <div class="row"><button class="btn red" id="o-pub" ${n?'':'disabled'}>Approve my ${n} question${n===1?'':'s'} for students</button>
+  ${fixedOn?'<button class="btn ghost" id="o-unpub">Go back to the changing exam</button>':''}</div></section>`;
+}
+async function publishOwn(){
+  const T=S.t;
+  const R=makeRng((Math.random()*4294967295)>>>0);
+  const valid=S.own.filter(x=>x&&x.q&&x.c&&Array.isArray(x.w)&&x.w.length>=1);
+  if(!valid.length){T.pubMsg='Could not approve: add at least one question first.';tOwn();return;}
+  const all=valid.map(x=>ownQ(R,x));
+  const qs=[...all.filter(q=>q.sec==='v'),...all.filter(q=>q.sec==='g')].map(q=>({sec:q.sec,topic:q.topic,type:'own',q:q.q,o:q.o,a:q.a,qd:q.qd,od:q.od,tip:q.tip||'',img:q.img||''}));
+  const doc={code:('T'+Math.random().toString(36).slice(2,6)).toUpperCase(),at:Date.now(),questions:qs};
+  try{
+    await tcall('save',{field:'fixed',value:doc});
+    const c=Object.assign({},S.cfg,{examMode:'fixed'});
+    await tcall('save',{field:'cfg',value:c});
+    S.cfg=sanitizeCfg(c);S.fixed=Object.assign({},doc,{questions:doc.questions.map((x,i)=>Object.assign({},x,{imgUrl:(all.find(z=>z.q===x.q)||{}).imgUrl||''}))});
+    T.pubMsg=`Exam approved with ${qs.length} question${qs.length===1?'':'s'}. Every student who starts now takes these questions.`;
+  }catch(e){if(!S.canEdit){render();return;}T.pubMsg='Could not approve the exam. Please try again.';}
+  tOwn();
+}
+async function unpublishOwn(){
+  const T=S.t;
+  try{const c=Object.assign({},S.cfg,{examMode:'auto'});await tcall('save',{field:'cfg',value:c});S.cfg=sanitizeCfg(c);T.pubMsg='The exam changes for each student again.';}
+  catch(e){if(!S.canEdit){render();return;}T.pubMsg='Could not switch back. Please try again.';}
+  tOwn();
 }
 function cleanQ(s,q,c,ws,tip,im){
   q=String(q).trim();c=String(c).trim();ws=ws.map(x=>String(x).trim()).filter(Boolean);
@@ -1398,6 +1553,8 @@ function sanitizeCfg(d){
   c.ownMode=['off','mix','only'].includes(c.ownMode)?c.ownMode:'off';c.ownCount=Math.max(0,Math.min(100,+c.ownCount||0));
   c.level=[0,1,2,3].includes(+c.level)?+c.level:2;c.timeMin=Math.max(0,Math.min(180,+c.timeMin||0));
   c.topics=Array.isArray(c.topics)&&c.topics.length?c.topics:TOPICS.map(t=>t.id);
+  c.compOn=!!c.compOn;c.compRound=Math.max(1,Math.min(3,Math.round(+c.compRound||1)));
+  c.compMin=[0,1,2].map(i=>Math.max(0,Math.min(200,Math.round(+((Array.isArray(c.compMin)?c.compMin:[8,9,10])[i])||[8,9,10][i]))));
   c.title=String(c.title||DEFAULT_CFG.title).slice(0,80);c.showAnswers=c.showAnswers!==false;
   return c;
 }
@@ -1406,7 +1563,7 @@ async function loadResults(){
   try{
     const res=await tcall('listResults');
     S.results=res.rows.map(r=>({id:r.id,uid:String(r.name).trim().toLowerCase()+'|'+String(r.cls||'').trim().toLowerCase(),name:r.name,cls:r.cls||'',
-      a:{t:r.t,code:r.code,v:r.v,g:r.g,pct:r.pct,dur:r.dur,lv:r.lv,tp:r.tp||{},items:Array.isArray(r.items)?r.items:null}}));
+      a:{t:r.t,code:r.code,v:r.v,g:r.g,pct:r.pct,dur:r.dur,lv:r.lv,round:r.round||0,tp:r.tp||{},items:Array.isArray(r.items)?r.items:null}}));
     S.resultsLoaded=true;S.dbErr='';
   }catch(e){
     if(!S.canEdit)return;
