@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en" dir="ltr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>*{box-sizing:border-box}[hidden]{display:none!important}:root{color-scheme:light}body{margin:0}</style>
-<title>اختبار الإنجليزي المتجدد</title>
+<title>Grammar&amp;vocabulary hunters</title>
 <meta name="theme-color" content="#1B2559">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -212,7 +212,7 @@ td.num{font-family:var(--f-mono);direction:ltr;text-align:left;white-space:nowra
 </head><body>
 <div class="wrap">
   <header class="bar">
-    <div class="brand"><b>English Exam</b><span>Vocabulary + Grammar</span><span dir="ltr" style="display:block;margin-top:2px;font-weight:600">Ms.Eman Almogheiry</span></div>
+    <div class="brand"><b>Grammar&amp;vocabulary hunters</b><span dir="ltr" style="display:block;margin-top:2px;font-weight:600">Ms.Eman Almogheiry</span></div>
     <nav class="tabs" role="tablist" aria-label="Pages">
       <button class="tab" role="tab" id="tab-exam" aria-selected="true" data-go="exam">Exam</button>
       <button class="tab" role="tab" id="tab-teacher" aria-selected="false" data-go="teacher">Teacher panel</button>
@@ -592,8 +592,8 @@ function vocabQ(R,w,type,all){
 }
 
 /* ---- build one exam from config ---- */
-const DEFAULT_CFG={title:'English Exam',vocabCount:10,grammarCount:10,level:2,timeMin:15,
-  topics:TOPICS.map(t=>t.id),vocabSource:'bank',showAnswers:true,ownMode:'off',ownCount:0,examMode:'auto',compOn:false,compRound:1,compMin:[8,9,10]};
+const DEFAULT_CFG={title:'Grammar&vocabulary hunters',vocabCount:10,grammarCount:10,level:2,timeMin:15,
+  topics:TOPICS.map(t=>t.id),vocabSource:'bank',showAnswers:true,ownMode:'off',ownCount:0,examMode:'auto',compOn:false,compOpen:false,compRound:1,compMin:[8,9,10]};
 function ownQ(R,x){
   const o=R.shuffle([x.c,...x.w]);const ar=/[\u0600-\u06FF]/;
   return {sec:x.s==='v'?'v':'g',topic:'own-'+(x.s==='v'?'v':'g'),type:'own',q:x.q,o,a:o.indexOf(x.c),
@@ -724,6 +724,7 @@ function applySettings(d){
   S.custom=Array.isArray(d.words)?d.words:[];
   S.own=Array.isArray(d.questions)?d.questions:[];
   S.fixed=(d.fixed&&fixedOk(d.fixed))?d.fixed:null;
+  S.compExam=(d.compExam&&fixedOk(d.compExam))?d.compExam:null;
 }
 async function refreshSettings(){
   if(!BACKEND_ON){S.net='off';return;}
@@ -760,12 +761,7 @@ function renderStart(){
   <section class="sheet">
     <h2>${esc(c.title)}</h2>
     <p class="lead">${fixedOn?'A vocabulary and grammar exam prepared by your teacher.':'A vocabulary and grammar exam. The questions and words change every time you start a new exam.'}</p>
-    <div class="facts">
-      <span>Questions: <b>${nq}</b></span>
-      ${onlyOwn?'':`<span>Level: <b>${LV[c.level]}</b></span>`}
-      <span>Time: <b>${c.timeMin>0?c.timeMin+' min':'Untimed'}</b></span>
-      ${c.compOn?`<span>Round: <b>${ROUND_NAMES[c.compRound]}</b></span><span>Minimum to qualify: <b>${c.compMin[c.compRound-1]}</b> correct</span>`:''}
-    </div>
+    ${c.compOn?`<div class="facts"><span>${ROUND_NAMES[c.compRound]}</span><span>${c.compOpen?'Open':'Not open yet'}</span>${c.compOpen?`<span>Minimum to qualify: <b>${c.compMin[c.compRound-1]}</b> correct</span>`:''}</div>`:'<div class="sp"></div>'}
     <div class="grid2">
       <label class="f">Full name<input class="in" id="f-name" maxlength="60" autocomplete="name" value="${esc(S.name)}" placeholder="Type your name"></label>
       <label class="f">Class / section <span class="hint">Optional</span><input class="in" id="f-cls" maxlength="30" value="${esc(S.cls)}" placeholder="e.g. 9/2"></label>
@@ -786,9 +782,14 @@ async function startExam(){
   try{localStorage.setItem('ex-name',S.name);localStorage.setItem('ex-cls',S.cls);}catch(e){}
   const gb=$('#f-go');if(gb){gb.disabled=true;gb.textContent='Preparing your exam...';}
   await refreshSettings();
+  const stop=msg=>{const e=$('#f-err');if(e){e.textContent=msg;e.hidden=false;}if(gb){gb.disabled=false;gb.textContent='Start exam';}};
+  if(S.cfg.compOn&&S.net!=='ok'){stop('Could not reach the server. Check your internet and try again.');return;}
+  if(S.cfg.compOn&&!S.cfg.compOpen){stop(ROUND_NAMES[S.cfg.compRound]+' is not open yet. Please wait for your teacher to start it.');return;}
+  if(S.cfg.compOn&&!S.compExam){stop('The exam for '+ROUND_NAMES[S.cfg.compRound]+' is not ready yet. Please ask your teacher.');return;}
   if(S.cfg.compOn&&S.net==='ok'){
     try{
       const r=await cx('query','exam:canStart',{name:S.name},8000);
+      if(r&&r.closed){stop(ROUND_NAMES[S.cfg.compRound]+' is not open yet. Please wait for your teacher to start it.');return;}
       if(!r||!r.ok){
         const e=$('#f-err');if(e){e.textContent='You are not on the qualified list for '+ROUND_NAMES[S.cfg.compRound]+'. Check that you typed your full name exactly as in the previous round, or ask your teacher.';e.hidden=false;}
         if(gb){gb.disabled=false;gb.textContent='Start exam';}
@@ -796,7 +797,7 @@ async function startExam(){
       }
     }catch(err){}
   }
-  S.exam=(S.cfg.examMode==='fixed'&&fixedOk(S.fixed))?fixedExam(S.cfg,S.fixed):buildExam(S.cfg,S.custom,S.own);
+  S.exam=S.cfg.compOn?fixedExam(S.cfg,S.compExam):((S.cfg.examMode==='fixed'&&fixedOk(S.fixed))?fixedExam(S.cfg,S.fixed):buildExam(S.cfg,S.custom,S.own));
   S.ans=new Array(S.exam.questions.length).fill(-1);
   S.cur=0;S.phase='run';S.confirm=false;S.startAt=Date.now();S.saveState='';
   clearInterval(S.timer);
@@ -902,7 +903,7 @@ async function saveAttempt(){
   const x=S.sum;
   try{
     const r=await cx('mutation','exam:submit',{id:x.id,name:S.name,cls:S.cls||'',code:x.code,title:x.title,lv:x.lv,v:x.v,g:x.g,pct:x.pct,dur:x.dur,tp:x.tp,items:x.items});
-    S.saveState=(r&&r.ok)?'ok':(r&&r.reason==='not_eligible'?'noelig':'fail');
+    S.saveState=(r&&r.ok)?'ok':(r&&r.reason==='not_eligible'?'noelig':(r&&r.reason==='closed'?'closed':'fail'));
   }catch(e){S.saveState='fail';}
   if(S.view==='exam'&&S.phase==='done')renderDone();
 }
@@ -919,6 +920,7 @@ function renderDone(){
     saving:['','Sending your result to the teacher...'],
     ok:['ok','Your result was sent to your teacher.'],
     fail:['bad','Could not send your result. Check your internet, then press “Resend result”, or copy the summary and show it to your teacher.'],
+    closed:['bad','This round was closed by your teacher before your result arrived, so it was not saved. Ask your teacher.'],
     noelig:['bad','You are not on the qualified list for this round, so your result was not saved. Ask your teacher.'],
     local:['bad','Your result was not sent automatically. Copy the summary below and show it to your teacher.']}[S.saveState]||['',''];
   let h=`<section class="sheet">
@@ -968,14 +970,14 @@ function renderTeacher(){
   if(!S.ready){m.innerHTML='<div class="empty"><b>Loading</b>One moment...</div>';return;}
   if(!S.canEdit){renderLogin();return;}
   const T=S.t;
-  const tabs=[['grades','Grades'],['own','My questions'],['settings','Exam settings'],['preview','Preview exam'],['words','Lesson words'],['rank','Qualifiers']];
+  const tabs=[['grades','Grades'],['own','My questions'],['settings','Exam settings'],['preview','Preview exam'],['words','Lesson words'],['rounds','Rounds'],['rank','Qualifiers']];
   let h=`<div class="subtabs" role="tablist">${tabs.map(t=>`<button class="subtab" role="tab" data-st="${t[0]}" aria-selected="${T.tab===t[0]}">${t[1]}</button>`).join('')}<button class="subtab" id="t-out" style="margin-inline-start:auto">Sign out</button></div>`;
   if(!BACKEND_ON)h+=`<div class="note bad">The site is not connected to the database yet. Open the file config.js and put your Convex URL in it, as explained in the instructions file.</div><div class="sp"></div>`;
   else if(S.dbErr)h+=`<div class="note bad">${esc(S.dbErr)}</div><div class="sp"></div>`;
   m.innerHTML=h+`<div id="t-body"></div>`;
   $('#t-out').onclick=()=>{teacherLogout();S.loginMsg='';render();};
   m.querySelectorAll('[data-st]').forEach(b=>b.onclick=()=>{T.tab=b.dataset.st;T.msg='';T.rankFresh=false;renderTeacher();});
-  if(T.tab==='grades')tGrades();else if(T.tab==='settings')tSettings();else if(T.tab==='own')tOwn();else if(T.tab==='preview')tPreview();else if(T.tab==='rank')tRank();else tWords();
+  if(T.tab==='grades')tGrades();else if(T.tab==='settings')tSettings();else if(T.tab==='own')tOwn();else if(T.tab==='preview')tPreview();else if(T.tab==='rounds')tRounds();else if(T.tab==='rank')tRank();else tWords();
 }
 
 /* ---- grades ---- */
@@ -1096,7 +1098,7 @@ function readCfg(){
   const topics=[...document.querySelectorAll('[data-tp]')].filter(x=>x.checked).map(x=>x.dataset.tp);
   return {title:($('#s-title').value.trim()||DEFAULT_CFG.title),vocabCount:n('#s-vc',0,40),grammarCount:n('#s-gc',0,40),
     level:+$('#s-lv').value,timeMin:n('#s-time',0,180),examMode:S.cfg.examMode==='fixed'?'fixed':'auto',ownMode:$('#s-own').value,ownCount:n('#s-oc',0,100),vocabSource:$('#s-src').value,showAnswers:$('#s-show').value==='1',
-    topics:topics.length?topics:TOPICS.map(t=>t.id),compOn:!!S.cfg.compOn,compRound:S.cfg.compRound||1,compMin:S.cfg.compMin||[8,9,10]};
+    topics:topics.length?topics:TOPICS.map(t=>t.id),compOn:!!S.cfg.compOn,compOpen:!!S.cfg.compOpen,compRound:S.cfg.compRound||1,compMin:S.cfg.compMin||[8,9,10]};
 }
 async function saveCfg(){
   const c=readCfg();
@@ -1106,6 +1108,82 @@ async function saveCfg(){
   try{await tcall('save',{field:'cfg',value:c});S.t.msg='Settings saved. Students will see them when they open a new exam.';}
   catch(e){S.t.msg='Could not save the settings. Please try again.';}
   renderTeacher();
+}
+
+/* ---- rounds (prepare all three, then start) ---- */
+async function loadRounds(){
+  S.rexam=S.rexam||{};S.quals=S.quals||{};
+  await Promise.all([1,2,3].map(async i=>{const r=await tcall('getPrivate',{field:'exam'+i});S.rexam[i]=r.value||null;}));
+  await Promise.all([1,2].map(async i=>{if(!S.quals['qual'+i])await loadQual('qual'+i);}));
+}
+function packQ(q){return {sec:q.sec,topic:q.topic,type:q.type||'grammar',q:q.q,o:q.o,a:q.a,qd:q.qd,od:q.od,tip:q.tip||'',img:q.img||''};}
+function roundQs(i,mode){
+  if(mode==='own'){
+    const R=makeRng((Math.random()*4294967295)>>>0);
+    const all=S.own.filter(x=>x&&x.q&&x.c&&Array.isArray(x.w)&&x.w.length>=1&&(x.r||0)===i).map(x=>ownQ(R,x));
+    return [...all.filter(q=>q.sec==='v'),...all.filter(q=>q.sec==='g')].map(packQ);
+  }
+  return buildExam(S.cfg,S.custom,S.own).questions.map(packQ);
+}
+async function saveRoundExam(i,mode){
+  const T=S.t;
+  const qs=roundQs(i,mode);
+  if(!qs.length){T.rMsg='Could not prepare '+ROUND_NAMES[i]+': there are no questions to use.';tRounds();return;}
+  const doc={code:('R'+i+Math.random().toString(36).slice(2,5)).toUpperCase(),at:Date.now(),src:mode,questions:qs};
+  try{await tcall('save',{field:'exam'+i,value:doc});S.rexam[i]=doc;T.rMsg=`${ROUND_NAMES[i]} is ready with ${qs.length} question${qs.length===1?'':'s'}.`;}
+  catch(e){if(!S.canEdit){render();return;}T.rMsg='Could not save the '+ROUND_NAMES[i]+' exam. Please try again.';}
+  tRounds();
+}
+async function setComp(patch,okMsg){
+  const T=S.t;
+  const nc=Object.assign({},S.cfg,patch);
+  try{await tcall('save',{field:'cfg',value:nc});S.cfg=sanitizeCfg(nc);T.rankRound=null;T.rankMsg='';T.rMsg=okMsg;}
+  catch(e){if(!S.canEdit){render();return;}T.rMsg='Could not save. Please try again.';}
+  tRounds();
+}
+function tRounds(){
+  const T=S.t,body=$('#t-body'),c=S.cfg;
+  if(!T.roundsLoaded){
+    body.innerHTML='<div class="sheet"><div class="empty"><b>Loading</b>One moment...</div></div>';
+    loadRounds().then(()=>{T.roundsLoaded=true;if(S.canEdit&&S.view==='teacher'&&S.t.tab==='rounds')tRounds();});return;
+  }
+  const open=c.compOn&&c.compOpen;
+  let h=`<section class="sheet"><h2>Competition rounds</h2>
+  <p class="lead">Prepare all three rounds first. When students are ready, press <b>Start</b> on the round you want. Pressing Start on another round closes the current one. Students only see the questions of the round that is open.</p>
+  <div class="note ${open?'ok':''}">${open?`<b>${ROUND_NAMES[c.compRound]} is open now.</b> Students can start it.`:'No round is open now. Students cannot start the exam.'}${open?'':''}</div><div class="sp"></div>
+  ${open?`<div class="row"><button class="btn red" id="r-stop">Close ${ROUND_NAMES[c.compRound]}</button></div><div class="sp"></div>`:''}
+  ${T.rMsg?`<div class="note ${T.rMsg.startsWith('Could not')?'bad':'ok'}">${esc(T.rMsg)}</div><div class="sp"></div>`:''}
+  <div class="grid2">
+    <label class="f">Round 1: minimum correct to qualify<input class="in" id="c-m1" type="number" min="0" max="200" value="${c.compMin[0]}"></label>
+    <label class="f">Round 2: minimum correct to qualify<input class="in" id="c-m2" type="number" min="0" max="200" value="${c.compMin[1]}"></label>
+    <label class="f">Final: minimum correct to win<input class="in" id="c-m3" type="number" min="0" max="200" value="${c.compMin[2]}"></label>
+  </div><div class="sp"></div>
+  <div class="row"><button class="btn ghost" id="c-save">Save the minimums</button></div>
+  <p class="hint" style="margin-top:10px">Tip: turn off “After submission: show the corrections” in Exam settings during the rounds, so students cannot share the answers.</p></section>`;
+  [1,2,3].forEach(i=>{
+    const d=S.rexam[i],k=S.own.filter(x=>x&&(x.r||0)===i).length;
+    const prevN=i>1?(S.quals['qual'+(i-1)]?S.quals['qual'+(i-1)].size:0):null;
+    const isOpen=open&&c.compRound===i;
+    h+=`<section class="sheet"><div class="row" style="justify-content:space-between"><h2 style="margin:0">${ROUND_NAMES[i]}</h2>
+    <span class="pill">${isOpen?'<b>Open now</b>':(d?'<b>Ready</b>':'Not prepared')}</span></div>
+    <p class="lead" style="margin-top:6px">Minimum to ${i===3?'win':'qualify'}: <b>${c.compMin[i-1]}</b> correct.${prevN!==null?` Students allowed from ${ROUND_NAMES[i-1]}: <b>${prevN}</b>${prevN?'':' (save the qualified list in the Qualifiers tab after that round)'}.`:' Open to everyone.'}</p>
+    ${d?`<div class="note ok">${d.questions.length} question${d.questions.length===1?'':'s'} · form <b dir="ltr">${esc(d.code)}</b> · ${d.src==='own'?'from your questions':'automatic'} · saved ${nowStr(d.at||0)}</div>`:'<div class="note">No exam prepared yet.</div>'}<div class="sp"></div>
+    <div class="row"><button class="btn ghost sm" data-rb="${i}" data-m="own" ${k?'':'disabled'}>Use my questions tagged ${ROUND_NAMES[i]} (${k})</button>
+    <button class="btn ghost sm" data-rb="${i}" data-m="auto">Generate an automatic exam (${S.cfg.vocabCount}+${S.cfg.grammarCount})</button>
+    ${d?`<button class="btn ghost sm" data-rv="${i}">${T.rView===i?'Hide questions':'Review questions'}</button>`:''}</div><div class="sp"></div>
+    <div class="row"><button class="btn" data-start="${i}" ${d?'':'disabled'}>${isOpen?'Round is open':'Start '+ROUND_NAMES[i]}</button></div>`;
+    if(d&&T.rView===i){
+      h+=`<div class="sp"></div>`+d.questions.map((q,n)=>`<div class="rv"><div class="qhead"><span class="qn mono">${n+1}</span><div class="qt ${q.qd==='ltr'?'en':''}" dir="${q.qd}" style="font-size:1rem">${esc(q.q).replace(/___/g,'_____')}${q.img?' <span class="pill" style="font-size:.75rem">image</span>':''}</div></div>
+      <div class="opts" style="margin-top:8px">${q.o.map((o,j)=>`<div class="opt ${j===q.a?'right':''}"><span class="${q.od==='ltr'?'en':''}" dir="${q.od}">${esc(o)}</span></div>`).join('')}</div></div>`).join('');
+    }
+    h+=`</section>`;
+  });
+  body.innerHTML=h;
+  const st=$('#r-stop');if(st)st.onclick=()=>setComp({compOpen:false},'The round is closed. Students cannot start it now.');
+  $('#c-save').onclick=()=>{const num=id=>Math.max(0,Math.min(200,parseInt($(id).value,10)||0));setComp({compMin:[num('#c-m1'),num('#c-m2'),num('#c-m3')]},'Minimums saved.');};
+  body.querySelectorAll('[data-rb]').forEach(b=>b.onclick=()=>saveRoundExam(+b.dataset.rb,b.dataset.m));
+  body.querySelectorAll('[data-rv]').forEach(b=>b.onclick=()=>{T.rView=T.rView===+b.dataset.rv?null:+b.dataset.rv;tRounds();});
+  body.querySelectorAll('[data-start]').forEach(b=>b.onclick=()=>{const i=+b.dataset.start;setComp({compOn:true,compOpen:true,compRound:i},`${ROUND_NAMES[i]} is now open. Students can start it.`);});
 }
 
 /* ---- competition + qualifiers ---- */
@@ -1135,19 +1213,7 @@ function tRank(){
   const list=bestByStudent(rr);
   const qn=()=>list.filter(x=>Q.has(x.k)).length;
   const passed=x=>rr?corr(x.r)>=min:true;
-  let h=`<section class="sheet"><h2>Competition</h2>
-  <p class="lead">Run a 3-round elimination. Scores are points (the number of correct answers). Students can join Round 2 only if you add them to the Round 1 qualified list, and the Final only from the Round 2 list. Round 1 is open to everyone. Use the same full name in every round.</p>
-  <label class="chk"><input type="checkbox" id="c-on" ${c.compOn?'checked':''}> Turn on the 3-round competition</label><div class="sp"></div>
-  <div class="grid2">
-    <label class="f">Current round (the one students can take now)<select class="in" id="c-round">${[1,2,3].map(i=>`<option value="${i}" ${c.compRound===i?'selected':''}>${ROUND_NAMES[i]}</option>`).join('')}</select></label>
-    <span></span>
-    <label class="f">Round 1: minimum correct to qualify<input class="in" id="c-m1" type="number" min="0" max="200" value="${c.compMin[0]}"></label>
-    <label class="f">Round 2: minimum correct to qualify<input class="in" id="c-m2" type="number" min="0" max="200" value="${c.compMin[1]}"></label>
-    <label class="f">Final: minimum correct to win<input class="in" id="c-m3" type="number" min="0" max="200" value="${c.compMin[2]}"></label>
-  </div><div class="sp"></div>
-  <p class="hint">Your exam currently has <b>${examQCount()}</b> question${examQCount()===1?'':'s'} (for example 8, 9 and 10 out of 10). If you want different questions in each round, approve a new exam between rounds.</p><div class="sp"></div>
-  ${T.compMsg?`<div class="note ${T.compMsg.startsWith('Could not')?'bad':'ok'}">${esc(T.compMsg)}</div><div class="sp"></div>`:''}
-  <div class="row"><button class="btn" id="c-save">Save competition settings</button></div></section>`;
+  let h='';
   h+=`<section class="sheet"><h2>${rr===3?'Final ranking':rr?ROUND_NAMES[rr]+' ranking':'Ranking (all attempts)'}</h2>
   <p class="lead">Each student is ranked by their best attempt${rr?` in this round`:''}. Ties are broken by the faster time (and then the earlier attempt).${rr?` Minimum to ${rr===3?'win':'qualify'}: <b>${min}</b> correct.`:''}${rr&&rr<3?` Students you select and save here can join ${ROUND_NAMES[rr+1]}.`:''}</p>`;
   if(c.compOn){h+=`<label class="f" style="max-width:260px;margin-bottom:12px">Show round<select class="in" id="r-round">${[1,2,3].map(i=>`<option value="${i}" ${rr===i?'selected':''}>${ROUND_NAMES[i]}</option>`).join('')}</select></label>`;}
@@ -1176,14 +1242,6 @@ function tRank(){
     <p class="hint" id="r-copied" style="margin-top:8px" hidden></p></section>`;
   }
   body.innerHTML=h;
-  const cs=$('#c-save');
-  cs.onclick=async()=>{
-    const num=id=>Math.max(0,Math.min(200,parseInt($(id).value,10)||0));
-    const nc=Object.assign({},S.cfg,{compOn:$('#c-on').checked,compRound:+$('#c-round').value,compMin:[num('#c-m1'),num('#c-m2'),num('#c-m3')]});
-    try{await tcall('save',{field:'cfg',value:nc});S.cfg=sanitizeCfg(nc);T.rankRound=null;T.rankMsg='';T.compMsg=nc.compOn?`Competition saved. Students can now take ${ROUND_NAMES[nc.compRound]}.`:'Competition turned off.';}
-    catch(e){if(!S.canEdit){render();return;}T.compMsg='Could not save the competition settings. Please try again.';}
-    tRank();
-  };
   const sr=$('#r-round');if(sr)sr.onchange=()=>{T.rankRound=+sr.value;T.rankMsg='';tRank();};
   if(!list.length||!S.resultsLoaded)return;
   const cnt=()=>{$('#r-count').textContent=qn();};
@@ -1448,6 +1506,7 @@ function tOwn(){
     <label class="f">Wrong option 2 <span class="hint">Optional</span><input class="in" id="o-w1" maxlength="120" value="${esc(w[1]||'')}"></label>
     <label class="f">Wrong option 3 <span class="hint">Optional</span><input class="in" id="o-w2" maxlength="120" value="${esc(w[2]||'')}"></label>
     <label class="f" style="grid-column:1/-1">Note shown to the student if they answer wrongly <span class="hint">Optional</span><input class="in" id="o-tip" maxlength="200" value="${esc(e?e.tip||'':'')}"></label>
+    <label class="f">Use in competition round <span class="hint">optional</span><select class="in" id="o-round">${[0,1,2,3].map(i=>`<option value="${i}" ${(e&&e.r||0)===i?'selected':''}>${i?ROUND_NAMES[i]:'Not for a specific round'}</option>`).join('')}</select></label>
     <div style="grid-column:1/-1">${imgCtl('o',T.oImg)}</div>
   </div>
   <div class="sp"></div>
@@ -1457,11 +1516,11 @@ function tOwn(){
   ${e?'':`<section class="sheet"><h2>Add several questions at once</h2>
   <p class="lead">Write each question on its own line and separate its parts with the <span class="en">|</span> sign in this order: question | correct answer | wrong | wrong | wrong. Start the line with <span class="en">v:</span> for vocabulary or <span class="en">g:</span> for grammar (grammar is the default).</p>
   <textarea class="in en" id="o-bulk" dir="ltr" placeholder="g: My brother ___ football every Friday. | plays | play | playing | played&#10;v: What does “borrow” mean? | to take something and give it back later | to carry | to visit | to forget"></textarea>
-  <div class="sp"></div><div class="row"><button class="btn" id="o-bulk-go">Add questions</button></div></section>`}
+  <div class="sp"></div><div class="row" style="align-items:flex-end"><label class="f" style="min-width:220px">Use these in competition round<select class="in" id="o-bulk-round">${[0,1,2,3].map(i=>`<option value="${i}">${i?ROUND_NAMES[i]:'Not for a specific round'}</option>`).join('')}</select></label><button class="btn" id="o-bulk-go">Add questions</button></div></section>`}
   ${pubSection()}
   <section class="sheet"><h2>My questions (${S.own.length})</h2>
   ${S.own.length?S.own.map((x,i)=>{const ar=/[؀-ۿ]/.test(x.q);return `<div class="rv"><div class="row" style="justify-content:space-between;align-items:flex-start;flex-wrap:nowrap">
-    <div style="min-width:0;flex:1"><span class="pill" style="font-size:.78rem">${x.s==='v'?'Vocabulary':'Grammar'}</span>${x.img?' <span class="pill" style="font-size:.78rem">with image</span>':''}
+    <div style="min-width:0;flex:1"><span class="pill" style="font-size:.78rem">${x.s==='v'?'Vocabulary':'Grammar'}</span>${x.img?' <span class="pill" style="font-size:.78rem">with image</span>':''}${x.r?` <span class="pill" style="font-size:.78rem">${ROUND_NAMES[x.r]}</span>`:''}
     <div class="${ar?'':'en'}" dir="${ar?'rtl':'ltr'}" style="margin-top:6px;overflow-wrap:anywhere">${esc(x.q).replace(/___/g,'_____')}</div>
     <div class="hint" style="margin-top:4px"><span class="mark y">✓</span><span class="en" dir="ltr">${esc(x.c)}</span> &nbsp; ${x.w.map(t=>`<span class="mark n">✗</span><span class="en" dir="ltr">${esc(t)}</span>`).join(' &nbsp; ')}</div></div>
     <div class="row" style="flex:none"><button class="btn ghost sm" data-oe="${i}">Edit</button><button class="btn ghost sm" data-od="${i}">Delete</button></div></div></div>`;}).join('')
@@ -1510,17 +1569,17 @@ async function unpublishOwn(){
   catch(e){if(!S.canEdit){render();return;}T.pubMsg='Could not switch back. Please try again.';}
   tOwn();
 }
-function cleanQ(s,q,c,ws,tip,im){
+function cleanQ(s,q,c,ws,tip,im,r){
   q=String(q).trim();c=String(c).trim();ws=ws.map(x=>String(x).trim()).filter(Boolean);
   if(!q||!c||!ws.length)return null;
   const seen=new Set([c.toLowerCase()]);const w=[];
   ws.forEach(x=>{const k=x.toLowerCase();if(!seen.has(k)){seen.add(k);w.push(x.slice(0,120));}});
   if(!w.length)return null;
-  return {s:s==='v'?'v':'g',q:q.slice(0,300),c:c.slice(0,120),w:w.slice(0,3),tip:String(tip||'').trim().slice(0,200),img:(im&&im.img)||'',imgUrl:(im&&im.imgUrl)||''};
+  return {s:s==='v'?'v':'g',q:q.slice(0,300),c:c.slice(0,120),w:w.slice(0,3),tip:String(tip||'').trim().slice(0,200),img:(im&&im.img)||'',imgUrl:(im&&im.imgUrl)||'',r:[1,2,3].includes(+r)?+r:0};
 }
 async function saveOneOwn(){
   const T=S.t;
-  const x=cleanQ($('#o-sec').value,$('#o-q').value,$('#o-c').value,[$('#o-w0').value,$('#o-w1').value,$('#o-w2').value],$('#o-tip').value,T.oImg);
+  const x=cleanQ($('#o-sec').value,$('#o-q').value,$('#o-c').value,[$('#o-w0').value,$('#o-w1').value,$('#o-w2').value],$('#o-tip').value,T.oImg,$('#o-round').value);
   if(!x){T.ownMsg='Could not save: write the question, the correct answer and at least one wrong option (different from the correct one).';tOwn();return;}
   const list=S.own.slice();
   if(T.edit!=null){list[T.edit]=x;}else list.push(x);
@@ -1532,7 +1591,7 @@ async function saveBulkOwn(){
   const add=[];let bad=0;
   lines.forEach(l=>{
     let s='g';const m=l.match(/^([vg])\s*:\s*/i);if(m){s=m[1].toLowerCase();l=l.slice(m[0].length);}
-    const p=l.split('|');const x=cleanQ(s,p[0]||'',p[1]||'',p.slice(2),'');
+    const p=l.split('|');const x=cleanQ(s,p[0]||'',p[1]||'',p.slice(2),'',null,($('#o-bulk-round')||{}).value);
     if(x)add.push(x);else bad++;
   });
   if(!add.length){T.ownMsg='Could not add the questions: write each line like: question | correct answer | wrong | wrong';tOwn();return;}
@@ -1553,7 +1612,7 @@ function sanitizeCfg(d){
   c.ownMode=['off','mix','only'].includes(c.ownMode)?c.ownMode:'off';c.ownCount=Math.max(0,Math.min(100,+c.ownCount||0));
   c.level=[0,1,2,3].includes(+c.level)?+c.level:2;c.timeMin=Math.max(0,Math.min(180,+c.timeMin||0));
   c.topics=Array.isArray(c.topics)&&c.topics.length?c.topics:TOPICS.map(t=>t.id);
-  c.compOn=!!c.compOn;c.compRound=Math.max(1,Math.min(3,Math.round(+c.compRound||1)));
+  c.compOn=!!c.compOn;c.compOpen=c.compOpen===true;c.compRound=Math.max(1,Math.min(3,Math.round(+c.compRound||1)));
   c.compMin=[0,1,2].map(i=>Math.max(0,Math.min(200,Math.round(+((Array.isArray(c.compMin)?c.compMin:[8,9,10])[i])||[8,9,10][i]))));
   c.title=String(c.title||DEFAULT_CFG.title).slice(0,80);c.showAnswers=c.showAnswers!==false;
   return c;
