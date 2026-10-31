@@ -44,19 +44,28 @@ p{margin:0}
   background:#fff;color:var(--ink);border:1px solid var(--line);
   border-radius:20px;padding:18px 22px;box-shadow:var(--shadow);
   display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;
-  position:relative;overflow:hidden;
+  position:relative;
 }
-.bar::after{content:"";position:absolute;inset-inline-end:-60px;top:-80px;width:220px;height:220px;border-radius:50%;
-  background:radial-gradient(circle,rgba(67,56,202,.07),transparent 70%);pointer-events:none}
+.bar::after{content:"";position:absolute;inset-block:0;inset-inline-end:0;width:240px;border-radius:inherit;background:radial-gradient(circle at 100% 0,rgba(67,56,202,.08),transparent 70%);pointer-events:none}
 .brand{display:flex;flex-direction:column;gap:2px;position:relative;z-index:1}
 .brand b{font-family:var(--f-display);font-size:1.6rem;font-weight:800;letter-spacing:.2px;line-height:1.2}
 .brand span{font-family:var(--f-en);font-size:.78rem;color:var(--ink2);direction:ltr;text-align:start;letter-spacing:.3px}
 .brand span[dir]{font-size:.82rem;color:var(--ink2)!important;margin-top:4px!important}
-.tabs{display:flex;gap:4px;background:var(--field);border:1px solid var(--line);border-radius:14px;padding:4px;position:relative;z-index:1}
-.tab{border:0;background:transparent;padding:9px 18px;min-height:40px;border-radius:10px;cursor:pointer;font-weight:600;color:var(--ink2);transition:background .18s,color .18s}
-.tab:hover{background:#fff}
-.tab[aria-selected="true"]{background:var(--brand);color:#fff;box-shadow:0 4px 12px -4px rgba(67,56,202,.5)}
-.tab:focus-visible{outline:2px solid var(--brand);outline-offset:2px}
+.bar{flex-wrap:nowrap;align-items:center}
+.menu-btn{position:relative;z-index:3;width:46px;height:46px;border-radius:14px;border:1px solid var(--line);background:#fff;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;padding:0;flex:none;transition:background .15s,border-color .15s}
+.menu-btn:hover{background:var(--field)}
+.menu-btn:focus-visible{outline:2px solid var(--brand);outline-offset:2px}
+.menu-btn i{display:block;width:22px;height:2px;border-radius:2px;background:var(--ink);transition:transform .2s,opacity .2s}
+.menu-btn[aria-expanded="true"] i:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.menu-btn[aria-expanded="true"] i:nth-child(2){opacity:0}
+.menu-btn[aria-expanded="true"] i:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+.tabs{position:absolute;z-index:5;inset-inline-end:14px;top:calc(100% - 8px);min-width:210px;display:flex;flex-direction:column;background:#fff;border:1px solid var(--line);border-radius:16px;padding:6px;box-shadow:0 18px 40px -12px rgba(17,27,61,.28)}
+.tabs[hidden]{display:none}
+.tab{border:0;background:transparent;padding:13px 16px;min-height:46px;border-radius:11px;cursor:pointer;font-weight:600;font-size:1.02rem;color:var(--ink);text-align:start;transition:background .15s,color .15s}
+.tab+.tab{border-top:1px solid var(--line);border-top-left-radius:0;border-top-right-radius:0}
+.tab:hover{background:var(--field)}
+.tab[aria-selected="true"]{color:var(--brand);background:var(--brand-soft)}
+.tab:focus-visible{outline:2px solid var(--brand);outline-offset:-2px}
 .btn:focus-visible,.opt:focus-within,input:focus-visible,select:focus-visible,textarea:focus-visible,.subtab:focus-visible,tr.clk:focus-visible{outline:3px solid var(--brand2);outline-offset:2px}
 
 /* sheet / cards */
@@ -203,7 +212,8 @@ td.num{font-family:var(--f-mono);direction:ltr;text-align:left;white-space:nowra
 <div class="wrap">
   <header class="bar">
     <div class="brand"><b>Grammar&amp;vocabulary hunters</b><span dir="ltr" style="display:block;margin-top:2px;font-weight:600">Ms.Eman Almogheiry</span></div>
-    <nav class="tabs" role="tablist" aria-label="Pages">
+    <button class="menu-btn" id="menu-btn" aria-label="Menu" aria-expanded="false" aria-controls="menu"><i></i><i></i><i></i></button>
+    <nav class="tabs" id="menu" role="tablist" aria-label="Pages" hidden>
       <button class="tab" role="tab" id="tab-exam" aria-selected="true" data-go="exam">Exam</button>
       <button class="tab" role="tab" id="tab-about" aria-selected="false" data-go="about">About</button>
       <button class="tab" role="tab" id="tab-teacher" aria-selected="false" data-go="teacher">Teacher panel</button>
@@ -751,11 +761,16 @@ function render(){
   else if(S.phase==='run')renderRun();
   else renderDone();
 }
+function setMenu(o){const m=$('#menu'),b=$('#menu-btn');if(!m)return;m.hidden=!o;b.setAttribute('aria-expanded',o?'true':'false');}
 document.addEventListener('click',e=>{
+  const mb=e.target.closest('#menu-btn');
+  if(mb){setMenu($('#menu').hidden);return;}
+  if(!e.target.closest('#menu'))setMenu(false);else setMenu(false);
   const g=e.target.closest('[data-go]');
   if(g){location.hash=g.dataset.go==='teacher'?'#teacher':(g.dataset.go==='about'?'#about':'#exam');}
 });
 window.addEventListener('hashchange',route);
+document.addEventListener('keydown',e=>{if(e.key==='Escape')setMenu(false);});
 
 /* ---------- start ---------- */
 function renderStart(){
@@ -834,8 +849,7 @@ function renderRun(){
   $('#main').innerHTML=`<div class="exbar">
     <span class="mono" id="prog">0 / ${n}</span>
     <div class="meter"><i id="meter"></i></div>
-    <span class="mono" id="timer">${E.timeMin>0?mmss(S.left):'--:--'}</span>
-    <span class="mono hint" dir="ltr">Form ${E.code}</span></div>
+    <span class="mono" id="timer">${E.timeMin>0?mmss(S.left):'--:--'}</span></div>
   <section class="sheet" id="qcard"></section>
   <nav class="dots" id="dots" aria-label="Question navigator"></nav>`;
   $('#main').onchange=e=>{
@@ -917,7 +931,7 @@ async function saveAttempt(){
 /* ---------- done ---------- */
 function summaryText(){
   const s=S.sum;
-  return `${S.name}${S.cls?' ('+S.cls+')':''} — ${s.title} — Score ${s.c}/${s.n} (${s.pct}%) — Vocabulary ${s.v[0]}/${s.v[1]}, Grammar ${s.g[0]}/${s.g[1]} — Form ${s.code} — ${nowStr(s.t)}`;
+  return `${S.name}${S.cls?' ('+S.cls+')':''} — ${s.title} — Score ${s.c}/${s.n} (${s.pct}%) — Vocabulary ${s.v[0]}/${s.v[1]}, Grammar ${s.g[0]}/${s.g[1]} — ${nowStr(s.t)}`;
 }
 function renderDone(){
   const s=S.sum,E=S.exam;
@@ -938,7 +952,7 @@ function renderDone(){
         <div class="split"><span class="pill">Vocabulary <b>${s.v[0]}/${s.v[1]}</b></span>
         <span class="pill">Grammar <b>${s.g[0]}/${s.g[1]}</b></span>
         <span class="pill">Time <b>${mmss(s.dur)}</b></span>
-        <span class="pill">Form <b dir="ltr">${s.code}</b></span>${s.round?`<span class="pill">${ROUND_NAMES[s.round]}</span>`:''}</div>
+        ${s.round?`<span class="pill">${ROUND_NAMES[s.round]}</span>`:''}</div>
       </div></div>
     <div class="sp"></div>
     <div class="note ${st[0]}" id="save-note">${st[1]}</div>
@@ -1010,23 +1024,21 @@ function tGrades(){
       <label class="f" style="flex:1;min-width:150px">Search by name<input class="in" id="g-q" value="${esc(T.q)}" placeholder="Student name"></label>
       <label class="f" style="min-width:140px">Class<select class="in" id="g-cls"><option value="">All classes</option>${classes.map(c=>`<option value="${esc(c)}" ${T.cls===c?'selected':''}>${esc(c)}</option>`).join('')}</select></label>
       <button class="btn ghost sm" id="g-csv" style="align-self:flex-end">Export CSV</button></div>
-      <div class="scroller"><table><thead><tr><th>Student</th><th>Class</th><th>Date</th><th>Vocabulary</th><th>Grammar</th><th>Score</th></tr></thead><tbody>`;
+      <div class="scroller"><table><thead><tr><th>Student</th><th>Class</th><th>Date</th><th>Vocabulary</th><th>Grammar</th><th>Score</th><th></th></tr></thead><tbody>`;
     rows.forEach((r,i)=>{
       const k=r.id,a=r.a,open=T.open===k;
       const c=a.v[0]+a.g[0],n=a.v[1]+a.g[1];
       h+=`<tr class="clk" data-k="${esc(k)}"><td>${esc(r.name)}</td><td>${esc(r.cls)||'-'}</td><td class="num">${nowStr(a.t)}</td>
         <td class="num">${a.v[0]}/${a.v[1]}</td><td class="num">${a.g[0]}/${a.g[1]}</td>
-        <td class="num"><span class="pct ${a.pct>=75?'hi':a.pct<50?'lo':''}">${c}/${n} · ${a.pct}%</span></td></tr>`;
+        <td class="num"><span class="pct ${a.pct>=75?'hi':a.pct<50?'lo':''}">${c}/${n} · ${a.pct}%</span></td>
+        <td class="num" style="white-space:nowrap">${T.delAsk===r.id?`<button class="btn red sm" data-del="${esc(r.id)}">Delete</button> <button class="btn ghost sm" data-delno="1">Cancel</button>`:`<button class="btn ghost sm" data-delask="${esc(r.id)}" aria-label="Delete grade of ${esc(r.name)}">Delete</button>`}</td></tr>`;
       if(open){
-        h+=`<tr><td colspan="6" style="background:var(--field)"><div class="hint" style="margin-bottom:8px">Form <span dir="ltr" class="mono">${esc(a.code)}</span> · Level ${LV[a.lv]||''} · Time ${mmss(a.dur||0)}</div>`;
+        h+=`<tr><td colspan="7" style="background:var(--field)"><div class="hint" style="margin-bottom:8px">Form <span dir="ltr" class="mono">${esc(a.code)}</span> · Level ${LV[a.lv]||''} · Time ${mmss(a.dur||0)}</div>`;
         if(a.items){
           h+=a.items.map(it=>{const ok=it[3]===it[4];
             return `<div class="rv"><span class="mark ${ok?'y':'n'}">${ok?'✓':'✗'}</span><span class="en" dir="ltr">${esc(it[2]).replace(/___/g,'_____')}</span>
             <div class="hint">${ok?'':`Student answer: <span class="en" dir="ltr">${esc(it[4]||'no answer')}</span> · `}Correct: <span class="en" dir="ltr">${esc(it[3])}</span></div></div>`;}).join('');
         }else h+=`<div class="hint">Question details are kept only for each student’s last 5 attempts.</div>`;
-        h+=T.delAsk===r.id
-          ?`<div class="row" style="margin-top:10px"><span class="note bad">Delete this attempt permanently?</span><button class="btn red sm" data-del="${esc(r.id)}">Yes, delete</button><button class="btn ghost sm" data-delno="1">Cancel</button></div>`
-          :`<div class="row" style="margin-top:10px"><button class="btn ghost sm" data-delask="${esc(r.id)}">Delete this attempt</button></div>`;
         h+=`</td></tr>`;
       }
     });
@@ -1046,9 +1058,9 @@ function tGrades(){
   const q=$('#g-q');if(q)q.oninput=()=>{T.q=q.value;const p=q.selectionStart;tGrades();const n=$('#g-q');n.focus();n.setSelectionRange(p,p);};
   const c=$('#g-cls');if(c)c.onchange=()=>{T.cls=c.value;tGrades();};
   body.querySelectorAll('tr.clk').forEach(tr=>tr.onclick=()=>{T.open=T.open===tr.dataset.k?null:tr.dataset.k;T.delAsk=null;tGrades();});
-  body.querySelectorAll('[data-delask]').forEach(b=>b.onclick=()=>{T.delAsk=b.dataset.delask;tGrades();});
-  body.querySelectorAll('[data-delno]').forEach(b=>b.onclick=()=>{T.delAsk=null;tGrades();});
-  body.querySelectorAll('[data-del]').forEach(b=>b.onclick=async()=>{
+  body.querySelectorAll('[data-delask]').forEach(b=>b.onclick=e=>{e.stopPropagation();T.delAsk=b.dataset.delask;tGrades();});
+  body.querySelectorAll('[data-delno]').forEach(b=>b.onclick=e=>{e.stopPropagation();T.delAsk=null;tGrades();});
+  body.querySelectorAll('[data-del]').forEach(b=>b.onclick=async e=>{e.stopPropagation();
     try{await tcall('removeResult',{id:b.dataset.del});T.delAsk=null;T.open=null;await loadResults();tGrades();}
     catch(e){if(!S.canEdit){render();return;}S.dbErr='Could not delete the result.';renderTeacher();}
   });
