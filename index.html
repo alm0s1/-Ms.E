@@ -1,182 +1,221 @@
 <!doctype html>
-<html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<html lang="en" dir="ltr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>*{box-sizing:border-box}[hidden]{display:none!important}:root{color-scheme:light}body{margin:0}</style>
 <title>اختبار الإنجليزي المتجدد</title>
+<meta name="theme-color" content="#1B2559">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=Reem+Kufi:wght@600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap">
 <style>
-/* Layout: one ruled exam sheet in a narrow column, red margin line on the reading side, teacher's red pen reserved for scores and corrections. */
 :root{
-  --paper:#EDF0F4; --sheet:#FFFFFF; --ink:#16243A; --ink2:#5A6A80; --line:#D5DBE4;
-  --red:#C62F2D; --red-soft:#FBE7E6; --green:#1D7A4C; --green-soft:#E1F3EA;
-  --mark:#F6DC6A; --mark-soft:#FFF6CF; --field:#F6F8FB;
-  --f-display:'Reem Kufi','IBM Plex Sans Arabic',system-ui,sans-serif;
-  --f-body:'IBM Plex Sans Arabic',system-ui,sans-serif;
-  --f-en:'IBM Plex Sans',system-ui,-apple-system,'Segoe UI',sans-serif;
-  --f-mono:'IBM Plex Mono',ui-monospace,monospace;
+  --paper:#F3F5FB; --sheet:#FFFFFF; --ink:#111B3D; --ink2:#5A6684; --line:#E2E7F2; --field:#F6F8FD;
+  --brand:#4338CA; --brand2:#6D5EF6; --brand-soft:#ECEBFF; --on-brand:#FFFFFF;
+  --hero1:#1B2559; --hero2:#3B2FB8;
+  --red:#D6293E; --red-soft:#FDECEF; --green:#12805C; --green-soft:#E3F6EE;
+  --mark:#E6B422; --mark-soft:#FFF7DB;
+  --shadow:0 1px 2px rgba(17,27,61,.05),0 8px 24px -8px rgba(17,27,61,.12);
+  --r:16px;
+  --f-display:'Plus Jakarta Sans',Inter,system-ui,sans-serif;
+  --f-body:Inter,system-ui,-apple-system,'Segoe UI',sans-serif;
+  --f-en:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --f-mono:'JetBrains Mono',ui-monospace,monospace;
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
-    --paper:#0E1622; --sheet:#162132; --ink:#E7EDF6; --ink2:#9AA9BE; --line:#2A394F;
-    --red:#FF7470; --red-soft:#3A1E24; --green:#52CC8E; --green-soft:#163628;
-    --mark:#C9A92A; --mark-soft:#3A3215; --field:#1B283C; color-scheme:dark;
+    --paper:#0B1022; --sheet:#141B33; --ink:#E9EDFB; --ink2:#9BA7C7; --line:#263054; --field:#1A2342;
+    --brand:#8B83FF; --brand2:#A79EFF; --brand-soft:#252B5C; --on-brand:#0B1022;
+    --hero1:#141B3F; --hero2:#2B2780;
+    --red:#FF7A8A; --red-soft:#3A1B26; --green:#4ADE9F; --green-soft:#12342A;
+    --mark:#E6B422; --mark-soft:#3A3215; --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px -8px rgba(0,0,0,.5);
+    color-scheme:dark;
   }
 }
-:root[data-theme="dark"]{
-  --paper:#0E1622; --sheet:#162132; --ink:#E7EDF6; --ink2:#9AA9BE; --line:#2A394F;
-  --red:#FF7470; --red-soft:#3A1E24; --green:#52CC8E; --green-soft:#163628;
-  --mark:#C9A92A; --mark-soft:#3A3215; --field:#1B283C; color-scheme:dark;
-}
 *{box-sizing:border-box}
-html{direction:rtl}
-html{-webkit-text-size-adjust:100%}
+html{direction:ltr;-webkit-text-size-adjust:100%;scroll-behavior:smooth}
 body{
-  margin:0; background:var(--paper); color:var(--ink);
-  font-family:var(--f-body); font-size:16px; line-height:1.65;
-  padding-block:0 48px;
+  margin:0;background:var(--paper);color:var(--ink);
+  font-family:var(--f-body);font-size:16px;line-height:1.6;
+  padding-block:0 56px;
   padding-left:max(16px,env(safe-area-inset-left,0px));
   padding-right:max(16px,env(safe-area-inset-right,0px));
+  -webkit-font-smoothing:antialiased;
 }
-.wrap{max-width:780px;margin-inline:auto}
+.wrap{max-width:820px;margin-inline:auto}
 button,input,select,textarea{font:inherit;color:inherit}
-h1,h2,h3{font-family:var(--f-display);font-weight:700;line-height:1.3;margin:0;text-wrap:balance}
+h1,h2,h3{font-family:var(--f-display);font-weight:800;line-height:1.35;margin:0;text-wrap:balance}
 p{margin:0}
 .en{font-family:var(--f-en);direction:ltr;unicode-bidi:isolate}
 .mono{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+#prog{direction:ltr;unicode-bidi:isolate}
 
-/* top bar */
-body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--paper);z-index:30}
-.bar{background:var(--paper);
-  display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;
-  padding-block:14px;border-bottom:1px solid var(--line);margin-bottom:20px}
-.brand{display:flex;align-items:baseline;gap:2px 10px;flex-wrap:wrap}
-.brand b{font-family:var(--f-display);font-size:1.35rem;letter-spacing:.2px}
-.brand span{font-family:var(--f-mono);font-size:.72rem;color:var(--ink2);direction:ltr}
-.tabs{display:flex;gap:4px;background:var(--field);border:1px solid var(--line);border-radius:10px;padding:3px}
-.tab{border:0;background:transparent;padding:6px 14px;border-radius:8px;cursor:pointer;font-weight:500;color:var(--ink2)}
-.tab[aria-selected="true"]{background:var(--ink);color:var(--sheet)}
-.tab:focus-visible,.btn:focus-visible,.opt:focus-within,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid var(--red);outline-offset:2px}
+/* header */
+.bar{
+  margin-top:max(14px,env(safe-area-inset-top,0px));margin-bottom:22px;
+  background:linear-gradient(135deg,var(--hero1),var(--hero2));color:#fff;
+  border-radius:20px;padding:18px 22px;box-shadow:var(--shadow);
+  display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;
+  position:relative;overflow:hidden;
+}
+.bar::after{content:"";position:absolute;inset-inline-end:-60px;top:-80px;width:220px;height:220px;border-radius:50%;
+  background:radial-gradient(circle,rgba(255,255,255,.18),transparent 70%);pointer-events:none}
+.brand{display:flex;flex-direction:column;gap:2px;position:relative;z-index:1}
+.brand b{font-family:var(--f-display);font-size:1.6rem;font-weight:800;letter-spacing:.2px;line-height:1.2}
+.brand span{font-family:var(--f-en);font-size:.78rem;color:rgba(255,255,255,.78);direction:ltr;text-align:start;letter-spacing:.3px}
+.brand span[dir]{font-size:.82rem;color:#fff!important;margin-top:4px!important;opacity:.95}
+.tabs{display:flex;gap:4px;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.22);border-radius:14px;padding:4px;position:relative;z-index:1;backdrop-filter:blur(6px)}
+.tab{border:0;background:transparent;padding:9px 18px;min-height:40px;border-radius:10px;cursor:pointer;font-weight:600;color:rgba(255,255,255,.85);transition:background .18s,color .18s}
+.tab:hover{background:rgba(255,255,255,.12)}
+.tab[aria-selected="true"]{background:#fff;color:var(--hero2);box-shadow:0 2px 8px rgba(0,0,0,.18)}
+.tab:focus-visible{outline:2px solid #fff;outline-offset:2px}
+.btn:focus-visible,.opt:focus-within,input:focus-visible,select:focus-visible,textarea:focus-visible,.subtab:focus-visible,tr.clk:focus-visible{outline:3px solid var(--brand2);outline-offset:2px}
 
-/* sheet */
-.sheet{background:var(--sheet);border:1px solid var(--line);border-radius:10px;padding:22px 22px 24px;
-  border-inline-start:3px solid var(--red);margin-bottom:16px}
-.sheet h2{font-size:1.35rem;margin-bottom:6px}
-.lead{color:var(--ink2);margin-bottom:16px}
-.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-@media (max-width:520px){.grid2{grid-template-columns:1fr}}
-label.f{display:flex;flex-direction:column;gap:6px;font-size:.92rem;font-weight:500}
-.in{width:100%;background:var(--field);border:1px solid var(--line);border-radius:8px;padding:10px 12px;min-width:0}
-textarea.in{min-height:120px;resize:vertical;line-height:1.6}
+/* sheet / cards */
+.sheet{background:var(--sheet);border:1px solid var(--line);border-radius:var(--r);padding:26px 26px 28px;box-shadow:var(--shadow);margin-bottom:18px}
+.sheet h2{font-size:1.5rem;margin-bottom:6px}
+.lead{color:var(--ink2);margin-bottom:18px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media (max-width:520px){.grid2{grid-template-columns:1fr}.sheet{padding:20px 16px 22px}}
+label.f{display:flex;flex-direction:column;gap:7px;font-size:.93rem;font-weight:600}
+.in{width:100%;background:var(--field);border:1.5px solid var(--line);border-radius:12px;padding:11px 14px;min-height:46px;min-width:0;transition:border-color .15s,box-shadow .15s,background .15s}
+.in:hover{border-color:var(--ink2)}
+.in:focus{border-color:var(--brand);background:var(--sheet);box-shadow:0 0 0 4px var(--brand-soft);outline:none}
+textarea.in{min-height:120px;resize:vertical;line-height:1.7}
 .hint{font-size:.82rem;color:var(--ink2);font-weight:400}
-.btn{border:1px solid var(--ink);background:var(--ink);color:var(--sheet);padding:10px 20px;border-radius:8px;cursor:pointer;font-weight:600}
-.btn:hover{opacity:.92}
-.btn.ghost{background:transparent;color:var(--ink);border-color:var(--line)}
-.btn.ghost:hover{border-color:var(--ink)}
-.btn.red{background:var(--red);border-color:var(--red);color:#fff}
-.btn.sm{padding:5px 12px;font-size:.85rem}
-.btn:disabled{opacity:.45;cursor:not-allowed}
+.btn{border:1.5px solid transparent;background:linear-gradient(135deg,var(--brand),var(--brand2));color:var(--on-brand);color:#fff;
+  padding:11px 24px;min-height:44px;border-radius:12px;cursor:pointer;font-weight:700;
+  box-shadow:0 6px 16px -6px rgba(67,56,202,.6);transition:transform .15s,box-shadow .15s,opacity .15s}
+.btn:hover{transform:translateY(-1px);box-shadow:0 10px 20px -8px rgba(67,56,202,.7)}
+.btn:active{transform:translateY(0)}
+.btn.ghost{background:transparent;color:var(--ink);border-color:var(--line);box-shadow:none}
+.btn.ghost:hover{border-color:var(--brand);color:var(--brand);transform:none}
+.btn.red{background:var(--red);border-color:var(--red);color:#fff;box-shadow:0 6px 16px -6px rgba(214,41,62,.55)}
+.btn.sm{padding:6px 14px;min-height:36px;font-size:.86rem;border-radius:10px}
+.btn:disabled{opacity:.45;cursor:not-allowed;transform:none;box-shadow:none}
 .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
-.note{background:var(--mark-soft);border:1px solid var(--mark);border-radius:8px;padding:10px 14px;font-size:.92rem}
+.note{background:var(--mark-soft);border:1px solid var(--mark);border-radius:12px;padding:11px 16px;font-size:.92rem}
 .note.bad{background:var(--red-soft);border-color:var(--red)}
 .note.ok{background:var(--green-soft);border-color:var(--green)}
-.facts{display:flex;gap:8px 18px;flex-wrap:wrap;margin:14px 0 18px;font-size:.92rem;color:var(--ink2)}
-.facts b{color:var(--ink);font-family:var(--f-mono);font-weight:500}
+.facts{display:flex;gap:8px 20px;flex-wrap:wrap;margin:14px 0 20px;font-size:.92rem;color:var(--ink2)}
+.facts b{color:var(--ink);font-family:var(--f-mono);font-weight:600}
 
 /* exam */
-.exbar{position:sticky;top:calc(env(safe-area-inset-top,0px) + 6px);z-index:15;background:var(--sheet);
-  border:1px solid var(--line);border-radius:10px;padding:10px 16px;margin-bottom:16px;
+.exbar{position:sticky;top:calc(env(safe-area-inset-top,0px) + 8px);z-index:15;background:color-mix(in srgb,var(--sheet) 88%,transparent);
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  border:1px solid var(--line);border-radius:14px;padding:11px 18px;margin-bottom:18px;box-shadow:var(--shadow);
   display:flex;align-items:center;gap:14px;justify-content:space-between;flex-wrap:wrap}
-.meter{flex:1 1 140px;height:6px;background:var(--line);border-radius:3px;overflow:hidden;min-width:80px}
-.meter i{display:block;height:100%;background:var(--ink);width:0;transition:width .25s}
-.part{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin:26px 0 12px;
-  border-bottom:2px solid var(--ink);padding-bottom:6px}
-.part h3{font-size:1.15rem}
-.part .en{font-size:.85rem;color:var(--ink2)}
-.q{padding:16px 0;border-bottom:1px dashed var(--line)}
+.meter{flex:1 1 140px;height:8px;background:var(--line);border-radius:99px;overflow:hidden;min-width:80px}
+.meter i{display:block;height:100%;background:linear-gradient(90deg,var(--brand),var(--brand2));border-radius:99px;width:0;transition:width .3s ease}
+.part{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:30px 0 14px;
+  background:var(--brand-soft);border-radius:12px;padding:10px 16px}
+.part h3{font-size:1.15rem;color:var(--brand)}
+.part .en{font-size:.85rem;color:var(--ink2);font-weight:500}
+.q{padding:18px 0;border-bottom:1px solid var(--line)}
 .q:last-of-type{border-bottom:0}
 .qhead{display:flex;gap:12px;align-items:flex-start}
-.qn{font-family:var(--f-mono);font-size:.85rem;color:var(--red);min-width:2.1ch;padding-top:3px}
-.qt{font-size:1.08rem;font-weight:500;flex:1;min-width:0;overflow-wrap:anywhere}
+.qn{font-family:var(--f-mono);font-size:.82rem;font-weight:600;color:var(--brand);background:var(--brand-soft);
+  min-width:30px;height:30px;border-radius:9px;display:grid;place-items:center;flex:none;margin-top:1px}
+.qt{font-size:1.1rem;font-weight:600;flex:1;min-width:0;overflow-wrap:anywhere;padding-top:2px}
 .qt.en{text-align:left}
-.qhint{font-size:.85rem;color:var(--ink2);margin-top:2px}
-.opts{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px;margin-inline-start:calc(2.1ch + 12px)}
+.qhint{font-size:.85rem;color:var(--ink2);margin-top:2px;font-weight:400}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px;margin-inline-start:42px}
 @media (max-width:560px){.opts{grid-template-columns:1fr;margin-inline-start:0}}
 .opt{position:relative;display:block}
 .opt input{position:absolute;opacity:0;inset:0;width:100%;height:100%;margin:0;cursor:pointer}
-.opt span{display:block;padding:10px 14px;border:1px solid var(--line);border-radius:8px;background:var(--field);
-  overflow-wrap:anywhere;transition:background .12s,border-color .12s}
-.opt:hover span{border-color:var(--ink2)}
-.opt input:checked + span{background:var(--mark-soft);border-color:var(--mark);box-shadow:inset 0 -3px 0 var(--mark)}
-.opt input:focus-visible + span{outline:2px solid var(--red);outline-offset:2px}
+.opt span{display:flex;align-items:center;min-height:48px;padding:10px 16px;border:1.5px solid var(--line);border-radius:12px;background:var(--sheet);
+  overflow-wrap:anywhere;font-weight:500;transition:background .15s,border-color .15s,transform .15s,box-shadow .15s}
+.opt:hover span{border-color:var(--brand2);background:var(--field)}
+.opt input:checked + span{background:var(--brand-soft);border-color:var(--brand);color:var(--brand);font-weight:700;box-shadow:0 0 0 3px var(--brand-soft)}
+.opt input:focus-visible + span{outline:3px solid var(--brand2);outline-offset:2px}
 .opt .en,.opt span.en{text-align:left}
-.opt.right span{background:var(--green-soft);border-color:var(--green);box-shadow:none}
-.opt.wrong span{background:var(--red-soft);border-color:var(--red);box-shadow:none;text-decoration:line-through;text-decoration-color:var(--red)}
-.tip{margin-top:10px;margin-inline-start:calc(2.1ch + 12px);font-size:.88rem;color:var(--ink2);border-inline-start:2px solid var(--red);padding-inline-start:10px}
+.opt.right span{background:var(--green-soft);border-color:var(--green);color:var(--green);box-shadow:none}
+.opt.wrong span{background:var(--red-soft);border-color:var(--red);color:var(--red);box-shadow:none;text-decoration:line-through;text-decoration-color:var(--red)}
+.tip{margin-top:12px;margin-inline-start:42px;font-size:.9rem;color:var(--ink2);background:var(--field);border-radius:10px;border-inline-start:3px solid var(--brand);padding:8px 12px}
 @media (max-width:560px){.tip{margin-inline-start:0}}
 
+/* one question per screen */
+.qtitle{font-size:1.2rem;color:var(--ink2);font-weight:700}
+.qstep{font-size:.9rem;color:var(--ink2);margin:6px 0 4px}
+.qstep b{color:var(--brand)}
+#qcard .q{border-bottom:0;padding:10px 0 4px}
+#qcard .qt{font-size:1.3rem;line-height:1.6}
+#qcard .opt span{min-height:56px;font-size:1.05rem}
+.navrow{display:flex;justify-content:space-between;gap:10px;margin-top:22px}
+.navrow .btn{min-width:130px}
+.dots{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;padding:6px 4px 0}
+.dot{width:40px;height:40px;border-radius:12px;border:1.5px solid var(--line);background:var(--sheet);color:var(--ink2);font-family:var(--f-mono);font-weight:600;cursor:pointer;transition:all .15s}
+.dot:hover{border-color:var(--brand)}
+.dot.done{background:var(--brand-soft);border-color:var(--brand2);color:var(--brand)}
+.dot.cur{background:var(--brand);border-color:var(--brand);color:#fff;box-shadow:0 4px 12px -4px rgba(67,56,202,.6)}
+.dot:focus-visible{outline:3px solid var(--brand2);outline-offset:2px}
+.qimg{display:block;max-width:100%;max-height:360px;margin:14px 0 0;margin-inline-start:42px;border-radius:14px;border:1px solid var(--line);background:var(--field);object-fit:contain}
+@media (max-width:560px){.qimg{margin-inline-start:0}.navrow .btn{min-width:0;flex:1}}
+.imgprev{border:1px dashed var(--line);border-radius:12px;padding:8px;background:var(--field);display:inline-block;max-width:100%}
+.imgprev img{display:block;max-width:100%;max-height:200px;border-radius:8px}
 /* result */
-.res{display:flex;gap:22px;align-items:center;flex-wrap:wrap}
-.score{width:132px;height:132px;border:3px solid var(--red);border-radius:50%;display:grid;place-items:center;
-  transform:rotate(-6deg);flex:none;text-align:center;border-radius:48% 52% 50% 50% / 52% 48% 52% 48%}
-.score b{display:block;font-family:var(--f-mono);font-size:2.1rem;line-height:1;color:var(--red);font-weight:500;direction:ltr}
-.score small{display:block;font-family:var(--f-mono);font-size:.8rem;color:var(--red);direction:ltr}
-.split{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
-.pill{border:1px solid var(--line);border-radius:999px;padding:3px 14px;font-size:.9rem;background:var(--field)}
-.pill b{font-family:var(--f-mono);font-weight:500}
-.mark{display:inline-block;font-weight:700;margin-inline-end:6px}
+.res{display:flex;gap:26px;align-items:center;flex-wrap:wrap}
+.score{width:140px;height:140px;border-radius:50%;display:grid;place-items:center;flex:none;text-align:center;
+  background:radial-gradient(closest-side,var(--sheet) 72%,transparent 74%),conic-gradient(from 0deg,var(--brand),var(--brand2),var(--green),var(--brand));
+  box-shadow:0 10px 30px -10px rgba(67,56,202,.5)}
+.score b{display:block;font-family:var(--f-mono);font-size:2.1rem;line-height:1.05;color:var(--brand);font-weight:700;direction:ltr}
+.score small{display:block;font-family:var(--f-mono);font-size:.8rem;color:var(--ink2);direction:ltr}
+.split{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.pill{border:1px solid var(--line);border-radius:999px;padding:4px 16px;font-size:.9rem;background:var(--field)}
+.pill b{font-family:var(--f-mono);font-weight:600}
+.mark{display:inline-block;font-weight:800;margin-inline-end:6px}
 .mark.y{color:var(--green)} .mark.n{color:var(--red)}
-.rv{padding:12px 0;border-bottom:1px dashed var(--line)}
+.rv{padding:14px 0;border-bottom:1px solid var(--line)}
 .rv:last-child{border-bottom:0}
 
 /* teacher */
-.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:18px}
 @media (max-width:620px){.stats{grid-template-columns:1fr 1fr}}
-.stat{background:var(--sheet);border:1px solid var(--line);border-radius:10px;padding:12px 14px}
-.stat b{display:block;font-family:var(--f-mono);font-size:1.5rem;font-weight:500;line-height:1.2;direction:ltr;text-align:right}
-.stat span{font-size:.82rem;color:var(--ink2)}
-.subtabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
-.subtab{border:1px solid var(--line);background:transparent;border-radius:999px;padding:5px 16px;cursor:pointer;font-weight:500;color:var(--ink2)}
-.subtab[aria-selected="true"]{background:var(--ink);color:var(--sheet);border-color:var(--ink)}
-.scroller{overflow-x:auto;border:1px solid var(--line);border-radius:8px}
+.stat{background:var(--sheet);border:1px solid var(--line);border-radius:var(--r);padding:16px 18px;box-shadow:var(--shadow);position:relative;overflow:hidden}
+.stat::before{content:"";position:absolute;inset-block:0;inset-inline-start:0;width:4px;background:linear-gradient(var(--brand),var(--brand2))}
+.stat b{display:block;font-family:var(--f-mono);font-size:1.7rem;font-weight:700;line-height:1.25;direction:ltr;text-align:left;color:var(--brand)}
+.stat span{font-size:.84rem;color:var(--ink2);font-weight:500}
+.subtabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px}
+.subtab{border:1.5px solid var(--line);background:var(--sheet);border-radius:999px;padding:7px 18px;min-height:40px;cursor:pointer;font-weight:600;color:var(--ink2);transition:all .15s}
+.subtab:hover{border-color:var(--brand);color:var(--brand)}
+.subtab[aria-selected="true"]{background:var(--brand);color:#fff;border-color:var(--brand)}
+.scroller{overflow-x:auto;border:1px solid var(--line);border-radius:12px}
 table{border-collapse:collapse;width:100%;min-width:640px;font-size:.92rem}
-th,td{padding:9px 12px;text-align:start;border-bottom:1px solid var(--line);vertical-align:top}
-th{background:var(--field);font-weight:600;font-size:.82rem;color:var(--ink2);position:sticky;top:0}
+th,td{padding:11px 14px;text-align:start;border-bottom:1px solid var(--line);vertical-align:top}
+th{background:var(--field);font-weight:700;font-size:.8rem;color:var(--ink2);position:sticky;top:0}
 tr:last-child td{border-bottom:0}
 tr.clk{cursor:pointer}
-tr.clk:hover td{background:var(--field)}
-td.num{font-family:var(--f-mono);direction:ltr;text-align:right;white-space:nowrap}
-.pct{font-family:var(--f-mono);font-weight:500}
+tr.clk:hover td{background:var(--brand-soft)}
+td.num{font-family:var(--f-mono);direction:ltr;text-align:left;white-space:nowrap}
+.pct{font-family:var(--f-mono);font-weight:700}
 .pct.hi{color:var(--green)} .pct.lo{color:var(--red)}
-.bars{display:flex;flex-direction:column;gap:9px}
-.brow{display:grid;grid-template-columns:minmax(110px,170px) 1fr 52px;gap:10px;align-items:center;font-size:.9rem}
+.bars{display:flex;flex-direction:column;gap:10px}
+.brow{display:grid;grid-template-columns:minmax(110px,170px) 1fr 52px;gap:12px;align-items:center;font-size:.9rem}
 @media (max-width:520px){.brow{grid-template-columns:1fr 52px}.brow .track{grid-column:1/-1;order:3}}
-.track{height:10px;background:var(--line);border-radius:5px;overflow:hidden}
-.track i{display:block;height:100%;background:var(--green)}
+.track{height:10px;background:var(--line);border-radius:99px;overflow:hidden}
+.track i{display:block;height:100%;background:var(--green);border-radius:99px}
 .track i.w{background:var(--red)}
-.checks{display:grid;grid-template-columns:1fr 1fr;gap:6px 14px}
+.checks{display:grid;grid-template-columns:1fr 1fr;gap:8px 16px}
 @media (max-width:560px){.checks{grid-template-columns:1fr}}
-.chk{display:flex;gap:8px;align-items:center;font-size:.92rem}
-.chk input{width:18px;height:18px;accent-color:var(--ink)}
+.chk{display:flex;gap:10px;align-items:center;font-size:.93rem;min-height:36px}
+.chk input{width:20px;height:20px;accent-color:var(--brand)}
 .wl{display:flex;flex-direction:column}
-.wi{display:grid;grid-template-columns:1fr 1fr auto;gap:10px;align-items:center;padding:8px 0;border-bottom:1px dashed var(--line)}
+.wi{display:grid;grid-template-columns:1fr 1fr auto;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line)}
 @media (max-width:560px){.wi{grid-template-columns:1fr auto}.wi .ar{grid-column:1;}}
-.empty{text-align:center;padding:28px 12px;color:var(--ink2)}
-.empty b{display:block;color:var(--ink);font-family:var(--f-display);font-size:1.1rem;margin-bottom:4px}
+.empty{text-align:center;padding:36px 14px;color:var(--ink2)}
+.empty b{display:block;color:var(--ink);font-family:var(--f-display);font-size:1.15rem;margin-bottom:4px}
 .erow{display:flex;gap:8px;align-items:center}
-.erow input[type=radio]{width:18px;height:18px;accent-color:var(--green);flex:none}
-.acts{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;margin-inline-start:calc(2.1ch + 12px)}
+.erow input[type=radio]{width:20px;height:20px;accent-color:var(--green);flex:none}
+.acts{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;margin-inline-start:42px}
 @media (max-width:560px){.acts{margin-inline-start:0}}
 .sp{height:12px}
-@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}.btn:hover{transform:none}}
 </style>
 </head><body>
 <div class="wrap">
   <header class="bar">
-    <div class="brand"><b>اختبار الإنجليزي</b><span>Vocabulary + Grammar</span><span dir="ltr" style="display:block;margin-top:2px;font-weight:600">Ms.Eman Almogheiry</span></div>
-    <nav class="tabs" role="tablist" aria-label="الصفحات">
-      <button class="tab" role="tab" id="tab-exam" aria-selected="true" data-go="exam">الاختبار</button>
-      <button class="tab" role="tab" id="tab-teacher" aria-selected="false" data-go="teacher">لوحة المعلم</button>
+    <div class="brand"><b>English Exam</b><span>Vocabulary + Grammar</span><span dir="ltr" style="display:block;margin-top:2px;font-weight:600">Ms.Eman Almogheiry</span></div>
+    <nav class="tabs" role="tablist" aria-label="Pages">
+      <button class="tab" role="tab" id="tab-exam" aria-selected="true" data-go="exam">Exam</button>
+      <button class="tab" role="tab" id="tab-teacher" aria-selected="false" data-go="teacher">Teacher panel</button>
     </nav>
   </header>
   <main id="main"></main>
@@ -184,101 +223,101 @@ td.num{font-family:var(--f-mono);direction:ltr;text-align:right;white-space:nowr
 
 <script src="config.js"></script>
 <script>
-document.documentElement.setAttribute('dir','rtl');document.documentElement.setAttribute('lang','ar');
+document.documentElement.setAttribute('dir','ltr');document.documentElement.setAttribute('lang','en');
 /* ============ DATA ============ */
 // word|arabic|level|sentence with ___|pos
 const BANK_RAW = `
-library|مكتبة|1|We borrow story books from the ___.|n
-kitchen|مطبخ|1|My mother is cooking lunch in the ___.|n
-neighbour|جار|1|Our ___ lives in the house next to ours.|n
-market|سوق|1|We buy fresh fish from the ___ every Friday.|n
-doctor|طبيب|1|The ___ gave me some medicine for my cold.|n
-farmer|مزارع|1|The ___ grows dates and vegetables on his farm.|n
-island|جزيرة|1|Masirah is an ___ in the Arabian Sea.|n
-mountain|جبل|1|We climbed the ___ early in the morning.|n
-desert|صحراء|1|It is very hot in the ___ in summer.|n
-river|نهر|1|The ___ flows slowly into the sea.|n
-weather|الطقس|1|The ___ is sunny and warm today.|n
-holiday|إجازة|1|We are going on ___ to Salalah next week.|n
-borrow|يستعير|1|Can I ___ your pen for a minute, please?|v
-carry|يحمل|1|He can ___ two heavy bags at the same time.|v
-climb|يتسلق|1|The boys ___ the tree to pick the fruit.|v
-visit|يزور|1|We ___ our grandparents every Friday.|v
-choose|يختار|1|You can ___ any colour you like.|v
-invite|يدعو|1|I will ___ all my friends to my birthday party.|v
-forget|ينسى|1|Please don't ___ to bring your homework tomorrow.|v
-arrive|يصل|1|The bus will ___ at the school at eight o'clock.|v
-dangerous|خطير|1|Swimming here is ___ because the waves are very high.|adj
-expensive|غالي|1|That watch costs five hundred rials. It is too ___ for me.|adj
-cheap|رخيص|1|These shoes are very ___. They cost only two rials.|adj
-quiet|هادئ|1|Please be ___. The baby is sleeping.|adj
-clean|نظيف|1|Wash your hands to keep them ___.|adj
-heavy|ثقيل|1|The box is too ___ for me to lift.|adj
-empty|فارغ|1|The bottle is ___. Please fill it with water.|adj
-guest|ضيف|1|We have a ___ for dinner tonight, so Mum is cooking more food.|n
-ticket|تذكرة|1|I showed my ___ to the man at the cinema door.|n
-medicine|دواء|1|Take this ___ after lunch and you will feel better.|n
-healthy|صحي|1|Fruit and vegetables are ___ food.|adj
-environment|بيئة|2|We must protect the ___ from rubbish and smoke.|n
-pollution|تلوث|2|Cars and factories cause air ___ in big cities.|n
-recycle|يعيد التدوير|2|We ___ plastic bottles and old paper at our school.|v
-protect|يحمي|2|A helmet can ___ your head from injury.|v
-improve|يحسّن|2|Practice every day will ___ your English.|v
-discover|يكتشف|2|Scientists ___ new planets every year.|v
-describe|يصف|2|Please ___ the man to the police: his height, his hair and his clothes.|v
-explain|يشرح|2|I don't understand. Can you ___ the rule again?|v
-suggest|يقترح|2|I ___ that we start the project today.|v
-agree|يوافق|2|Do you ___ with my idea? I think it is good.|v
-prepare|يحضّر|2|She will ___ a presentation about her town for the class.|v
-achieve|يحقق|2|You can ___ your goals if you work hard.|v
-ancient|أثري|2|Nizwa Fort is very ___. It is over three hundred years old.|adj
-traditional|تقليدي|2|She wore a ___ Omani dress at the festival.|adj
-crowded|مزدحم|2|The market is very ___ on Fridays. There are people everywhere.|adj
-generous|كريم|2|Omani people are ___ to their guests and always offer coffee.|adj
-brave|شجاع|2|The ___ firefighter went into the burning house to save the child.|adj
-polite|مهذب|2|It is ___ to say "thank you" and "please".|adj
-curious|فضولي|2|The ___ boy asked a lot of questions about space.|adj
-valuable|ثمين|2|This old gold coin is very ___. It is worth thousands of rials.|adj
-benefit|فائدة|2|Reading every day has a great ___ for your mind.|n
-experience|خبرة|2|She has ten years of ___ in teaching English.|n
-opinion|رأي|2|In my ___, this film is excellent.|n
-advice|نصيحة|2|My teacher gave me good ___ about the exam.|n
-journey|رحلة|2|The ___ from Muscat to Sur takes about two hours by car.|n
-decision|قرار|2|It was a difficult ___ to make, but I think it was right.|n
-language|لغة|2|English is an international ___ used all over the world.|n
-society|مجتمع|2|Education is very important for ___.|n
-average|متوسط|2|The ___ temperature in winter is about twenty-four degrees.|adj
-increase|يزداد|2|The number of students will ___ next year as the school grows.|v
-sustainable|مستدام|3|Solar and wind power are ___ sources of energy.|adj
-influence|تأثير|3|Parents have a strong ___ on their children's habits.|n
-consequence|عاقبة|3|Every action has a ___, good or bad.|n
-reliable|موثوق|3|He is a ___ friend; you can always trust him.|adj
-efficient|كفؤ|3|This new machine is very ___. It saves time and energy.|adj
-estimate|يقدّر|3|Engineers ___ the cost of the bridge before they build it.|v
-essential|أساسي|3|Water is ___ for all living things.|adj
-significant|ملحوظ|3|There has been a ___ rise in temperature this year.|adj
-contribute|يساهم|3|Everyone can ___ to a cleaner city by recycling.|v
-require|يتطلب|3|Visitors ___ a visa to enter some countries.|v
-potential|إمكانات|3|The young player has great ___.|n
-challenge|تحدٍّ|3|Learning a new language is a big ___ for many people.|n
-temporary|مؤقت|3|This is a ___ job for the summer only.|adj
-enormous|ضخم|3|The whale is ___. It is longer than three buses.|adj
-competition|مسابقة|3|She won first prize in the school science ___.|n
-population|عدد السكان|3|The ___ of Oman is growing every year.|n
-evidence|دليل|3|The police found no ___ against him.|n
-solution|حل|3|The best ___ to pollution is using clean energy.|n
-isolated|معزول|3|The village is ___ because there is no road to it.|adj
-vary|يتفاوت|3|Prices ___ from shop to shop.|v
-anxious|قلق|3|She felt ___ before the big exam.|adj
-scarce|نادر|3|Fresh water is ___ in the desert.|adj
-reduce|يقلل|3|We can ___ waste by using cloth bags again and again.|v
-comfortable|مريح|3|This sofa is soft and very ___.|adj
-develop|يطوّر|3|The company wants to ___ a new app for students.|v
-compare|يقارن|3|Let's ___ the two phones before we buy one.|v
-generation|جيل|3|My grandfather's ___ lived without electricity.|n
-disadvantage|عيب|3|The main ___ of this car is its high price.|n
-survive|ينجو|3|Few plants can ___ in the desert without water.|v
-imagine|يتخيل|3|Close your eyes and ___ that you are on a beach.|v
+library|a place where you can read and borrow books|1|We borrow story books from the ___.|n
+kitchen|the room where food is cooked|1|My mother is cooking lunch in the ___.|n
+neighbour|a person who lives next to you|1|Our ___ lives in the house next to ours.|n
+market|a place where people buy and sell food and goods|1|We buy fresh fish from the ___ every Friday.|n
+doctor|a person who treats sick people|1|The ___ gave me some medicine for my cold.|n
+farmer|a person who grows crops or keeps animals|1|The ___ grows dates and vegetables on his farm.|n
+island|land completely surrounded by water|1|Masirah is an ___ in the Arabian Sea.|n
+mountain|a very high hill|1|We climbed the ___ early in the morning.|n
+desert|a dry area with very little rain and lots of sand|1|It is very hot in the ___ in summer.|n
+river|a long stream of water that flows to the sea|1|The ___ flows slowly into the sea.|n
+weather|the sun, rain, wind and temperature outside|1|The ___ is sunny and warm today.|n
+holiday|a time away from school or work|1|We are going on ___ to Salalah next week.|n
+borrow|to take something and give it back later|1|Can I ___ your pen for a minute, please?|v
+carry|to hold something and take it somewhere|1|He can ___ two heavy bags at the same time.|v
+climb|to go up something like a tree or a hill|1|The boys ___ the tree to pick the fruit.|v
+visit|to go and spend time at a person or place|1|We ___ our grandparents every Friday.|v
+choose|to pick one thing from several|1|You can ___ any colour you like.|v
+invite|to ask someone to come to an event|1|I will ___ all my friends to my birthday party.|v
+forget|to not remember something|1|Please don't ___ to bring your homework tomorrow.|v
+arrive|to reach the place you are going to|1|The bus will ___ at the school at eight o'clock.|v
+dangerous|likely to hurt you or cause harm|1|Swimming here is ___ because the waves are very high.|adj
+expensive|costing a lot of money|1|That watch costs five hundred rials. It is too ___ for me.|adj
+cheap|costing very little money|1|These shoes are very ___. They cost only two rials.|adj
+quiet|making little or no noise|1|Please be ___. The baby is sleeping.|adj
+clean|not dirty|1|Wash your hands to keep them ___.|adj
+heavy|weighing a lot and hard to lift|1|The box is too ___ for me to lift.|adj
+empty|with nothing inside|1|The bottle is ___. Please fill it with water.|adj
+guest|a person who is invited to your home|1|We have a ___ for dinner tonight, so Mum is cooking more food.|n
+ticket|a piece of paper that lets you travel or enter|1|I showed my ___ to the man at the cinema door.|n
+medicine|something you take to get better when you are ill|1|Take this ___ after lunch and you will feel better.|n
+healthy|strong and not ill|1|Fruit and vegetables are ___ food.|adj
+environment|the air, water and land around us|2|We must protect the ___ from rubbish and smoke.|n
+pollution|dirty or harmful things in the air, water or land|2|Cars and factories cause air ___ in big cities.|n
+recycle|to use old things again to make new ones|2|We ___ plastic bottles and old paper at our school.|v
+protect|to keep someone or something safe from harm|2|A helmet can ___ your head from injury.|v
+improve|to become or make something better|2|Practice every day will ___ your English.|v
+discover|to find something for the first time|2|Scientists ___ new planets every year.|v
+describe|to say what someone or something is like|2|Please ___ the man to the police: his height, his hair and his clothes.|v
+explain|to make something clear so others understand it|2|I don't understand. Can you ___ the rule again?|v
+suggest|to offer an idea or plan for others to consider|2|I ___ that we start the project today.|v
+agree|to have the same opinion as someone else|2|Do you ___ with my idea? I think it is good.|v
+prepare|to get ready or make something ready|2|She will ___ a presentation about her town for the class.|v
+achieve|to succeed in doing or getting something|2|You can ___ your goals if you work hard.|v
+ancient|very old, from a long time ago in history|2|Nizwa Fort is very ___. It is over three hundred years old.|adj
+traditional|following customs passed down over many years|2|She wore a ___ Omani dress at the festival.|adj
+crowded|full of too many people|2|The market is very ___ on Fridays. There are people everywhere.|adj
+generous|happy to give money or help to others|2|Omani people are ___ to their guests and always offer coffee.|adj
+brave|not afraid of danger|2|The ___ firefighter went into the burning house to save the child.|adj
+polite|having good manners and respect for others|2|It is ___ to say "thank you" and "please".|adj
+curious|wanting to learn or know about things|2|The ___ boy asked a lot of questions about space.|adj
+valuable|worth a lot of money or very useful|2|This old gold coin is very ___. It is worth thousands of rials.|adj
+benefit|a good or helpful result|2|Reading every day has a great ___ for your mind.|n
+experience|knowledge you get from doing something|2|She has ten years of ___ in teaching English.|n
+opinion|what you think or believe about something|2|In my ___, this film is excellent.|n
+advice|helpful words about what someone should do|2|My teacher gave me good ___ about the exam.|n
+journey|a long trip from one place to another|2|The ___ from Muscat to Sur takes about two hours by car.|n
+decision|a choice you make after thinking|2|It was a difficult ___ to make, but I think it was right.|n
+language|the words people use to speak or write, like Arabic or English|2|English is an international ___ used all over the world.|n
+society|all the people living together in a country or community|2|Education is very important for ___.|n
+average|normal, or the usual amount in the middle|2|The ___ temperature in winter is about twenty-four degrees.|adj
+increase|to become or make something bigger in number|2|The number of students will ___ next year as the school grows.|v
+sustainable|able to continue for a long time without harming the environment|3|Solar and wind power are ___ sources of energy.|adj
+influence|the power to change what people think or do|3|Parents have a strong ___ on their children's habits.|n
+consequence|a result of something that happened before|3|Every action has a ___, good or bad.|n
+reliable|able to be trusted to do what is expected|3|He is a ___ friend; you can always trust him.|adj
+efficient|working well without wasting time or energy|3|This new machine is very ___. It saves time and energy.|adj
+estimate|to guess the size or cost of something|3|Engineers ___ the cost of the bridge before they build it.|v
+essential|absolutely necessary|3|Water is ___ for all living things.|adj
+significant|important or large enough to notice|3|There has been a ___ rise in temperature this year.|adj
+contribute|to give something to help reach a goal|3|Everyone can ___ to a cleaner city by recycling.|v
+require|to need something or make it necessary|3|Visitors ___ a visa to enter some countries.|v
+potential|the ability to develop or succeed in the future|3|The young player has great ___.|n
+challenge|something difficult that tests your ability|3|Learning a new language is a big ___ for many people.|n
+temporary|lasting for only a short time|3|This is a ___ job for the summer only.|adj
+enormous|extremely large|3|The whale is ___. It is longer than three buses.|adj
+competition|an event where people try to win|3|She won first prize in the school science ___.|n
+population|the number of people living in a place|3|The ___ of Oman is growing every year.|n
+evidence|facts or signs that show something is true|3|The police found no ___ against him.|n
+solution|an answer to a problem|3|The best ___ to pollution is using clean energy.|n
+isolated|far away from other people or places|3|The village is ___ because there is no road to it.|adj
+vary|to be different or change from one time to another|3|Prices ___ from shop to shop.|v
+anxious|worried and nervous about something|3|She felt ___ before the big exam.|adj
+scarce|not enough of something available|3|Fresh water is ___ in the desert.|adj
+reduce|to make something smaller or less|3|We can ___ waste by using cloth bags again and again.|v
+comfortable|giving a pleasant feeling of rest, not painful|3|This sofa is soft and very ___.|adj
+develop|to grow or change into something bigger or better|3|The company wants to ___ a new app for students.|v
+compare|to look at things to see how they are alike or different|3|Let's ___ the two phones before we buy one.|v
+generation|all the people born around the same time|3|My grandfather's ___ lived without electricity.|n
+disadvantage|something that makes a situation worse or harder|3|The main ___ of this car is its high price.|n
+survive|to stay alive in a dangerous situation|3|Few plants can ___ in the desert without water.|v
+imagine|to make a picture of something in your mind|3|Close your eyes and ___ that you are on a beach.|v
 `;
 const BANK = BANK_RAW.trim().split('\n').map(l=>{const p=l.split('|');return {e:p[0],a:p[1],l:+p[2],s:p[3]||'',pos:p[4]||'',b:1};});
 
@@ -447,19 +486,19 @@ cheap|cheaper|cheapest|more cheap|most cheap|Apples are ___ than mangoes.|This i
 
 // Grammar topics (id, Arabic name, levels, tip)
 const TOPICS = [
-  {id:'be',   ar:'فعل الكينونة am / is / are', lv:[1],   tip:'I مع am — وhe / she / it مع is — وwe / you / they مع are.'},
-  {id:'art',  ar:'أدوات التنكير a / an',        lv:[1],   tip:'نستعمل an قبل الصوت المتحرك (apple, hour) وa قبل الصوت الساكن (university, uniform).'},
-  {id:'plu',  ar:'جمع الأسماء',                 lv:[1,2], tip:'بعض الأسماء جمعها شاذ (man ← men) وبعضها يأخذ es أو ies (box ← boxes، city ← cities).'},
-  {id:'prep', ar:'حروف الجر',                   lv:[1,2], tip:'at للوقت المحدد، on لليوم، in للشهر والسنة والأماكن الكبيرة، وكل حرف جر يرتبط بكلمة معيّنة.'},
-  {id:'wh',   ar:'أدوات الاستفهام والأسئلة',    lv:[1,2], tip:'اختر أداة الاستفهام التي تناسب الإجابة: where للمكان، when للزمن، who للشخص، why للسبب.'},
-  {id:'pron', ar:'الضمائر وصفات الملكية',       lv:[1,2], tip:'الضمير الفاعل (she) قبل الفعل، وصفة الملكية (her) قبل الاسم، وضمير المفعول (her) بعد الفعل.'},
-  {id:'there',ar:'there is / are وكمّيات',      lv:[1,2], tip:'there is مع المفرد وغير المعدود، وthere are مع الجمع. many مع المعدود وmuch مع غير المعدود، وany في النفي والسؤال.'},
-  {id:'ps',   ar:'المضارع البسيط',              lv:[1,2], tip:'مع he / she / it نضيف s أو es للفعل، ومع باقي الضمائر نستعمل الفعل بلا إضافة.'},
-  {id:'past', ar:'الماضي البسيط',               lv:[2],   tip:'الأفعال المنتظمة تأخذ ed، وبعض الأفعال شاذة وتحفظ (go ← went). كلمات مثل yesterday وlast week تدل على الماضي.'},
-  {id:'pc',   ar:'المضارع المستمر',             lv:[2],   tip:'am / is / are + الفعل مع ing، وكلمات مثل now وright now وListen! تدل عليه.'},
-  {id:'cmp',  ar:'المقارنة والتفضيل',           lv:[2,3], tip:'للمقارنة نستعمل er + than أو more + than، وللتفضيل the + est أو the most. الأفعال الشاذة: good ← better ← best.'},
-  {id:'perf', ar:'المضارع التام',               lv:[3],   tip:'has / have + التصريف الثالث للفعل. has مع he / she / it وhave مع باقي الضمائر.'},
-  {id:'cond', ar:'الجملة الشرطية (النوع الأول)',lv:[3],   tip:'If + مضارع بسيط ، will + فعل. لا نضع will بعد if.'}
+  {id:'be',   ar:'Verb to be: am / is / are', lv:[1],   tip:'Use am with I, is with he / she / it, and are with we / you / they.'},
+  {id:'art',  ar:'Articles: a / an',        lv:[1],   tip:'Use an before a vowel sound (apple, hour) and a before a consonant sound (university, uniform).'},
+  {id:'plu',  ar:'Plural nouns',                 lv:[1,2], tip:'Some plurals are irregular (man → men); others take es or ies (box → boxes, city → cities).'},
+  {id:'prep', ar:'Prepositions',                   lv:[1,2], tip:'Use at for exact times, on for days, and in for months, years and large places. Many words also go with a fixed preposition.'},
+  {id:'wh',   ar:'Question words and questions',    lv:[1,2], tip:'Choose the question word that fits the answer: where for place, when for time, who for a person, why for a reason.'},
+  {id:'pron', ar:'Pronouns and possessives',       lv:[1,2], tip:'A subject pronoun (she) comes before the verb, a possessive adjective (her) comes before a noun, and an object pronoun (her) comes after the verb.'},
+  {id:'there',ar:'There is / are and quantities',      lv:[1,2], tip:'Use there is with singular and uncountable nouns, and there are with plurals. Use many with countable nouns, much with uncountable nouns, and any in negatives and questions.'},
+  {id:'ps',   ar:'Present simple',              lv:[1,2], tip:'With he / she / it add s or es to the verb. With other subjects use the base verb.'},
+  {id:'past', ar:'Past simple',               lv:[2],   tip:'Regular verbs take ed, and some verbs are irregular (go → went). Words like yesterday and last week show the past.'},
+  {id:'pc',   ar:'Present continuous',             lv:[2],   tip:'Use am / is / are + verb-ing. Words like now, right now and Listen! signal this tense.'},
+  {id:'cmp',  ar:'Comparatives and superlatives',           lv:[2,3], tip:'For comparing use er + than or more + than; for the highest degree use the + est or the most. Irregular: good → better → best.'},
+  {id:'perf', ar:'Present perfect',               lv:[3],   tip:'Use has / have + past participle. Use has with he / she / it and have with other subjects.'},
+  {id:'cond', ar:'First conditional',lv:[3],   tip:'If + present simple, will + base verb. Do not use will after if.'}
 ];
 /* ============ EXAM ENGINE ============ */
 function makeRng(seed){
@@ -533,12 +572,12 @@ function vocabQ(R,w,type,all){
   const others=all.filter(x=>x.e!==w.e);
   if(type==='en2ar'){
     const ws=R.sample(others,14).map(x=>x.a);
-    return mcq(R,`What does “${w.e}” mean?`,w.a,ws,{qd:'ltr',od:'rtl',type});
+    return mcq(R,`What does “${w.e}” mean?`,w.a,ws,{qd:'ltr',od:'ltr',type});
   }
   if(type==='ar2en'){
     const same=others.filter(x=>w.pos&&x.pos===w.pos);
     const src=same.length>=3?same:others;
-    return mcq(R,`اختر الكلمة الإنجليزية التي معناها: «${w.a}»`,w.e,R.sample(src,14).map(x=>x.e),{qd:'rtl',od:'ltr',type});
+    return mcq(R,`Choose the word that means: “${w.a}”`,w.e,R.sample(src,14).map(x=>x.e),{qd:'ltr',od:'ltr',type});
   }
   if(type==='gap'&&w.s&&w.s.includes('___')){
     const same=others.filter(x=>w.pos&&x.pos===w.pos);
@@ -547,18 +586,18 @@ function vocabQ(R,w,type,all){
   }
   if(type==='spell'&&w.e.length>=4&&/^[a-z' -]+$/i.test(w.e)){
     const m=mutate(R,w.e);if(m.length<3)return null;
-    return mcq(R,`اختر الإملاء الصحيح لكلمة «${w.a}»`,w.e,m,{qd:'rtl',od:'ltr',type});
+    return mcq(R,`Choose the correct spelling of the word that means: “${w.a}”`,w.e,m,{qd:'ltr',od:'ltr',type});
   }
   return null;
 }
 
 /* ---- build one exam from config ---- */
-const DEFAULT_CFG={title:'اختبار اللغة الإنجليزية',vocabCount:10,grammarCount:10,level:2,timeMin:15,
+const DEFAULT_CFG={title:'English Exam',vocabCount:10,grammarCount:10,level:2,timeMin:15,
   topics:TOPICS.map(t=>t.id),vocabSource:'bank',showAnswers:true,ownMode:'off',ownCount:0,examMode:'auto'};
 function ownQ(R,x){
   const o=R.shuffle([x.c,...x.w]);const ar=/[\u0600-\u06FF]/;
   return {sec:x.s==='v'?'v':'g',topic:'own-'+(x.s==='v'?'v':'g'),type:'own',q:x.q,o,a:o.indexOf(x.c),
-    qd:ar.test(x.q)?'rtl':'ltr',od:o.some(t=>ar.test(t))?'rtl':'ltr',tip:x.tip||''};
+    qd:ar.test(x.q)?'rtl':'ltr',od:o.some(t=>ar.test(t))?'rtl':'ltr',tip:x.tip||'',img:x.img||'',imgUrl:x.imgUrl||''};
 }
 function ownPicks(cfg,own){
   const pool=(own||[]).filter(x=>x&&x.q&&x.c&&Array.isArray(x.w)&&x.w.length>=1);
@@ -637,7 +676,7 @@ function fixedExam(cfg,fx){
     questions:fx.questions.map(q=>Object.assign({},q,{o:q.o.slice()}))};
 }
 function fixedOk(fx){return !!(fx&&Array.isArray(fx.questions)&&fx.questions.length&&fx.questions.every(q=>q&&q.q&&Array.isArray(q.o)&&q.o.length>=2&&q.a>=0&&q.a<q.o.length));}
-const topicName=id=>id==='own-v'?'أسئلة المعلم (مفردات)':id==='own-g'?'أسئلة المعلم (قواعد)':id==='vocab'?'المفردات':(TOPICS.find(t=>t.id===id)||{ar:id}).ar;
+const topicName=id=>id==='own-v'?'Teacher questions (vocabulary)':id==='own-g'?'Teacher questions (grammar)':id==='vocab'?'Vocabulary':(TOPICS.find(t=>t.id===id)||{ar:id}).ar;
 /* ============ APP CORE + STUDENT ============ */
 const $=s=>document.querySelector(s);
 const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -650,7 +689,7 @@ try{S.name=localStorage.getItem('ex-name')||'';S.cls=localStorage.getItem('ex-cl
 
 const nowStr=ms=>{const d=new Date(ms);const p=n=>String(n).padStart(2,'0');return `${p(d.getDate())}/${p(d.getMonth()+1)}/${d.getFullYear()} ${p(d.getHours())}:${p(d.getMinutes())}`;};
 const mmss=s=>`${String(Math.floor(s/60)).padStart(2,'0')}:${String(s%60).padStart(2,'0')}`;
-const LV={0:'متنوّع',1:'أساسي',2:'متوسط',3:'متقدّم'};
+const LV={0:'Mixed',1:'Basic',2:'Intermediate',3:'Advanced'};
 
 /* ---- Convex HTTP API (no library needed) ---- */
 const CX=String((window.EXAM_CONFIG&&window.EXAM_CONFIG.CONVEX_URL)||'').trim().replace(/\/+$/,'');
@@ -673,7 +712,7 @@ function teacherLogout(){
 async function tcall(fn,args){
   const res=await cx('mutation','exam:'+fn,Object.assign({code:S.code},args||{}));
   if(res&&res.ok===false){
-    if(['bad','locked','not_configured'].includes(res.reason)){teacherLogout();S.loginMsg='تعذّر التحقق من الرمز. ادخل الرمز من جديد.';}
+    if(['bad','locked','not_configured'].includes(res.reason)){teacherLogout();S.loginMsg='Could not verify the code. Please sign in again.';}
     const e=new Error(res.reason||'failed');e.reason=res.reason;throw e;
   }
   return res;
@@ -698,7 +737,7 @@ function route(){
 function render(){
   $('#tab-exam').setAttribute('aria-selected',S.view==='exam');
   $('#tab-teacher').setAttribute('aria-selected',S.view==='teacher');
-  $('#tab-teacher').textContent=S.canEdit?'لوحة المعلم':'دخول المعلم';
+  $('#tab-teacher').textContent=S.canEdit?'Teacher panel':'Teacher sign-in';
   if(S.view==='teacher'){renderTeacher();return;}
   if(S.phase==='start')renderStart();
   else if(S.phase==='run')renderRun();
@@ -719,35 +758,35 @@ function renderStart(){
   $('#main').innerHTML=`
   <section class="sheet">
     <h2>${esc(c.title)}</h2>
-    <p class="lead">${fixedOn?'اختبار مفردات وقواعد أعدّه معلمك.':'اختبار مفردات وقواعد. تتغيّر الأسئلة والكلمات في كل مرة تبدأ فيها اختبارًا جديدًا.'}</p>
+    <p class="lead">${fixedOn?'A vocabulary and grammar exam prepared by your teacher.':'A vocabulary and grammar exam. The questions and words change every time you start a new exam.'}</p>
     <div class="facts">
-      <span>الأسئلة: <b>${nq}</b></span>
-      ${onlyOwn?'':`<span>المستوى: <b>${LV[c.level]}</b></span>`}
-      <span>الوقت: <b>${c.timeMin>0?c.timeMin+' دقيقة':'مفتوح'}</b></span>
+      <span>Questions: <b>${nq}</b></span>
+      ${onlyOwn?'':`<span>Level: <b>${LV[c.level]}</b></span>`}
+      <span>Time: <b>${c.timeMin>0?c.timeMin+' min':'Untimed'}</b></span>
     </div>
     <div class="grid2">
-      <label class="f">الاسم الكامل<input class="in" id="f-name" maxlength="60" autocomplete="name" value="${esc(S.name)}" placeholder="اكتب اسمك"></label>
-      <label class="f">الصف والشعبة <span class="hint">اختياري</span><input class="in" id="f-cls" maxlength="30" value="${esc(S.cls)}" placeholder="مثال: ٩/٢"></label>
+      <label class="f">Full name<input class="in" id="f-name" maxlength="60" autocomplete="name" value="${esc(S.name)}" placeholder="Type your name"></label>
+      <label class="f">Class / section <span class="hint">Optional</span><input class="in" id="f-cls" maxlength="30" value="${esc(S.cls)}" placeholder="e.g. 9/2"></label>
     </div>
     <div class="sp"></div>
-    ${offline?`<div class="note">تعذّر تحميل إعدادات الاختبار من الإنترنت، لذلك سيظهر اختبار افتراضي. تأكد من اتصالك ثم أعد فتح الصفحة إن أردت اختبار معلمك.</div><div class="sp"></div>`:''}
+    ${offline?`<div class="note">Could not load the exam settings from the internet, so a default exam will be shown. Check your connection and reload the page to get your teacher’s exam.</div><div class="sp"></div>`:''}
     <div id="f-err" class="note bad" hidden></div>
-    <div class="row"><button class="btn" id="f-go">ابدأ الاختبار</button></div>
+    <div class="row"><button class="btn" id="f-go">Start exam</button></div>
   </section>`;
   $('#f-go').onclick=startExam;
   $('#f-name').onkeydown=e=>{if(e.key==='Enter')startExam();};
 }
 async function startExam(){
   const name=$('#f-name').value.trim();
-  if(name.length<2){const e=$('#f-err');e.textContent='اكتب اسمك قبل أن تبدأ.';e.hidden=false;$('#f-name').focus();return;}
+  if(name.length<2){const e=$('#f-err');e.textContent='Type your name before you start.';e.hidden=false;$('#f-name').focus();return;}
   S.name=name;S.cls=$('#f-cls').value.trim();
   S.preview=false;
   try{localStorage.setItem('ex-name',S.name);localStorage.setItem('ex-cls',S.cls);}catch(e){}
-  const gb=$('#f-go');if(gb){gb.disabled=true;gb.textContent='جارٍ تجهيز الاختبار...';}
+  const gb=$('#f-go');if(gb){gb.disabled=true;gb.textContent='Preparing your exam...';}
   await refreshSettings();
   S.exam=(S.cfg.examMode==='fixed'&&fixedOk(S.fixed))?fixedExam(S.cfg,S.fixed):buildExam(S.cfg,S.custom,S.own);
   S.ans=new Array(S.exam.questions.length).fill(-1);
-  S.phase='run';S.confirm=false;S.startAt=Date.now();S.saveState='';
+  S.cur=0;S.phase='run';S.confirm=false;S.startAt=Date.now();S.saveState='';
   clearInterval(S.timer);
   if(S.exam.timeMin>0){S.left=S.exam.timeMin*60;S.timer=setInterval(()=>{S.left--;paintTimer();if(S.left<=0)submit(true);},1000);}
   render();window.scrollTo(0,0);
@@ -755,54 +794,77 @@ async function startExam(){
 function paintTimer(){const t=$('#timer');if(t){t.textContent=mmss(Math.max(0,S.left));t.style.color=S.left<=60?'var(--red)':'';}}
 
 /* ---------- run ---------- */
+const imgHtml=q=>q.imgUrl?`<img class="qimg" src="${esc(q.imgUrl)}" alt="Question image" loading="eager" decoding="async">`:'';
 function qHtml(q,i){
   const text=esc(q.q).replace(/___/g,'_____');
   return `<div class="q" data-i="${i}">
     <div class="qhead"><span class="qn mono">${i+1}</span>
     <div class="qt ${q.qd==='ltr'?'en':''}" dir="${q.qd}">${text}</div></div>
-    <div class="opts" role="radiogroup" aria-label="السؤال ${i+1}">
-      ${q.o.map((o,j)=>`<label class="opt"><input type="radio" name="q${i}" value="${j}"><span class="${q.od==='ltr'?'en':''}" dir="${q.od}">${esc(o)}</span></label>`).join('')}
+    ${imgHtml(q)}
+    <div class="opts" role="radiogroup" aria-label="Question ${i+1}">
+      ${q.o.map((o,j)=>`<label class="opt"><input type="radio" name="q${i}" value="${j}" ${S.ans[i]===j?'checked':''}><span class="${q.od==='ltr'?'en':''}" dir="${q.od}">${esc(o)}</span></label>`).join('')}
     </div></div>`;
 }
 function partHead(sec){
-  return sec==='v'?`<div class="part"><h3>الجزء الأول: المفردات</h3><span class="en">Part A · Vocabulary</span></div>`
-                  :`<div class="part"><h3>الجزء الثاني: القواعد</h3><span class="en">Part B · Grammar</span></div>`;
+  return sec==='v'?`<div class="part"><h3>Part A: Vocabulary</h3><span class="en">Choose the best answer</span></div>`
+                  :`<div class="part"><h3>Part B: Grammar</h3><span class="en">Choose the best answer</span></div>`;
 }
 function renderRun(){
   const E=S.exam;const n=E.questions.length;
-  let html=`<div class="exbar">
+  S.cur=Math.max(0,Math.min(S.cur||0,n-1));
+  $('#main').innerHTML=`<div class="exbar">
     <span class="mono" id="prog">0 / ${n}</span>
     <div class="meter"><i id="meter"></i></div>
     <span class="mono" id="timer">${E.timeMin>0?mmss(S.left):'--:--'}</span>
     <span class="mono hint" dir="ltr">Form ${E.code}</span></div>
-  <section class="sheet"><h2>${esc(E.title)}</h2>
-  <p class="lead">${esc(S.name)}${S.cls?' · '+esc(S.cls):''}${S.preview?' · وضع التجربة':''}</p>`;
-  let last='';
-  E.questions.forEach((q,i)=>{if(q.sec!==last){html+=partHead(q.sec);last=q.sec;}html+=qHtml(q,i);});
-  html+=`<div class="sp"></div><div id="sub-area"></div></section>`;
-  $('#main').innerHTML=html;
-  paintSubmit();
+  <section class="sheet" id="qcard"></section>
+  <nav class="dots" id="dots" aria-label="Question navigator"></nav>`;
   $('#main').onchange=e=>{
     const r=e.target.closest('input[type=radio]');if(!r)return;
-    const i=+r.name.slice(1);S.ans[i]=+r.value;paintProg();
+    const i=+r.name.slice(1);S.ans[i]=+r.value;paintProg();paintDots();
     if(S.confirm){S.confirm=false;paintSubmit();}
   };
-  paintTimer();
+  paintQ();paintDots();paintProg();paintTimer();
+}
+function goQ(i){
+  const n=S.exam.questions.length;S.cur=Math.max(0,Math.min(i,n-1));S.confirm=false;
+  paintQ();paintDots();window.scrollTo({top:0,behavior:'auto'});
+}
+function paintQ(){
+  const E=S.exam,i=S.cur,q=E.questions[i],n=E.questions.length,last=i===n-1;
+  const first=i===0||E.questions[i-1].sec!==q.sec;
+  $('#qcard').innerHTML=`<h2 class="qtitle">${esc(E.title)}</h2>
+  <p class="lead">${esc(S.name)}${S.cls?' · '+esc(S.cls):''}${S.preview?' · Preview mode':''}</p>
+  ${partHead(q.sec)}
+  <div class="qstep">Question <b class="mono">${i+1}</b> of <b class="mono">${n}</b></div>
+  ${qHtml(q,i)}
+  <div class="navrow"><button class="btn ghost" id="q-prev" ${i===0?'disabled':''}>← Previous</button>
+  ${last?'':'<button class="btn" id="q-next">Next →</button>'}</div>
+  ${last?'<div class="sp"></div><div id="sub-area"></div>':''}`;
+  $('#q-prev').onclick=()=>goQ(i-1);
+  const nx=$('#q-next');if(nx)nx.onclick=()=>goQ(i+1);
+  if(last)paintSubmit();
+}
+function paintDots(){
+  const d=$('#dots');if(!d)return;
+  d.innerHTML=S.exam.questions.map((q,i)=>`<button class="dot ${S.ans[i]>=0?'done':''} ${i===S.cur?'cur':''}" data-g="${i}" aria-label="Question ${i+1}${S.ans[i]>=0?' (answered)':''}" ${i===S.cur?'aria-current="true"':''}>${i+1}</button>`).join('');
+  d.onclick=e=>{const b=e.target.closest('[data-g]');if(b)goQ(+b.dataset.g);};
 }
 function paintProg(){
   const n=S.ans.length,d=S.ans.filter(x=>x>=0).length;
   $('#prog').textContent=`${d} / ${n}`;$('#meter').style.width=(100*d/n)+'%';
-  const h=$('#sub-hint');if(h)h.textContent=`تم حل ${d} من ${n}`;
+  const h=$('#sub-hint');if(h)h.textContent=`Answered ${d} of ${n}`;
 }
 function paintSubmit(){
   const left=S.ans.filter(x=>x<0).length;
   const a=$('#sub-area');if(!a)return;
   if(S.confirm){
-    a.innerHTML=`<div class="note bad">بقي <b>${left}</b> ${left===1?'سؤال':'أسئلة'} بدون إجابة. هل تريد التسليم الآن؟</div><div class="sp"></div>
-    <div class="row"><button class="btn red" id="sub-yes">سلّم الآن</button><button class="btn ghost" id="sub-no">أكمل الإجابة</button></div>`;
+    a.innerHTML=`<div class="note bad"><b>${left}</b> ${left===1?'question is':'questions are'} unanswered. Submit now?</div><div class="sp"></div>
+    <div class="row"><button class="btn red" id="sub-yes">Submit now</button><button class="btn ghost" id="sub-first">Go to first unanswered</button><button class="btn ghost" id="sub-no">Back</button></div>`;
     $('#sub-yes').onclick=()=>submit(false);$('#sub-no').onclick=()=>{S.confirm=false;paintSubmit();};
+    $('#sub-first').onclick=()=>{goQ(Math.max(0,S.ans.findIndex(x=>x<0)));};
   }else{
-    a.innerHTML=`<div class="row"><button class="btn" id="sub-go">تسليم الإجابات</button><span class="hint" id="sub-hint">تم حل ${S.ans.length-left} من ${S.ans.length}</span></div>`;
+    a.innerHTML=`<div class="row"><button class="btn" id="sub-go">Submit answers</button><span class="hint" id="sub-hint">Answered ${S.ans.length-left} of ${S.ans.length}</span></div>`;
     $('#sub-go').onclick=()=>{if(S.ans.some(x=>x<0)){S.confirm=true;paintSubmit();}else submit(false);};
   }
 }
@@ -836,43 +898,43 @@ async function saveAttempt(){
 /* ---------- done ---------- */
 function summaryText(){
   const s=S.sum;
-  return `${S.name}${S.cls?' ('+S.cls+')':''} — ${s.title} — النتيجة ${s.c}/${s.n} (${s.pct}%) — مفردات ${s.v[0]}/${s.v[1]}، قواعد ${s.g[0]}/${s.g[1]} — نسخة ${s.code} — ${nowStr(s.t)}`;
+  return `${S.name}${S.cls?' ('+S.cls+')':''} — ${s.title} — Score ${s.c}/${s.n} (${s.pct}%) — Vocabulary ${s.v[0]}/${s.v[1]}, Grammar ${s.g[0]}/${s.g[1]} — Form ${s.code} — ${nowStr(s.t)}`;
 }
 function renderDone(){
   const s=S.sum,E=S.exam;
-  const msg=s.pct>=90?'ممتاز':s.pct>=75?'جيد جدًا':s.pct>=60?'جيد':s.pct>=50?'مقبول':'تحتاج إلى مراجعة';
-  const st={preview:['','وضع التجربة: لم تُحفظ هذه النتيجة في الدرجات.'],
-    saving:['','جارٍ إرسال النتيجة إلى المعلم...'],
-    ok:['ok','تم إرسال نتيجتك إلى المعلم.'],
-    fail:['bad','تعذّر إرسال النتيجة. تأكد من الإنترنت ثم اضغط «إعادة إرسال النتيجة»، أو انسخ الملخص وأره للمعلم.'],
-    local:['bad','لم تُرسل النتيجة إلى المعلم تلقائيًا. انسخ الملخص أدناه وأره للمعلم.']}[S.saveState]||['',''];
+  const msg=s.pct>=90?'Excellent':s.pct>=75?'Very good':s.pct>=60?'Good':s.pct>=50?'Fair':'Needs review';
+  const st={preview:['','Preview mode: this result was not saved to the grades.'],
+    saving:['','Sending your result to the teacher...'],
+    ok:['ok','Your result was sent to your teacher.'],
+    fail:['bad','Could not send your result. Check your internet, then press “Resend result”, or copy the summary and show it to your teacher.'],
+    local:['bad','Your result was not sent automatically. Copy the summary below and show it to your teacher.']}[S.saveState]||['',''];
   let h=`<section class="sheet">
     <div class="res">
       <div class="score"><div><b>${s.c}/${s.n}</b><small>${s.pct}%</small></div></div>
       <div style="flex:1;min-width:200px">
-        <h2>${msg}${s.auto?' <span class="hint">(انتهى الوقت)</span>':''}</h2>
+        <h2>${msg}${s.auto?' <span class="hint">(Time is up)</span>':''}</h2>
         <p class="lead">${esc(S.name)}${S.cls?' · '+esc(S.cls):''}</p>
-        <div class="split"><span class="pill">المفردات <b>${s.v[0]}/${s.v[1]}</b></span>
-        <span class="pill">القواعد <b>${s.g[0]}/${s.g[1]}</b></span>
-        <span class="pill">الزمن <b>${mmss(s.dur)}</b></span>
-        <span class="pill">النسخة <b dir="ltr">${s.code}</b></span></div>
+        <div class="split"><span class="pill">Vocabulary <b>${s.v[0]}/${s.v[1]}</b></span>
+        <span class="pill">Grammar <b>${s.g[0]}/${s.g[1]}</b></span>
+        <span class="pill">Time <b>${mmss(s.dur)}</b></span>
+        <span class="pill">Form <b dir="ltr">${s.code}</b></span></div>
       </div></div>
     <div class="sp"></div>
     <div class="note ${st[0]}" id="save-note">${st[1]}</div>
     <div class="sp"></div>
-    <div class="row"><button class="btn" id="d-new">اختبار جديد بأسئلة مختلفة</button>
-    ${S.saveState==='fail'?'<button class="btn red" id="d-retry">إعادة إرسال النتيجة</button>':''}<button class="btn ghost" id="d-copy">نسخ ملخص النتيجة</button></div>
+    <div class="row"><button class="btn" id="d-new">New exam with different questions</button>
+    ${S.saveState==='fail'?'<button class="btn red" id="d-retry">Resend result</button>':''}<button class="btn ghost" id="d-copy">Copy result summary</button></div>
     <p class="hint" id="d-copied" style="margin-top:8px" hidden></p>
   </section>`;
   if(E.showAnswers){
-    h+=`<section class="sheet"><h2>مراجعة الإجابات</h2><p class="lead">الأخضر هو الجواب الصحيح، والأحمر هو اختيارك الخاطئ.</p>`;
+    h+=`<section class="sheet"><h2>Review answers</h2><p class="lead">Green is the correct answer, red is your wrong choice.</p>`;
     E.questions.forEach((q,i)=>{
       const ok=S.ans[i]===q.a;
       h+=`<div class="rv"><div class="qhead"><span class="qn mono">${i+1}</span>
         <div class="qt ${q.qd==='ltr'?'en':''}" dir="${q.qd}"><span class="mark ${ok?'y':'n'}">${ok?'✓':'✗'}</span>${esc(q.q).replace(/___/g,'_____')}</div></div>
-        <div class="opts">${q.o.map((o,j)=>`<div class="opt ${j===q.a?'right':(j===S.ans[i]?'wrong':'')}"><span class="${q.od==='ltr'?'en':''}" dir="${q.od}">${esc(o)}</span></div>`).join('')}</div>
+        ${imgHtml(q)}<div class="opts">${q.o.map((o,j)=>`<div class="opt ${j===q.a?'right':(j===S.ans[i]?'wrong':'')}"><span class="${q.od==='ltr'?'en':''}" dir="${q.od}">${esc(o)}</span></div>`).join('')}</div>
         ${!ok&&q.tip?`<div class="tip">${esc(q.tip)}</div>`:''}
-        ${S.ans[i]<0?`<div class="tip">لم تُجب عن هذا السؤال.</div>`:''}</div>`;
+        ${S.ans[i]<0?`<div class="tip">You did not answer this question.</div>`:''}</div>`;
     });
     h+=`</section>`;
   }
@@ -882,19 +944,19 @@ function renderDone(){
   $('#d-copy').onclick=()=>copyText(summaryText(),$('#d-copied'));
 }
 function copyText(text,out){
-  const done=ok=>{out.hidden=false;out.textContent=ok?'تم النسخ.':'تعذّر النسخ تلقائيًا. حدد النص التالي وانسخه: '+text;};
+  const done=ok=>{out.hidden=false;out.textContent=ok?'Copied.':'Could not copy automatically. Select this text and copy it: '+text;};
   try{navigator.clipboard.writeText(text).then(()=>done(true),()=>done(false));}catch(e){done(false);}
 }
 /* ============ TEACHER ============ */
 function rowsFromResults(){return S.results.slice().sort((x,y)=>y.a.t-x.a.t);}
 function renderTeacher(){
   const m=$('#main');
-  if(!S.ready){m.innerHTML='<div class="empty"><b>جارٍ التحميل</b>لحظات...</div>';return;}
+  if(!S.ready){m.innerHTML='<div class="empty"><b>Loading</b>One moment...</div>';return;}
   if(!S.canEdit){renderLogin();return;}
   const T=S.t;
-  const tabs=[['grades','الدرجات'],['own','أسئلتي'],['settings','إعدادات الاختبار'],['preview','معاينة الاختبار'],['words','كلمات الدرس']];
-  let h=`<div class="subtabs" role="tablist">${tabs.map(t=>`<button class="subtab" role="tab" data-st="${t[0]}" aria-selected="${T.tab===t[0]}">${t[1]}</button>`).join('')}<button class="subtab" id="t-out" style="margin-inline-start:auto">خروج</button></div>`;
-  if(!BACKEND_ON)h+=`<div class="note bad">الموقع غير مربوط بقاعدة البيانات بعد. افتح ملف config.js وضع فيه رابط Convex كما في ملف التعليمات.</div><div class="sp"></div>`;
+  const tabs=[['grades','Grades'],['own','My questions'],['settings','Exam settings'],['preview','Preview exam'],['words','Lesson words']];
+  let h=`<div class="subtabs" role="tablist">${tabs.map(t=>`<button class="subtab" role="tab" data-st="${t[0]}" aria-selected="${T.tab===t[0]}">${t[1]}</button>`).join('')}<button class="subtab" id="t-out" style="margin-inline-start:auto">Sign out</button></div>`;
+  if(!BACKEND_ON)h+=`<div class="note bad">The site is not connected to the database yet. Open the file config.js and put your Convex URL in it, as explained in the instructions file.</div><div class="sp"></div>`;
   else if(S.dbErr)h+=`<div class="note bad">${esc(S.dbErr)}</div><div class="sp"></div>`;
   m.innerHTML=h+`<div id="t-body"></div>`;
   $('#t-out').onclick=()=>{teacherLogout();S.loginMsg='';render();};
@@ -913,20 +975,20 @@ function tGrades(){
   const students=new Set(all.map(r=>r.uid)).size;
   const avg=all.length?Math.round(all.reduce((s,r)=>s+r.a.pct,0)/all.length):0;
   const hi=all.length?Math.max(...all.map(r=>r.a.pct)):0,lo=all.length?Math.min(...all.map(r=>r.a.pct)):0;
-  let h=`<div class="row" style="margin-bottom:10px"><button class="btn ghost sm" id="g-ref">تحديث الدرجات</button></div><div class="stats">
-    <div class="stat"><b>${students}</b><span>عدد الطلاب</span></div>
-    <div class="stat"><b>${all.length}</b><span>عدد المحاولات</span></div>
-    <div class="stat"><b>${all.length?avg+'%':'-'}</b><span>متوسط الدرجات</span></div>
-    <div class="stat"><b>${all.length?hi+'% / '+lo+'%':'-'}</b><span>أعلى / أدنى</span></div></div>`;
-  if(!S.resultsLoaded)h+=`<div class="sheet"><div class="empty"><b>جارٍ تحميل الدرجات</b>لحظات...</div></div>`;
+  let h=`<div class="row" style="margin-bottom:10px"><button class="btn ghost sm" id="g-ref">Refresh grades</button></div><div class="stats">
+    <div class="stat"><b>${students}</b><span>Students</span></div>
+    <div class="stat"><b>${all.length}</b><span>Attempts</span></div>
+    <div class="stat"><b>${all.length?avg+'%':'-'}</b><span>Average score</span></div>
+    <div class="stat"><b>${all.length?hi+'% / '+lo+'%':'-'}</b><span>Highest / lowest</span></div></div>`;
+  if(!S.resultsLoaded)h+=`<div class="sheet"><div class="empty"><b>Loading grades</b>One moment...</div></div>`;
   else if(!all.length){
-    h+=`<div class="sheet"><div class="empty"><b>لا توجد نتائج بعد</b>أرسل رابط الموقع للطلاب ليحلّوا الاختبار، وستظهر درجاتهم هنا.</div></div>`;
+    h+=`<div class="sheet"><div class="empty"><b>No results yet</b>Send the site link to your students. Their grades will appear here.</div></div>`;
   }else{
     h+=`<section class="sheet"><div class="row" style="margin-bottom:12px">
-      <label class="f" style="flex:1;min-width:150px">بحث بالاسم<input class="in" id="g-q" value="${esc(T.q)}" placeholder="اسم الطالب"></label>
-      <label class="f" style="min-width:140px">الصف<select class="in" id="g-cls"><option value="">كل الصفوف</option>${classes.map(c=>`<option value="${esc(c)}" ${T.cls===c?'selected':''}>${esc(c)}</option>`).join('')}</select></label>
-      <button class="btn ghost sm" id="g-csv" style="align-self:flex-end">تصدير CSV</button></div>
-      <div class="scroller"><table><thead><tr><th>الطالب</th><th>الصف</th><th>التاريخ</th><th>مفردات</th><th>قواعد</th><th>النتيجة</th></tr></thead><tbody>`;
+      <label class="f" style="flex:1;min-width:150px">Search by name<input class="in" id="g-q" value="${esc(T.q)}" placeholder="Student name"></label>
+      <label class="f" style="min-width:140px">Class<select class="in" id="g-cls"><option value="">All classes</option>${classes.map(c=>`<option value="${esc(c)}" ${T.cls===c?'selected':''}>${esc(c)}</option>`).join('')}</select></label>
+      <button class="btn ghost sm" id="g-csv" style="align-self:flex-end">Export CSV</button></div>
+      <div class="scroller"><table><thead><tr><th>Student</th><th>Class</th><th>Date</th><th>Vocabulary</th><th>Grammar</th><th>Score</th></tr></thead><tbody>`;
     rows.forEach((r,i)=>{
       const k=r.id,a=r.a,open=T.open===k;
       const c=a.v[0]+a.g[0],n=a.v[1]+a.g[1];
@@ -934,27 +996,27 @@ function tGrades(){
         <td class="num">${a.v[0]}/${a.v[1]}</td><td class="num">${a.g[0]}/${a.g[1]}</td>
         <td class="num"><span class="pct ${a.pct>=75?'hi':a.pct<50?'lo':''}">${c}/${n} · ${a.pct}%</span></td></tr>`;
       if(open){
-        h+=`<tr><td colspan="6" style="background:var(--field)"><div class="hint" style="margin-bottom:8px">نسخة <span dir="ltr" class="mono">${esc(a.code)}</span> · المستوى ${LV[a.lv]||''} · الزمن ${mmss(a.dur||0)}</div>`;
+        h+=`<tr><td colspan="6" style="background:var(--field)"><div class="hint" style="margin-bottom:8px">Form <span dir="ltr" class="mono">${esc(a.code)}</span> · Level ${LV[a.lv]||''} · Time ${mmss(a.dur||0)}</div>`;
         if(a.items){
           h+=a.items.map(it=>{const ok=it[3]===it[4];
             return `<div class="rv"><span class="mark ${ok?'y':'n'}">${ok?'✓':'✗'}</span><span class="en" dir="ltr">${esc(it[2]).replace(/___/g,'_____')}</span>
-            <div class="hint">${ok?'':`إجابة الطالب: <span class="en" dir="ltr">${esc(it[4]||'بدون إجابة')}</span> · `}الصحيح: <span class="en" dir="ltr">${esc(it[3])}</span></div></div>`;}).join('');
-        }else h+=`<div class="hint">تفاصيل الأسئلة محفوظة لآخر 5 محاولات لكل طالب فقط.</div>`;
+            <div class="hint">${ok?'':`Student answer: <span class="en" dir="ltr">${esc(it[4]||'no answer')}</span> · `}Correct: <span class="en" dir="ltr">${esc(it[3])}</span></div></div>`;}).join('');
+        }else h+=`<div class="hint">Question details are kept only for each student’s last 5 attempts.</div>`;
         h+=T.delAsk===r.id
-          ?`<div class="row" style="margin-top:10px"><span class="note bad">حذف هذه المحاولة نهائيًا؟</span><button class="btn red sm" data-del="${esc(r.id)}">نعم، احذف</button><button class="btn ghost sm" data-delno="1">إلغاء</button></div>`
-          :`<div class="row" style="margin-top:10px"><button class="btn ghost sm" data-delask="${esc(r.id)}">حذف هذه المحاولة</button></div>`;
+          ?`<div class="row" style="margin-top:10px"><span class="note bad">Delete this attempt permanently?</span><button class="btn red sm" data-del="${esc(r.id)}">Yes, delete</button><button class="btn ghost sm" data-delno="1">Cancel</button></div>`
+          :`<div class="row" style="margin-top:10px"><button class="btn ghost sm" data-delask="${esc(r.id)}">Delete this attempt</button></div>`;
         h+=`</td></tr>`;
       }
     });
     h+=`</tbody></table></div>`;
-    if(!rows.length)h+=`<div class="empty">لا توجد نتائج مطابقة.</div>`;
+    if(!rows.length)h+=`<div class="empty">No matching results.</div>`;
     h+=`</section>`;
     // weak topics
     const agg={};
     all.forEach(r=>Object.entries(r.a.tp||{}).forEach(([t,v])=>{const x=agg[t]||(agg[t]=[0,0]);x[0]+=v[0];x[1]+=v[1];}));
     const list=Object.entries(agg).filter(e=>e[1][1]>0).map(([t,v])=>({t,p:Math.round(100*v[0]/v[1]),n:v[1]})).sort((a,b)=>a.p-b.p);
     if(list.length){
-      h+=`<section class="sheet"><h2>أين أخطأ الطلاب أكثر؟</h2><p class="lead">نسبة الإجابات الصحيحة في كل موضوع، من الأضعف إلى الأقوى.</p><div class="bars">
+      h+=`<section class="sheet"><h2>Where did students make the most mistakes?</h2><p class="lead">Percentage of correct answers per topic, from weakest to strongest.</p><div class="bars">
       ${list.map(x=>`<div class="brow"><span>${esc(topicName(x.t))}</span><div class="track"><i class="${x.p<60?'w':''}" style="width:${x.p}%"></i></div><span class="mono" dir="ltr">${x.p}%</span></div>`).join('')}</div></section>`;
     }
   }
@@ -966,7 +1028,7 @@ function tGrades(){
   body.querySelectorAll('[data-delno]').forEach(b=>b.onclick=()=>{T.delAsk=null;tGrades();});
   body.querySelectorAll('[data-del]').forEach(b=>b.onclick=async()=>{
     try{await tcall('removeResult',{id:b.dataset.del});T.delAsk=null;T.open=null;await loadResults();tGrades();}
-    catch(e){if(!S.canEdit){render();return;}S.dbErr='تعذّر حذف النتيجة.';renderTeacher();}
+    catch(e){if(!S.canEdit){render();return;}S.dbErr='Could not delete the result.';renderTeacher();}
   });
   const csv=$('#g-csv');if(csv)csv.onclick=exportCsv;
   const gr=$('#g-ref');if(gr)gr.onclick=async()=>{gr.disabled=true;await loadResults();if(S.canEdit)tGrades();else render();};
@@ -974,7 +1036,7 @@ function tGrades(){
 function exportCsv(){
   const rows=rowsFromResults();
   const q=v=>'"'+String(v).replace(/"/g,'""')+'"';
-  let t='﻿'+['الاسم','الصف','التاريخ','النسخة','مفردات','قواعد','المجموع','من','النسبة %'].map(q).join(',')+'\n';
+  let t='﻿'+['Name','Class','Date','Form','Vocabulary','Grammar','Total','Out of','Percent %'].map(q).join(',')+'\n';
   rows.forEach(r=>{const a=r.a;t+=[r.name,r.cls,nowStr(a.t),a.code,a.v[0]+'/'+a.v[1],a.g[0]+'/'+a.g[1],a.v[0]+a.g[0],a.v[1]+a.g[1],a.pct].map(q).join(',')+'\n';});
   const u=URL.createObjectURL(new Blob([t],{type:'text/csv;charset=utf-8'}));
   const a=document.createElement('a');a.href=u;a.download='english-exam-results.csv';document.body.appendChild(a);a.click();a.remove();
@@ -984,33 +1046,33 @@ function exportCsv(){
 /* ---- settings ---- */
 function tSettings(){
   const c=S.cfg,T=S.t,body=$('#t-body');
-  body.innerHTML=`<section class="sheet"><h2>إعدادات الاختبار</h2>
-  <p class="lead">ما تحفظه هنا ينطبق على كل طالب يبدأ اختبارًا جديدًا. الأسئلة نفسها تتولّد عشوائيًا في كل مرة.</p>
-  ${c.examMode==='fixed'?`<div class="note">الطلاب يحلّون الآن اختبارًا ثابتًا اعتمدته من تبويب «معاينة الاختبار». أعداد الأسئلة والمواضيع هنا لا تؤثر عليه، ولا يتغيّر منه إلا العنوان والوقت وعرض التصحيح.</div><div class="sp"></div>`:''}
+  body.innerHTML=`<section class="sheet"><h2>Exam settings</h2>
+  <p class="lead">What you save here applies to every student who starts a new exam. The questions themselves are generated randomly each time.</p>
+  ${c.examMode==='fixed'?`<div class="note">Students are now taking a fixed exam that you approved in the “Preview exam” tab. The question counts and topics here do not affect it; only the title, time and answer review change.</div><div class="sp"></div>`:''}
   <div class="grid2">
-    <label class="f" style="grid-column:1/-1">عنوان الاختبار<input class="in" id="s-title" maxlength="80" value="${esc(c.title)}"></label>
-    <label class="f">عدد أسئلة المفردات<input class="in" id="s-vc" type="number" min="0" max="40" value="${c.vocabCount}"></label>
-    <label class="f">عدد أسئلة القواعد<input class="in" id="s-gc" type="number" min="0" max="40" value="${c.grammarCount}"></label>
-    <label class="f">المستوى<select class="in" id="s-lv">${[1,2,3,0].map(l=>`<option value="${l}" ${c.level===l?'selected':''}>${LV[l]}${l===0?' (كل المستويات)':''}</option>`).join('')}</select></label>
-    <label class="f">الوقت بالدقائق <span class="hint">0 = بدون وقت</span><input class="in" id="s-time" type="number" min="0" max="180" value="${c.timeMin}"></label>
-    <label class="f">مصدر المفردات<select class="in" id="s-src">
-      <option value="bank" ${c.vocabSource==='bank'?'selected':''}>بنك الكلمات الجاهز</option>
-      <option value="both" ${c.vocabSource==='both'?'selected':''}>البنك الجاهز + كلمات الدرس (${S.custom.length})</option>
-      <option value="custom" ${c.vocabSource==='custom'?'selected':''}>كلمات الدرس فقط (${S.custom.length})</option></select></label>
-    <label class="f">أسئلة المعلم (${S.own.length})<select class="in" id="s-own">
-      <option value="off" ${c.ownMode==='off'?'selected':''}>لا تُستخدم</option>
-      <option value="mix" ${c.ownMode==='mix'?'selected':''}>تُضاف إلى الأسئلة التلقائية</option>
-      <option value="only" ${c.ownMode==='only'?'selected':''}>أسئلتي فقط</option></select></label>
-    <label class="f">عدد أسئلتي في كل اختبار <span class="hint">0 = كلها، وإلا يختار الموقع منها عشوائيًا</span><input class="in" id="s-oc" type="number" min="0" max="100" value="${c.ownCount}"></label>
-    <label class="f">بعد التسليم<select class="in" id="s-show"><option value="1" ${c.showAnswers?'selected':''}>يعرض التصحيح للطالب</option><option value="0" ${!c.showAnswers?'selected':''}>يعرض الدرجة فقط</option></select></label>
+    <label class="f" style="grid-column:1/-1">Exam title<input class="in" id="s-title" maxlength="80" value="${esc(c.title)}"></label>
+    <label class="f">Number of vocabulary questions<input class="in" id="s-vc" type="number" min="0" max="40" value="${c.vocabCount}"></label>
+    <label class="f">Number of grammar questions<input class="in" id="s-gc" type="number" min="0" max="40" value="${c.grammarCount}"></label>
+    <label class="f">Level<select class="in" id="s-lv">${[1,2,3,0].map(l=>`<option value="${l}" ${c.level===l?'selected':''}>${LV[l]}${l===0?' (all levels)':''}</option>`).join('')}</select></label>
+    <label class="f">Time in minutes <span class="hint">0 = no time limit</span><input class="in" id="s-time" type="number" min="0" max="180" value="${c.timeMin}"></label>
+    <label class="f">Vocabulary source<select class="in" id="s-src">
+      <option value="bank" ${c.vocabSource==='bank'?'selected':''}>Built-in word bank</option>
+      <option value="both" ${c.vocabSource==='both'?'selected':''}>Built-in bank + Lesson words (${S.custom.length})</option>
+      <option value="custom" ${c.vocabSource==='custom'?'selected':''}>Lesson words only (${S.custom.length})</option></select></label>
+    <label class="f">Teacher questions (${S.own.length})<select class="in" id="s-own">
+      <option value="off" ${c.ownMode==='off'?'selected':''}>Not used</option>
+      <option value="mix" ${c.ownMode==='mix'?'selected':''}>Added to the automatic questions</option>
+      <option value="only" ${c.ownMode==='only'?'selected':''}>My questions only</option></select></label>
+    <label class="f">Number of my questions per exam <span class="hint">0 = all; otherwise the site picks that many at random</span><input class="in" id="s-oc" type="number" min="0" max="100" value="${c.ownCount}"></label>
+    <label class="f">After submission<select class="in" id="s-show"><option value="1" ${c.showAnswers?'selected':''}>Show the corrections to the student</option><option value="0" ${!c.showAnswers?'selected':''}>Show the score only</option></select></label>
   </div>
-  <div class="sp"></div><b>مواضيع القواعد</b><div class="sp"></div>
-  <div class="checks">${TOPICS.map(t=>`<label class="chk"><input type="checkbox" data-tp="${t.id}" ${c.topics.includes(t.id)?'checked':''}> ${esc(t.ar)} <span class="hint">(${t.lv.map(l=>LV[l]).join('، ')})</span></label>`).join('')}</div>
+  <div class="sp"></div><b>Grammar topics</b><div class="sp"></div>
+  <div class="checks">${TOPICS.map(t=>`<label class="chk"><input type="checkbox" data-tp="${t.id}" ${c.topics.includes(t.id)?'checked':''}> ${esc(t.ar)} <span class="hint">(${t.lv.map(l=>LV[l]).join(', ')})</span></label>`).join('')}</div>
   <div class="sp"></div>
-  <div class="hint">يُستخدم من المواضيع أعلاه ما يناسب المستوى المختار فقط.</div>
+  <div class="hint">Only the topics above that fit the chosen level are used.</div>
   <div class="sp"></div>
-  ${T.msg?`<div class="note ${T.msg.startsWith('تعذّر')?'bad':'ok'}">${esc(T.msg)}</div><div class="sp"></div>`:''}
-  <div class="row"><button class="btn" id="s-save">حفظ الإعدادات</button><button class="btn ghost" id="s-prev">شاهد الاختبار كاملًا</button><button class="btn ghost" data-go="exam" id="s-try">جرّب اختبارًا</button></div>
+  ${T.msg?`<div class="note ${T.msg.startsWith('Could not')?'bad':'ok'}">${esc(T.msg)}</div><div class="sp"></div>`:''}
+  <div class="row"><button class="btn" id="s-save">Save settings</button><button class="btn ghost" id="s-prev">View the full exam</button><button class="btn ghost" data-go="exam" id="s-try">Try an exam</button></div>
   </section>`;
   $('#s-save').onclick=saveCfg;
   $('#s-prev').onclick=async()=>{await saveCfg();S.t.tab='preview';S.t.prev=null;S.t.msg='';renderTeacher();};
@@ -1024,31 +1086,31 @@ function readCfg(){
 }
 async function saveCfg(){
   const c=readCfg();
-  if(c.vocabCount+c.grammarCount<1&&c.ownMode!=='only'){S.t.msg='تعذّر الحفظ: اختر سؤالًا واحدًا على الأقل.';renderTeacher();return;}
-  if(c.ownMode==='only'&&!S.own.length){S.t.msg='تعذّر الحفظ: لم تضف أي سؤال في تبويب «أسئلتي» بعد.';renderTeacher();return;}
+  if(c.vocabCount+c.grammarCount<1&&c.ownMode!=='only'){S.t.msg='Could not save: choose at least one question.';renderTeacher();return;}
+  if(c.ownMode==='only'&&!S.own.length){S.t.msg='Could not save: you have not added any question in the “My questions” tab yet.';renderTeacher();return;}
   S.cfg=Object.assign({},DEFAULT_CFG,c);
-  try{await tcall('save',{field:'cfg',value:c});S.t.msg='تم حفظ الإعدادات. ستظهر للطلاب عند فتح اختبار جديد.';}
-  catch(e){S.t.msg='تعذّر حفظ الإعدادات. حاول مرة أخرى.';}
+  try{await tcall('save',{field:'cfg',value:c});S.t.msg='Settings saved. Students will see them when they open a new exam.';}
+  catch(e){S.t.msg='Could not save the settings. Please try again.';}
   renderTeacher();
 }
 
 /* ---- custom words ---- */
 function tWords(){
   const T=S.t,body=$('#t-body');
-  body.innerHTML=`<section class="sheet"><h2>كلمات الدرس</h2>
-  <p class="lead">أضف كلمات وحدتك. اكتب كل كلمة في سطر بهذا الشكل: <span class="en">borrow = يستعير</span>. يمكنك إضافة جملة فيها فراغ بعد علامة | مثل: <span class="en">borrow = يستعير | Can I ___ your pen?</span></p>
-  <label class="f">الكلمات<textarea class="in en" id="w-in" dir="ltr" placeholder="borrow = يستعير&#10;neighbour = جار | Our ___ lives next door."></textarea></label>
+  body.innerHTML=`<section class="sheet"><h2>Lesson words</h2>
+  <p class="lead">Add the words of your unit. Write each word on its own line like this: <span class="en">borrow = to take something and give it back later</span>. You can add a sentence with a blank after the | sign, for example: <span class="en">borrow = to take something and give it back later | Can I ___ your pen?</span></p>
+  <label class="f">Words<textarea class="in en" id="w-in" dir="ltr" placeholder="borrow = to take something and give it back later&#10;neighbour = a person who lives next to you | Our ___ lives next door."></textarea></label>
   <div class="sp"></div>
-  ${T.wordsMsg?`<div class="note ${T.wordsMsg.startsWith('تعذّر')?'bad':'ok'}">${esc(T.wordsMsg)}</div><div class="sp"></div>`:''}
-  <div class="row"><button class="btn" id="w-add">إضافة الكلمات</button></div>
+  ${T.wordsMsg?`<div class="note ${T.wordsMsg.startsWith('Could not')?'bad':'ok'}">${esc(T.wordsMsg)}</div><div class="sp"></div>`:''}
+  <div class="row"><button class="btn" id="w-add">Add words</button></div>
   <div class="sp"></div>
-  <h3 style="font-size:1.05rem;margin-bottom:6px">الكلمات المحفوظة (${S.custom.length})</h3>
-  ${S.custom.length?`<div class="wl">${S.custom.map((w,i)=>`<div class="wi"><span class="en" dir="ltr"><b>${esc(w.e)}</b>${w.s?`<div class="hint">${esc(w.s)}</div>`:''}</span><span class="ar">${esc(w.a)}</span><button class="btn ghost sm" data-wd="${i}">حذف</button></div>`).join('')}</div>`
-  :`<div class="empty"><b>لا توجد كلمات مضافة</b>عند اختيار «كلمات الدرس» في الإعدادات ستظهر أسئلة من هذه الكلمات.</div>`}
+  <h3 style="font-size:1.05rem;margin-bottom:6px">Saved words (${S.custom.length})</h3>
+  ${S.custom.length?`<div class="wl">${S.custom.map((w,i)=>`<div class="wi"><span class="en" dir="ltr"><b>${esc(w.e)}</b>${w.s?`<div class="hint">${esc(w.s)}</div>`:''}</span><span class="ar">${esc(w.a)}</span><button class="btn ghost sm" data-wd="${i}">Delete</button></div>`).join('')}</div>`
+  :`<div class="empty"><b>No words added</b>When you choose “Lesson words” in the settings, questions will be made from these words.</div>`}
   </section>`;
   $('#w-add').onclick=addWords;
   body.querySelectorAll('[data-wd]').forEach(b=>b.onclick=async()=>{
-    const list=S.custom.filter((_,i)=>i!==+b.dataset.wd);await saveWords(list,'تم حذف الكلمة.');
+    const list=S.custom.filter((_,i)=>i!==+b.dataset.wd);await saveWords(list,'Word deleted.');
   });
 }
 async function addWords(){
@@ -1057,18 +1119,61 @@ async function addWords(){
   lines.forEach(l=>{
     const parts=l.split('|');const pair=parts[0].split(/\s*=\s*|\t/);
     const e=(pair[0]||'').trim(),a=(pair.slice(1).join(' ')||'').trim(),s=(parts[1]||'').trim();
-    if(e&&a&&e.length<=40&&a.length<=60){add.push({e,a,s:s.includes('___')?s.slice(0,160):'',l:2});}else bad++;
+    if(e&&a&&e.length<=40&&a.length<=120){add.push({e,a,s:s.includes('___')?s.slice(0,160):'',l:2});}else bad++;
   });
-  if(!add.length){S.t.wordsMsg='تعذّر إضافة الكلمات: اكتب كل سطر بالشكل: word = المعنى';tWords();return;}
+  if(!add.length){S.t.wordsMsg='Could not add words: write each line like: word = meaning';tWords();return;}
   const keep=S.custom.filter(w=>!add.some(x=>x.e.toLowerCase()===w.e.toLowerCase()));
-  await saveWords([...keep,...add].slice(0,400),`تمت إضافة ${add.length} كلمة${bad?` وتخطّي ${bad} سطر غير صالح`:''}.`);
+  await saveWords([...keep,...add].slice(0,400),`Added ${add.length} word${add.length===1?'':'s'}${bad?` and skipped ${bad} invalid line${bad===1?'':'s'}`:''}.`);
 }
 async function saveWords(list,okMsg){
   try{await tcall('save',{field:'words',value:list});S.custom=list;S.t.wordsMsg=okMsg;}
-  catch(e){S.t.wordsMsg='تعذّر حفظ الكلمات. حاول مرة أخرى.';}
+  catch(e){S.t.wordsMsg='Could not save the words. Please try again.';}
   tWords();
 }
 
+
+/* ---- question images (Convex storage) ---- */
+async function prepImage(file){
+  const url=URL.createObjectURL(file);
+  try{
+    const im=await new Promise((res,rej)=>{const i=new Image();i.onload=()=>res(i);i.onerror=()=>rej(new Error('img'));i.src=url;});
+    const k=Math.min(1,1000/Math.max(im.naturalWidth,im.naturalHeight));
+    const c=document.createElement('canvas');c.width=Math.max(1,Math.round(im.naturalWidth*k));c.height=Math.max(1,Math.round(im.naturalHeight*k));
+    const g=c.getContext('2d');g.fillStyle='#fff';g.fillRect(0,0,c.width,c.height);g.drawImage(im,0,0,c.width,c.height);
+    const blob=await new Promise(r=>c.toBlob(r,'image/jpeg',.82));
+    if(!blob)throw new Error('blob');
+    return blob;
+  }finally{URL.revokeObjectURL(url);}
+}
+async function uploadImage(file){
+  const blob=await prepImage(file);
+  const r=await tcall('uploadUrl');
+  const up=await fetch(r.url,{method:'POST',headers:{'Content-Type':'image/jpeg'},body:blob});
+  const j=await up.json().catch(()=>null);
+  if(!up.ok||!j||!j.storageId)throw new Error('upload');
+  return {img:j.storageId,imgUrl:URL.createObjectURL(blob)};
+}
+function imgCtl(p,cur){
+  const has=cur&&cur.img;
+  return `<div class="f imgctl" id="${p}-ic">Question image <span class="hint">Optional, shown to the student under the question text</span>
+    <div class="imgprev" id="${p}-prev" ${has&&cur.imgUrl?'':'hidden'}>${has&&cur.imgUrl?`<img src="${esc(cur.imgUrl)}" alt="">`:''}</div>
+    <div class="row"><label class="btn ghost sm" style="cursor:pointer">${has?'Change image':'Add image'}<input type="file" id="${p}-file" accept="image/*" hidden></label>
+    <button type="button" class="btn ghost sm" id="${p}-rm" ${has?'':'hidden'}>Remove image</button><span class="hint" id="${p}-st" aria-live="polite"></span></div></div>`;
+}
+function wireImg(p,get,set){
+  const f=$('#'+p+'-file');if(!f)return;
+  const st=$('#'+p+'-st'),prev=$('#'+p+'-prev'),rm=$('#'+p+'-rm');
+  const paint=()=>{const c=get();prev.hidden=!(c&&c.img&&c.imgUrl);prev.innerHTML=c&&c.img&&c.imgUrl?`<img src="${esc(c.imgUrl)}" alt="">`:'';rm.hidden=!(c&&c.img);};
+  f.onchange=async()=>{
+    const file=f.files&&f.files[0];if(!file)return;
+    if(!BACKEND_ON){st.textContent='Connect the site to Convex to upload images.';return;}
+    st.textContent='Uploading image...';
+    try{set(await uploadImage(file));st.textContent='Image uploaded.';paint();}
+    catch(e){st.textContent=S.canEdit?'Could not upload the image. Make sure the file is an image and try again.':'';if(!S.canEdit)render();}
+    f.value='';
+  };
+  rm.onclick=()=>{set({img:'',imgUrl:''});st.textContent='';paint();};
+}
 
 /* ---- full preview + editor for the teacher ---- */
 function tPvEnsure(){
@@ -1079,12 +1184,13 @@ function pvForm(q,id,sec){
   const o=(q&&q.o)||['','','',''];const a=q?q.a:0;
   return `<div class="rv" id="pv-edit"><div class="qhead"><span class="qn mono">${id==null?'+':id+1}</span>
     <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:10px">
-    <label class="f">نص السؤال <span class="hint">للفراغ اكتب ___</span><textarea class="in" id="e-q" maxlength="300" style="min-height:70px">${esc(q?q.q:'')}</textarea></label>
-    <div class="f">الخيارات <span class="hint">اختر الدائرة بجانب الجواب الصحيح. اترك الخيار الفارغ إن لم تحتجه.</span></div>
-    ${[0,1,2,3].map(j=>`<div class="erow"><input type="radio" name="e-c" value="${j}" ${a===j?'checked':''} aria-label="الجواب الصحيح ${j+1}"><input class="in" id="e-o${j}" maxlength="120" value="${esc(o[j]||'')}" placeholder="الخيار ${j+1}"></div>`).join('')}
-    <label class="f">ملاحظة تظهر للطالب إذا أخطأ <span class="hint">اختياري</span><input class="in" id="e-tip" maxlength="200" value="${esc(q?q.tip||'':'')}"></label>
+    <label class="f">Question text <span class="hint">For a blank type ___</span><textarea class="in" id="e-q" maxlength="300" style="min-height:70px">${esc(q?q.q:'')}</textarea></label>
+    <div class="f">Options <span class="hint">Select the circle next to the correct answer. Leave an option empty if you do not need it.</span></div>
+    ${[0,1,2,3].map(j=>`<div class="erow"><input type="radio" name="e-c" value="${j}" ${a===j?'checked':''} aria-label="Correct answer ${j+1}"><input class="in" id="e-o${j}" maxlength="120" value="${esc(o[j]||'')}" placeholder="Option ${j+1}"></div>`).join('')}
+    <label class="f">Note shown to the student if they answer wrongly <span class="hint">Optional</span><input class="in" id="e-tip" maxlength="200" value="${esc(q?q.tip||'':'')}"></label>
+    ${imgCtl('e',S.t.pvImg)}
     <div id="e-err" class="note bad" hidden></div>
-    <div class="row"><button class="btn sm" id="e-save" data-sec="${sec}">حفظ السؤال</button><button class="btn ghost sm" id="e-cancel">إلغاء</button></div>
+    <div class="row"><button class="btn sm" id="e-save" data-sec="${sec}">Save question</button><button class="btn ghost sm" id="e-cancel">Cancel</button></div>
     </div></div></div>`;
 }
 function tPreview(){
@@ -1092,21 +1198,21 @@ function tPreview(){
   const E=T.prev,Q=E.questions;const show=T.showKey!==false;
   const nv=Q.filter(q=>q.sec==='v').length,ng=Q.length-nv;
   const fixedOn=S.cfg.examMode==='fixed'&&fixedOk(S.fixed);
-  let h=`<section class="sheet"><h2>معاينة الاختبار وتعديله</h2>
-  <p class="lead">هذه نسخة كاملة كما سيراها الطالب. عدّل أي سؤال أو احذفه أو استبدله أو أضف سؤالًا، ثم اعتمدها ليحلّها كل الطلاب كما هي. إن لم تعتمدها يبقى الاختبار متغيّرًا لكل طالب.</p>
-  ${fixedOn?`<div class="note ok">الطلاب يحلّون الآن اختبارك المعتمد (نسخة <b dir="ltr">${esc(S.fixed.code)}</b>، ${S.fixed.questions.length} سؤالًا، اعتُمد في ${nowStr(S.fixed.at||0)}).</div>`:`<div class="note">لم تعتمد اختبارًا ثابتًا. كل طالب يحصل الآن على اختبار مختلف.</div>`}
+  let h=`<section class="sheet"><h2>Preview and edit the exam</h2>
+  <p class="lead">This is a full copy as students will see it. Edit, delete or replace any question, or add one, then approve it so every student takes it as it is. If you do not approve it, the exam keeps changing for each student.</p>
+  ${fixedOn?`<div class="note ok">Students are now taking your approved exam (form <b dir="ltr">${esc(S.fixed.code)}</b>, ${S.fixed.questions.length} questions, approved on ${nowStr(S.fixed.at||0)}).</div>`:`<div class="note">No fixed exam is approved. Each student now gets a different exam.</div>`}
   <div class="sp"></div>
-  <div class="facts"><span>الأسئلة: <b>${Q.length}</b></span><span>المفردات: <b>${nv}</b></span><span>القواعد: <b>${ng}</b></span>
-  <span>الوقت: <b>${E.timeMin>0?E.timeMin+' دقيقة':'مفتوح'}</b></span><span>النسخة: <b dir="ltr">${E.code}</b></span></div>
-  ${T.pvMsg?`<div class="note ${T.pvMsg.startsWith('تعذّر')?'bad':'ok'}">${esc(T.pvMsg)}</div><div class="sp"></div>`:''}
-  ${T.askNew?`<div class="note bad">لديك تعديلات لم تعتمدها. إنشاء نسخة أخرى سيتجاهلها.</div><div class="sp"></div>
-    <div class="row"><button class="btn red sm" id="pv-new-yes">تجاهل التعديلات ونسخة أخرى</button><button class="btn ghost sm" id="pv-new-no">أكمل التعديل</button></div><div class="sp"></div>`:''}
-  <div class="row"><button class="btn red" id="pv-approve" ${Q.length?'':'disabled'}>اعتمد هذا الاختبار للطلاب</button>
-  <button class="btn ghost" id="pv-new">نسخة أخرى</button>
-  ${fixedOn?'<button class="btn ghost" id="pv-load">افتح الاختبار المعتمد للتعديل</button><button class="btn ghost" id="pv-unfix">العودة للاختبار المتغيّر</button>':''}</div>
+  <div class="facts"><span>Questions: <b>${Q.length}</b></span><span>Vocabulary: <b>${nv}</b></span><span>Grammar: <b>${ng}</b></span>
+  <span>Time: <b>${E.timeMin>0?E.timeMin+' min':'Untimed'}</b></span><span>Form: <b dir="ltr">${E.code}</b></span></div>
+  ${T.pvMsg?`<div class="note ${T.pvMsg.startsWith('Could not')?'bad':'ok'}">${esc(T.pvMsg)}</div><div class="sp"></div>`:''}
+  ${T.askNew?`<div class="note bad">You have edits that are not approved. Creating another version will discard them.</div><div class="sp"></div>
+    <div class="row"><button class="btn red sm" id="pv-new-yes">Discard edits and make another version</button><button class="btn ghost sm" id="pv-new-no">Keep editing</button></div><div class="sp"></div>`:''}
+  <div class="row"><button class="btn red" id="pv-approve" ${Q.length?'':'disabled'}>Approve this exam for students</button>
+  <button class="btn ghost" id="pv-new">Another version</button>
+  ${fixedOn?'<button class="btn ghost" id="pv-load">Open the approved exam to edit</button><button class="btn ghost" id="pv-unfix">Go back to the changing exam</button>':''}</div>
   <div class="sp"></div>
-  <div class="row"><label class="chk"><input type="checkbox" id="pv-key" ${show?'checked':''}> إظهار الإجابات الصحيحة</label>
-  <button class="btn ghost sm" id="pv-copy">نسخ الأسئلة كنص</button></div>
+  <div class="row"><label class="chk"><input type="checkbox" id="pv-key" ${show?'checked':''}> Show correct answers</label>
+  <button class="btn ghost sm" id="pv-copy">Copy questions as text</button></div>
   <p class="hint" id="pv-copied" style="margin-top:8px" hidden></p></section>
   <section class="sheet"><h2 style="font-size:1.2rem">${esc(S.cfg.title)}</h2>`;
   ['v','g'].forEach(sec=>{
@@ -1117,12 +1223,13 @@ function tPreview(){
       h+=`<div class="rv"><div class="qhead"><span class="qn mono">${i+1}</span>
         <div style="flex:1;min-width:0"><div class="qt ${q.qd==='ltr'?'en':''}" dir="${q.qd}">${esc(q.q).replace(/___/g,'_____')}</div>
         <div class="hint" style="margin-top:2px">${esc(topicName(q.topic))}</div></div></div>
+        ${imgHtml(q)}
         <div class="opts">${q.o.map((o,j)=>`<div class="opt ${show&&j===q.a?'right':''}"><span class="${q.od==='ltr'?'en':''}" dir="${q.od}">${esc(o)}</span></div>`).join('')}</div>
         ${show&&q.tip?`<div class="tip">${esc(q.tip)}</div>`:''}
-        <div class="acts"><button class="btn ghost sm" data-pe="${i}">تعديل</button><button class="btn ghost sm" data-pr="${i}">استبدال بسؤال آخر</button><button class="btn ghost sm" data-pd="${i}">حذف</button></div></div>`;
+        <div class="acts"><button class="btn ghost sm" data-pe="${i}">Edit</button><button class="btn ghost sm" data-pr="${i}">Replace with another question</button><button class="btn ghost sm" data-pd="${i}">Delete</button></div></div>`;
     });
     if(T.edit2==='new-'+sec)h+=pvForm(null,null,sec);
-    else h+=`<div class="acts" style="margin-inline-start:0"><button class="btn ghost sm" data-pa="${sec}">+ سؤال تلقائي</button><button class="btn ghost sm" data-pn="${sec}">+ سؤال أكتبه بنفسي</button></div>`;
+    else h+=`<div class="acts" style="margin-inline-start:0"><button class="btn ghost sm" data-pa="${sec}">+ automatic question</button><button class="btn ghost sm" data-pn="${sec}">+ question I write myself</button></div>`;
   });
   h+=`</section>`;
   body.innerHTML=h;
@@ -1144,7 +1251,7 @@ function wirePreview(E){
     Q.forEach((q,i)=>{t+=(i+1)+'. '+q.q.replace(/___/g,'_____')+'\n'+q.o.map((o,j)=>'   '+'abcd'[j]+') '+o).join('\n')+'\n';if(T.showKey!==false)t+='   ✓ '+q.o[q.a]+'\n';t+='\n';});
     copyText(t,$('#pv-copied'));
   };
-  body.querySelectorAll('[data-pe]').forEach(b=>b.onclick=()=>{T.edit2=+b.dataset.pe;re();});
+  body.querySelectorAll('[data-pe]').forEach(b=>b.onclick=()=>{const q=Q[+b.dataset.pe];T.pvImg={img:q.img||'',imgUrl:q.imgUrl||''};T.edit2=+b.dataset.pe;re();});
   body.querySelectorAll('[data-pd]').forEach(b=>b.onclick=()=>{Q.splice(+b.dataset.pd,1);T.dirty=true;T.edit2=null;re();});
   body.querySelectorAll('[data-pr]').forEach(b=>b.onclick=()=>{
     const i=+b.dataset.pr,old=Q[i];let nq=null;
@@ -1154,14 +1261,15 @@ function wirePreview(E){
       if(cand.length)nq=ownQ(R,R.pick(cand));
     }
     if(!nq)nq=genQuestion(S.cfg,S.custom,old.sec,old.type==='grammar'?old.topic:null,avoid())||genQuestion(S.cfg,S.custom,old.sec,null,avoid());
-    if(nq){Q[i]=nq;T.dirty=true;T.pvMsg='';}else T.pvMsg='تعذّر العثور على سؤال بديل.';
+    if(nq){Q[i]=nq;T.dirty=true;T.pvMsg='';}else T.pvMsg='Could not find a replacement question.';
     re();
   });
   body.querySelectorAll('[data-pa]').forEach(b=>b.onclick=()=>{
     const sec=b.dataset.pa;const nq=genQuestion(S.cfg,S.custom,sec,null,avoid());
-    if(nq){Q.splice(pvInsertPos(Q,sec),0,nq);T.dirty=true;T.pvMsg='';}else T.pvMsg='تعذّر توليد سؤال جديد.';re();
+    if(nq){Q.splice(pvInsertPos(Q,sec),0,nq);T.dirty=true;T.pvMsg='';}else T.pvMsg='Could not generate a new question.';re();
   });
-  body.querySelectorAll('[data-pn]').forEach(b=>b.onclick=()=>{T.edit2='new-'+b.dataset.pn;re();});
+  body.querySelectorAll('[data-pn]').forEach(b=>b.onclick=()=>{T.pvImg={img:'',imgUrl:''};T.edit2='new-'+b.dataset.pn;re();});
+  wireImg('e',()=>T.pvImg,v=>{T.pvImg=v;});
   const sv=$('#e-save');if(sv)sv.onclick=()=>{
     const err=$('#e-err');const q=$('#e-q').value.trim();
     const raw=[0,1,2,3].map(j=>$('#e-o'+j).value.trim());
@@ -1170,13 +1278,13 @@ function wirePreview(E){
     raw.forEach((x,j)=>{if(x){if(j===ci)a=opts.length;opts.push(x);}});
     const uniq=new Set(opts.map(x=>x.toLowerCase())).size===opts.length;
     const fail=m=>{err.textContent=m;err.hidden=false;};
-    if(!q)return fail('اكتب نص السؤال.');
-    if(opts.length<2)return fail('اكتب خيارين على الأقل.');
-    if(!uniq)return fail('الخيارات يجب أن تكون مختلفة.');
-    if(a<0)return fail('اختر الجواب الصحيح من الدوائر، ويجب أن يكون خياره غير فارغ.');
+    if(!q)return fail('Write the question text.');
+    if(opts.length<2)return fail('Write at least two options.');
+    if(!uniq)return fail('The options must be different.');
+    if(a<0)return fail('Select the correct answer with the circles, and its option must not be empty.');
     const sec=sv.dataset.sec;const tip=$('#e-tip').value.trim();
     const cur=typeof T.edit2==='number'?Q[T.edit2]:null;
-    const nq={sec,topic:cur?cur.topic:'own-'+sec,type:cur?cur.type:'manual',q,o:opts,a,qd:hasAr(q)?'rtl':'ltr',od:opts.some(hasAr)?'rtl':'ltr',tip};
+    const nq={sec,topic:cur?cur.topic:'own-'+sec,type:cur?cur.type:'manual',q,o:opts,a,qd:hasAr(q)?'rtl':'ltr',od:opts.some(hasAr)?'rtl':'ltr',tip,img:(T.pvImg&&T.pvImg.img)||'',imgUrl:(T.pvImg&&T.pvImg.imgUrl)||''};
     if(cur)Q[T.edit2]=nq;else Q.splice(pvInsertPos(Q,sec),0,nq);
     T.edit2=null;T.dirty=true;T.pvMsg='';re();
   };
@@ -1184,82 +1292,85 @@ function wirePreview(E){
 }
 async function approveExam(){
   const T=S.t,E=T.prev;
-  if(!E.questions.length){T.pvMsg='تعذّر الاعتماد: الاختبار بلا أسئلة.';tPreview();return;}
-  const qs=E.questions.map(q=>({sec:q.sec,topic:q.topic,type:q.type||'grammar',q:q.q,o:q.o,a:q.a,qd:q.qd,od:q.od,tip:q.tip||''}));
+  if(!E.questions.length){T.pvMsg='Could not approve: the exam has no questions.';tPreview();return;}
+  const qs=E.questions.map(q=>({sec:q.sec,topic:q.topic,type:q.type||'grammar',q:q.q,o:q.o,a:q.a,qd:q.qd,od:q.od,tip:q.tip||'',img:q.img||''}));
   const code=T.dirty?E.code+'E':E.code;
   const doc={code,at:Date.now(),questions:qs};
   try{
     await tcall('save',{field:'fixed',value:doc});
     const c=Object.assign({},S.cfg,{examMode:'fixed'});
     await tcall('save',{field:'cfg',value:c});
-    S.fixed=doc;S.cfg=sanitizeCfg(c);T.dirty=false;T.askNew=false;T.edit2=null;
-    T.pvMsg='تم اعتماد الاختبار. كل طالب يبدأ الآن يحلّ هذه الأسئلة نفسها.';
-  }catch(e){T.pvMsg='تعذّر اعتماد الاختبار. حاول مرة أخرى.';}
+    S.fixed=Object.assign({},doc,{questions:doc.questions.map((x,i)=>Object.assign({},x,{imgUrl:E.questions[i].imgUrl||''}))});S.cfg=sanitizeCfg(c);T.dirty=false;T.askNew=false;T.edit2=null;
+    T.pvMsg='Exam approved. Every student who starts now takes these same questions.';
+  }catch(e){T.pvMsg='Could not approve the exam. Please try again.';}
   tPreview();
 }
 async function unapproveExam(){
   const T=S.t;
-  try{const c=Object.assign({},S.cfg,{examMode:'auto'});await tcall('save',{field:'cfg',value:c});S.cfg=sanitizeCfg(c);T.pvMsg='عاد الاختبار متغيّرًا لكل طالب.';}
-  catch(e){T.pvMsg='تعذّر الرجوع للاختبار المتغيّر. حاول مرة أخرى.';}
+  try{const c=Object.assign({},S.cfg,{examMode:'auto'});await tcall('save',{field:'cfg',value:c});S.cfg=sanitizeCfg(c);T.pvMsg='The exam changes for each student again.';}
+  catch(e){T.pvMsg='Could not switch back to the changing exam. Please try again.';}
   tPreview();
 }
 
 /* ---- teacher's own questions ---- */
 function tOwn(){
   const T=S.t,body=$('#t-body');const e=T.edit!=null?S.own[T.edit]:null;
+  if(T.oImgFor!==T.edit){T.oImgFor=T.edit;T.oImg=e?{img:e.img||'',imgUrl:e.imgUrl||''}:{img:'',imgUrl:''};}
   const w=(e&&e.w)||[];
-  body.innerHTML=`<section class="sheet"><h2>${e?'تعديل السؤال':'أضف سؤالك بنفسك'}</h2>
-  <p class="lead">اكتب السؤال والجواب الصحيح وخيارات خاطئة. يرتّب الموقع الخيارات عشوائيًا لكل طالب. للفراغ داخل الجملة اكتب <span class="en">___</span>.</p>
+  body.innerHTML=`<section class="sheet"><h2>${e?'Edit question':'Add your own question'}</h2>
+  <p class="lead">Write the question, the correct answer and some wrong options. The site shuffles the options for every student. For a blank inside the sentence type <span class="en">___</span>.</p>
   <div class="grid2">
-    <label class="f">النوع<select class="in" id="o-sec"><option value="g" ${e&&e.s==='g'||!e?'selected':''}>قواعد</option><option value="v" ${e&&e.s==='v'?'selected':''}>مفردات</option></select></label>
+    <label class="f">Type<select class="in" id="o-sec"><option value="g" ${e&&e.s==='g'||!e?'selected':''}>Grammar</option><option value="v" ${e&&e.s==='v'?'selected':''}>Vocabulary</option></select></label>
     <span></span>
-    <label class="f" style="grid-column:1/-1">نص السؤال<textarea class="in" id="o-q" maxlength="300" style="min-height:70px" placeholder="She ___ to school every day.">${esc(e?e.q:'')}</textarea></label>
-    <label class="f">الجواب الصحيح<input class="in" id="o-c" maxlength="120" value="${esc(e?e.c:'')}"></label>
-    <label class="f">خيار خاطئ 1<input class="in" id="o-w0" maxlength="120" value="${esc(w[0]||'')}"></label>
-    <label class="f">خيار خاطئ 2 <span class="hint">اختياري</span><input class="in" id="o-w1" maxlength="120" value="${esc(w[1]||'')}"></label>
-    <label class="f">خيار خاطئ 3 <span class="hint">اختياري</span><input class="in" id="o-w2" maxlength="120" value="${esc(w[2]||'')}"></label>
-    <label class="f" style="grid-column:1/-1">ملاحظة تظهر للطالب إذا أخطأ <span class="hint">اختياري</span><input class="in" id="o-tip" maxlength="200" value="${esc(e?e.tip||'':'')}"></label>
+    <label class="f" style="grid-column:1/-1">Question text<textarea class="in" id="o-q" maxlength="300" style="min-height:70px" placeholder="She ___ to school every day.">${esc(e?e.q:'')}</textarea></label>
+    <label class="f">Correct answer<input class="in" id="o-c" maxlength="120" value="${esc(e?e.c:'')}"></label>
+    <label class="f">Wrong option 1<input class="in" id="o-w0" maxlength="120" value="${esc(w[0]||'')}"></label>
+    <label class="f">Wrong option 2 <span class="hint">Optional</span><input class="in" id="o-w1" maxlength="120" value="${esc(w[1]||'')}"></label>
+    <label class="f">Wrong option 3 <span class="hint">Optional</span><input class="in" id="o-w2" maxlength="120" value="${esc(w[2]||'')}"></label>
+    <label class="f" style="grid-column:1/-1">Note shown to the student if they answer wrongly <span class="hint">Optional</span><input class="in" id="o-tip" maxlength="200" value="${esc(e?e.tip||'':'')}"></label>
+    <div style="grid-column:1/-1">${imgCtl('o',T.oImg)}</div>
   </div>
   <div class="sp"></div>
-  ${T.ownMsg?`<div class="note ${T.ownMsg.startsWith('تعذّر')?'bad':'ok'}">${esc(T.ownMsg)}</div><div class="sp"></div>`:''}
-  <div class="row"><button class="btn" id="o-save">${e?'حفظ التعديل':'إضافة السؤال'}</button>${e?'<button class="btn ghost" id="o-cancel">إلغاء</button>':''}</div>
+  ${T.ownMsg?`<div class="note ${T.ownMsg.startsWith('Could not')?'bad':'ok'}">${esc(T.ownMsg)}</div><div class="sp"></div>`:''}
+  <div class="row"><button class="btn" id="o-save">${e?'Save changes':'Add question'}</button>${e?'<button class="btn ghost" id="o-cancel">Cancel</button>':''}</div>
   </section>
-  ${e?'':`<section class="sheet"><h2>إضافة عدة أسئلة دفعة واحدة</h2>
-  <p class="lead">اكتب كل سؤال في سطر، وافصل بين أجزائه بالعلامة <span class="en">|</span> بهذا الترتيب: السؤال | الجواب الصحيح | خاطئ | خاطئ | خاطئ. ابدأ السطر بـ <span class="en">v:</span> للمفردات أو <span class="en">g:</span> للقواعد (الافتراضي قواعد).</p>
-  <textarea class="in en" id="o-bulk" dir="ltr" placeholder="g: My brother ___ football every Friday. | plays | play | playing | played&#10;v: What does “borrow” mean? | يستعير | يحمل | يزور | ينسى"></textarea>
-  <div class="sp"></div><div class="row"><button class="btn" id="o-bulk-go">إضافة الأسئلة</button></div></section>`}
-  <section class="sheet"><h2>أسئلتي (${S.own.length})</h2>
+  ${e?'':`<section class="sheet"><h2>Add several questions at once</h2>
+  <p class="lead">Write each question on its own line and separate its parts with the <span class="en">|</span> sign in this order: question | correct answer | wrong | wrong | wrong. Start the line with <span class="en">v:</span> for vocabulary or <span class="en">g:</span> for grammar (grammar is the default).</p>
+  <textarea class="in en" id="o-bulk" dir="ltr" placeholder="g: My brother ___ football every Friday. | plays | play | playing | played&#10;v: What does “borrow” mean? | to take something and give it back later | to carry | to visit | to forget"></textarea>
+  <div class="sp"></div><div class="row"><button class="btn" id="o-bulk-go">Add questions</button></div></section>`}
+  <section class="sheet"><h2>My questions (${S.own.length})</h2>
   ${S.own.length?S.own.map((x,i)=>{const ar=/[؀-ۿ]/.test(x.q);return `<div class="rv"><div class="row" style="justify-content:space-between;align-items:flex-start;flex-wrap:nowrap">
-    <div style="min-width:0;flex:1"><span class="pill" style="font-size:.78rem">${x.s==='v'?'مفردات':'قواعد'}</span>
+    <div style="min-width:0;flex:1"><span class="pill" style="font-size:.78rem">${x.s==='v'?'Vocabulary':'Grammar'}</span>${x.img?' <span class="pill" style="font-size:.78rem">with image</span>':''}
     <div class="${ar?'':'en'}" dir="${ar?'rtl':'ltr'}" style="margin-top:6px;overflow-wrap:anywhere">${esc(x.q).replace(/___/g,'_____')}</div>
     <div class="hint" style="margin-top:4px"><span class="mark y">✓</span><span class="en" dir="ltr">${esc(x.c)}</span> &nbsp; ${x.w.map(t=>`<span class="mark n">✗</span><span class="en" dir="ltr">${esc(t)}</span>`).join(' &nbsp; ')}</div></div>
-    <div class="row" style="flex:none"><button class="btn ghost sm" data-oe="${i}">تعديل</button><button class="btn ghost sm" data-od="${i}">حذف</button></div></div></div>`;}).join('')
-  :`<div class="empty"><b>لم تضف أسئلة بعد</b>أضف سؤالك الأول من النموذج أعلاه، ثم فعّل «أسئلة المعلم» من تبويب إعدادات الاختبار.</div>`}
+    <div class="row" style="flex:none"><button class="btn ghost sm" data-oe="${i}">Edit</button><button class="btn ghost sm" data-od="${i}">Delete</button></div></div></div>`;}).join('')
+  :`<div class="empty"><b>No questions added yet</b>Add your first question using the form above, then turn on “Teacher questions” in the Exam settings tab.</div>`}
   </section>`;
+  wireImg('o',()=>T.oImg,v=>{T.oImg=v;});
   $('#o-save').onclick=saveOneOwn;
   const bg=$('#o-bulk-go');if(bg)bg.onclick=saveBulkOwn;
-  const cn=$('#o-cancel');if(cn)cn.onclick=()=>{T.edit=null;T.ownMsg='';tOwn();};
+  const cn=$('#o-cancel');if(cn)cn.onclick=()=>{T.edit=null;T.oImgFor=undefined;T.ownMsg='';tOwn();};
   body.querySelectorAll('[data-oe]').forEach(b=>b.onclick=()=>{T.edit=+b.dataset.oe;T.ownMsg='';tOwn();window.scrollTo(0,0);});
   body.querySelectorAll('[data-od]').forEach(b=>b.onclick=async()=>{
-    const i=+b.dataset.od;T.edit=null;await saveOwn(S.own.filter((_,k)=>k!==i),'تم حذف السؤال.');
+    const i=+b.dataset.od;T.edit=null;await saveOwn(S.own.filter((_,k)=>k!==i),'Question deleted.');
   });
 }
-function cleanQ(s,q,c,ws,tip){
+function cleanQ(s,q,c,ws,tip,im){
   q=String(q).trim();c=String(c).trim();ws=ws.map(x=>String(x).trim()).filter(Boolean);
   if(!q||!c||!ws.length)return null;
   const seen=new Set([c.toLowerCase()]);const w=[];
   ws.forEach(x=>{const k=x.toLowerCase();if(!seen.has(k)){seen.add(k);w.push(x.slice(0,120));}});
   if(!w.length)return null;
-  return {s:s==='v'?'v':'g',q:q.slice(0,300),c:c.slice(0,120),w:w.slice(0,3),tip:String(tip||'').trim().slice(0,200)};
+  return {s:s==='v'?'v':'g',q:q.slice(0,300),c:c.slice(0,120),w:w.slice(0,3),tip:String(tip||'').trim().slice(0,200),img:(im&&im.img)||'',imgUrl:(im&&im.imgUrl)||''};
 }
 async function saveOneOwn(){
   const T=S.t;
-  const x=cleanQ($('#o-sec').value,$('#o-q').value,$('#o-c').value,[$('#o-w0').value,$('#o-w1').value,$('#o-w2').value],$('#o-tip').value);
-  if(!x){T.ownMsg='تعذّر الحفظ: اكتب السؤال والجواب الصحيح وخيارًا خاطئًا واحدًا على الأقل (يجب أن يختلف عن الصحيح).';tOwn();return;}
+  const x=cleanQ($('#o-sec').value,$('#o-q').value,$('#o-c').value,[$('#o-w0').value,$('#o-w1').value,$('#o-w2').value],$('#o-tip').value,T.oImg);
+  if(!x){T.ownMsg='Could not save: write the question, the correct answer and at least one wrong option (different from the correct one).';tOwn();return;}
   const list=S.own.slice();
   if(T.edit!=null){list[T.edit]=x;}else list.push(x);
-  const wasEdit=T.edit!=null;T.edit=null;
-  await saveOwn(list.slice(0,300),wasEdit?'تم حفظ التعديل.':'تمت إضافة السؤال. يمكنك إضافة سؤال آخر.');
+  const wasEdit=T.edit!=null;T.edit=null;T.oImgFor=undefined;
+  await saveOwn(list.slice(0,300),wasEdit?'Changes saved.':'Question added. You can add another one.');
 }
 async function saveBulkOwn(){
   const T=S.t;const lines=$('#o-bulk').value.split('\n').map(l=>l.trim()).filter(Boolean);
@@ -1269,12 +1380,12 @@ async function saveBulkOwn(){
     const p=l.split('|');const x=cleanQ(s,p[0]||'',p[1]||'',p.slice(2),'');
     if(x)add.push(x);else bad++;
   });
-  if(!add.length){T.ownMsg='تعذّر إضافة الأسئلة: اكتب كل سطر بالشكل: السؤال | الجواب الصحيح | خاطئ | خاطئ';tOwn();return;}
-  await saveOwn([...S.own,...add].slice(0,300),`تمت إضافة ${add.length} سؤال${bad?` وتخطّي ${bad} سطر غير صالح`:''}.`);
+  if(!add.length){T.ownMsg='Could not add the questions: write each line like: question | correct answer | wrong | wrong';tOwn();return;}
+  await saveOwn([...S.own,...add].slice(0,300),`Added ${add.length} question${add.length===1?'':'s'}${bad?` and skipped ${bad} invalid line${bad===1?'':'s'}`:''}.`);
 }
 async function saveOwn(list,okMsg){
-  try{await tcall('save',{field:'questions',value:list});S.own=list;S.t.ownMsg=okMsg;}
-  catch(e){S.t.ownMsg='تعذّر حفظ الأسئلة. حاول مرة أخرى.';}
+  try{await tcall('save',{field:'questions',value:list.map(x=>{const r=Object.assign({},x);delete r.imgUrl;return r;})});S.own=list;S.t.ownMsg=okMsg;}
+  catch(e){S.t.ownMsg='Could not save the questions. Please try again.';}
   tOwn();
 }
 
@@ -1299,16 +1410,16 @@ async function loadResults(){
     S.resultsLoaded=true;S.dbErr='';
   }catch(e){
     if(!S.canEdit)return;
-    S.resultsLoaded=true;S.dbErr='تعذّر تحميل الدرجات. تأكد من الإنترنت ثم اضغط «تحديث الدرجات».';
+    S.resultsLoaded=true;S.dbErr='Could not load the grades. Check your internet, then press “Refresh grades”.';
   }
 }
 function renderLogin(){
-  $('#main').innerHTML=`<section class="sheet"><h2>دخول المعلم</h2>
-  <p class="lead">اكتب الرمز السري للدخول إلى الدرجات والإعدادات.</p>
-  ${!BACKEND_ON?'<div class="note bad">الموقع غير مربوط بقاعدة البيانات بعد. افتح ملف config.js وضع فيه رابط Convex كما في ملف التعليمات.</div><div class="sp"></div>':''}
+  $('#main').innerHTML=`<section class="sheet"><h2>Teacher sign-in</h2>
+  <p class="lead">Type the secret code to open the grades and settings.</p>
+  ${!BACKEND_ON?'<div class="note bad">The site is not connected to the database yet. Open the file config.js and put your Convex URL in it, as explained in the instructions file.</div><div class="sp"></div>':''}
   ${S.loginMsg?`<div class="note bad">${esc(S.loginMsg)}</div><div class="sp"></div>`:''}
-  <label class="f" style="max-width:340px">الرمز السري<input class="in" id="l-code" type="password" autocomplete="current-password"></label>
-  <div class="sp"></div><div class="row"><button class="btn" id="l-go">دخول</button></div></section>`;
+  <label class="f" style="max-width:340px">Secret code<input class="in" id="l-code" type="password" autocomplete="current-password"></label>
+  <div class="sp"></div><div class="row"><button class="btn" id="l-go">Sign in</button></div></section>`;
   $('#l-go').onclick=doLogin;
   $('#l-code').onkeydown=e=>{if(e.key==='Enter')doLogin();};
 }
@@ -1322,9 +1433,9 @@ async function doLogin(){
       try{sessionStorage.setItem('ex-code',code);}catch(e){}
       await loadResults();render();return;
     }
-    S.loginMsg=r&&r.reason==='locked'?'محاولات خاطئة كثيرة. انتظر 10 دقائق ثم حاول مرة أخرى.':
-      r&&r.reason==='not_configured'?'لم يُضبط الرمز السري في Convex بعد. راجع ملف التعليمات.':'الرمز السري غير صحيح.';
-  }catch(e){S.loginMsg='تعذّر الاتصال بالخادم. تأكد من الإنترنت ومن رابط Convex في ملف config.js.';}
+    S.loginMsg=r&&r.reason==='locked'?'Too many wrong attempts. Wait 10 minutes and try again.':
+      r&&r.reason==='not_configured'?'The secret code has not been set in Convex yet. See the instructions file.':'Incorrect secret code.';
+  }catch(e){S.loginMsg='Could not reach the server. Check your internet and the Convex URL in config.js.';}
   render();
 }
 async function boot(){
