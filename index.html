@@ -51,15 +51,16 @@ p{margin:0}
 .brand b{font-family:var(--f-display);font-size:1.6rem;font-weight:800;letter-spacing:.2px;line-height:1.2}
 .brand span{font-family:var(--f-en);font-size:.78rem;color:var(--ink2);direction:ltr;text-align:start;letter-spacing:.3px}
 .brand span[dir]{font-size:.82rem;color:var(--ink2)!important;margin-top:4px!important}
-.bar{flex-wrap:nowrap;align-items:center}
-.menu-btn{position:relative;z-index:3;width:46px;height:46px;border-radius:14px;border:1px solid var(--line);background:#fff;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;padding:0;flex:none;transition:background .15s,border-color .15s}
+.bar{flex-wrap:nowrap;align-items:center;justify-content:flex-start;gap:16px}
+.bar .brand{order:2;min-width:0}
+.menu-btn{order:1;position:relative;z-index:3;width:46px;height:46px;border-radius:14px;border:1px solid var(--line);background:#fff;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;padding:0;flex:none;transition:background .15s,border-color .15s}
 .menu-btn:hover{background:var(--field)}
 .menu-btn:focus-visible{outline:2px solid var(--brand);outline-offset:2px}
 .menu-btn i{display:block;width:22px;height:2px;border-radius:2px;background:var(--ink);transition:transform .2s,opacity .2s}
 .menu-btn[aria-expanded="true"] i:nth-child(1){transform:translateY(7px) rotate(45deg)}
 .menu-btn[aria-expanded="true"] i:nth-child(2){opacity:0}
 .menu-btn[aria-expanded="true"] i:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
-.tabs{position:absolute;z-index:5;inset-inline-end:14px;top:calc(100% - 8px);min-width:210px;display:flex;flex-direction:column;background:#fff;border:1px solid var(--line);border-radius:16px;padding:6px;box-shadow:0 18px 40px -12px rgba(17,27,61,.28)}
+.tabs{position:absolute;z-index:5;inset-inline-start:14px;top:calc(100% - 8px);min-width:210px;display:flex;flex-direction:column;background:#fff;border:1px solid var(--line);border-radius:16px;padding:6px;box-shadow:0 18px 40px -12px rgba(17,27,61,.28)}
 .tabs[hidden]{display:none}
 .tab{border:0;background:transparent;padding:13px 16px;min-height:46px;border-radius:11px;cursor:pointer;font-weight:600;font-size:1.02rem;color:var(--ink);text-align:start;transition:background .15s,color .15s}
 .tab+.tab{border-top:1px solid var(--line);border-top-left-radius:0;border-top-right-radius:0}
